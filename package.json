@@ -10,9 +10,5 @@
     "Israel Zurita <correo@espol.edu.ec>"
   ],
   "license": "MIT",
-  "private": true,
-  "workspaces": [
-    "frontend",
-    "backend"
-  ]
+  "private": true
 }
