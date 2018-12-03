@@ -83,7 +83,7 @@ class LoginWrapper extends Component {
         password: this.state.inputPassword.value, // Need hash
       };
       setTimeout(() => {
-        if (formValues !== 'jadams@espol.edu.ec') {
+        if (formValues.email !== 'jadams@espol.edu.ec') {
           this.setState({
             inputEmail: {
               ...this.state.inputEmail,
@@ -100,7 +100,7 @@ class LoginWrapper extends Component {
           });
           toast.error('Usuario o contraseña incorrectos', {
             position: 'bottom-right',
-            autoClose: 60000,
+            autoClose: 5000,
             hideProgressBar: true,
             closeOnClick: true,
             pauseOnHover: false,
