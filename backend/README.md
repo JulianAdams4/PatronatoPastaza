@@ -20,3 +20,5 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 ## Learn More
 
 En este página se realizo el diseño de la base [WWW SQL Designer](http://ondras.zarovi.cz/sql/demo/?keyword=default), se debe cargar el archivo "base.xml" para la respectiva visualización.
+
+En esta pagina se paso el scrip sql a psql [SQL Lines](http://www.sqlines.com/online).
