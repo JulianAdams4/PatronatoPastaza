@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const beneficiario = require('./beneficiario');
+const beneficiarioSM = require('./beneficiarioSM');
 
-router.use('/beneficiario', beneficiario);
+router.use('/beneficiarioSM', beneficiarioSM);
 
 module.exports = router;

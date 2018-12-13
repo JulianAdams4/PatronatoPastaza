@@ -32,7 +32,7 @@ CREATE SEQUENCE Canton_seq;
 
 CREATE TABLE Canton (
   id INTEGER DEFAULT NEXTVAL ('Canton_seq'),
-  nombre VARCHAR(100) NOT NULL,
+  nombre VARCHAR(30) NOT NULL,
   id_provincia INTEGER,
   PRIMARY KEY (id)
 );
@@ -48,7 +48,7 @@ CREATE SEQUENCE Rol_seq;
 
 CREATE TABLE Rol (
   id INTEGER DEFAULT NEXTVAL ('Rol_seq'),
-  nombre VARCHAR(100) NOT NULL,
+  nombre VARCHAR(50) NOT NULL,
   estRol CHAR(1) NOT NULL DEFAULT 'A',
   PRIMARY KEY (id)
 );
@@ -80,25 +80,25 @@ CREATE SEQUENCE Beneficiario_seq;
 
 CREATE TABLE Beneficiario (
   id INTEGER DEFAULT NEXTVAL ('Beneficiario_seq'),
-  apellidos VARCHAR(200) NOT NULL,
-  nombres VARCHAR(200) NOT NULL,
+  nombre VARCHAR(200) NOT NULL,
+  apellido VARCHAR(200) NOT NULL,
   identificacion VARCHAR(20) NULL DEFAULT NULL,
   direccion VARCHAR(300) NULL DEFAULT NULL,
   barrio VARCHAR(100) NULL DEFAULT NULL,
-  zona VARCHAR(10) NOT NULL,
-  telefono VARCHAR(20) NOT NULL,
-  fechaNacimiento DATE NOT NULL,
+  zona VARCHAR(10) NULL DEFAULT NULL,
+  telefono VARCHAR(50) NULL DEFAULT NULL,
+  fechaNacimiento DATE NULL DEFAULT NULL,
   edad INTEGER NOT NULL,
-  lugarNacimiento VARCHAR(200) NULL DEFAULT NULL,
+  lugarNacimiento VARCHAR(100) NULL DEFAULT NULL,
   nacionalidad VARCHAR(50) NOT NULL,
   grupoCultural VARCHAR(50) NOT NULL,
   sexo VARCHAR(10) NOT NULL,
   discapacidad VARCHAR(200) NULL DEFAULT NULL,
   viveCon VARCHAR(50) NULL DEFAULT NULL,
-  estadoCivil VARCHAR(20) NOT NULL,
+  estadoCivil VARCHAR(20) NULL DEFAULT NULL,
   institucion VARCHAR(200) NULL DEFAULT NULL,
-  instruccion VARCHAR(100) NULL DEFAULT NULL,
-  empresa VARCHAR(200) NULL DEFAULT NULL,
+  instruccion VARCHAR(50) NULL DEFAULT NULL,
+  empresa VARCHAR(100) NULL DEFAULT NULL,
   ocupacion VARCHAR(100) NULL DEFAULT NULL,
   seguro VARCHAR(100) NULL DEFAULT NULL,
   referido VARCHAR(100) NULL DEFAULT NULL,
@@ -117,9 +117,9 @@ CREATE SEQUENCE Servicio_seq;
 
 CREATE TABLE Servicio (
   id INTEGER DEFAULT NEXTVAL ('Servicio_seq'),
-  tipo VARCHAR(100) NOT NULL,
+  tipo VARCHAR(50) NOT NULL,
   estServ CHAR(1) NOT NULL DEFAULT 'A',
-  id_proyecto INTEGER,
+  id_proyUni INTEGER,
   PRIMARY KEY (id)
 );
 
@@ -138,38 +138,38 @@ CREATE TABLE Atencion (
   id_beneficiario INTEGER,
   fecha DATE NOT NULL,
   observacion VARCHAR(300) NULL DEFAULT NULL,
-  tieneCosto CHAR(1) NOT NULL DEFAULT 'N',
   estAtenc CHAR(1) NOT NULL DEFAULT 'P',
   PRIMARY KEY (id)
 );
 
 -- ---
--- Table 'UsuProyRol'
+-- Table 'Cargo'
 --
 -- ---
 
-DROP TABLE IF EXISTS UsuProyRol;
+DROP TABLE IF EXISTS Cargo;
 
-CREATE SEQUENCE UsuProyRol_seq;
+CREATE SEQUENCE Cargo_seq;
 
-CREATE TABLE UsuProyRol (
-  id INTEGER DEFAULT NEXTVAL ('UsuProyRol_seq'),
+CREATE TABLE Cargo (
+  id INTEGER DEFAULT NEXTVAL ('Cargo_seq'),
   id_usuario INTEGER,
-  id_proyRol INTEGER,
+  id_rol INTEGER,
+  id_proyUni INTEGER,
   PRIMARY KEY (id)
 );
 
 -- ---
--- Table 'ProyUniBene'
+-- Table 'Admision'
 --
 -- ---
 
-DROP TABLE IF EXISTS ProyUniBene;
+DROP TABLE IF EXISTS Admision;
 
-CREATE SEQUENCE ProyUniBene_seq;
+CREATE SEQUENCE Admision_seq;
 
-CREATE TABLE ProyUniBene (
-  id INTEGER DEFAULT NEXTVAL ('ProyUniBene_seq'),
+CREATE TABLE Admision (
+  id INTEGER DEFAULT NEXTVAL ('Admision_seq'),
   id_proyUni INTEGER,
   id_beneficiario INTEGER,
   fechaAdmi DATE NOT NULL,
@@ -188,9 +188,9 @@ CREATE SEQUENCE Compania_seq;
 
 CREATE TABLE Compania (
   id INTEGER DEFAULT NEXTVAL ('Compania_seq'),
-  nombre VARCHAR(100) NOT NULL,
+  nombre VARCHAR(30) NOT NULL,
   detalle VARCHAR(300) NULL DEFAULT NULL,
-  direccion VARCHAR(300) NULL DEFAULT NULL,
+  ubicacion VARCHAR(300) NULL DEFAULT NULL,
   PRIMARY KEY (id)
 );
 
@@ -205,7 +205,7 @@ CREATE SEQUENCE Provincia_seq;
 
 CREATE TABLE Provincia (
   id INTEGER DEFAULT NEXTVAL ('Provincia_seq'),
-  nombre VARCHAR(100) NOT NULL,
+  nombre VARCHAR(30) NOT NULL,
   PRIMARY KEY (id)
 );
 
@@ -220,7 +220,7 @@ CREATE SEQUENCE Parroquia_seq;
 
 CREATE TABLE Parroquia (
   id INTEGER DEFAULT NEXTVAL ('Parroquia_seq'),
-  nombre VARCHAR(100) NOT NULL,
+  nombre VARCHAR(30) NOT NULL,
   id_canton INTEGER,
   PRIMARY KEY (id)
 );
@@ -237,8 +237,8 @@ CREATE SEQUENCE Unidad_seq;
 CREATE TABLE Unidad (
   id INTEGER DEFAULT NEXTVAL ('Unidad_seq'),
   nombre VARCHAR(100) NOT NULL,
-  detalle VARCHAR(300) NULL DEFAULT NULL,
-  direccion VARCHAR(300) NULL DEFAULT NULL,
+  detalle VARCHAR(250) NULL DEFAULT NULL,
+  ubicacion VARCHAR(300) NULL DEFAULT NULL,
   estUnid CHAR(1) NOT NULL DEFAULT 'A',
   id_compania INTEGER,
   PRIMARY KEY (id)
@@ -257,7 +257,7 @@ CREATE TABLE Usuario (
   id INTEGER DEFAULT NEXTVAL ('Usuario_seq'),
   nombre VARCHAR(200) NOT NULL,
   apellido VARCHAR(200) NOT NULL,
-  identificacion VARCHAR(20) NOT NULL,
+  identificacion VARCHAR(30) NOT NULL,
   telefono VARCHAR(20) NULL DEFAULT NULL,
   fechaIngreso DATE NOT NULL,
   correo VARCHAR(100) NOT NULL,
@@ -278,7 +278,7 @@ CREATE SEQUENCE Accion_seq;
 
 CREATE TABLE Accion (
   id INTEGER DEFAULT NEXTVAL ('Accion_seq'),
-  nombre VARCHAR(100) NOT NULL,
+  nombre VARCHAR(50) NOT NULL,
   estAcc CHAR(1) NOT NULL DEFAULT 'A',
   PRIMARY KEY (id)
 );
@@ -294,14 +294,14 @@ CREATE SEQUENCE Responsable_seq;
 
 CREATE TABLE Responsable (
   id INTEGER DEFAULT NEXTVAL ('Responsable_seq'),
-  nombres VARCHAR(200) NOT NULL,
-  apellidos VARCHAR(200) NOT NULL,
+  nombre VARCHAR(200) NOT NULL,
+  apellido VARCHAR(200) NOT NULL,
   identificacion VARCHAR(20) NULL DEFAULT NULL,
   edad INTEGER NOT NULL,
-  parentesco VARCHAR(100) NOT NULL,
-  telefono VARCHAR(20) NULL DEFAULT NULL,
-  direccion VARCHAR(300) NULL DEFAULT NULL,
-  instruccion VARCHAR(100) NULL DEFAULT NULL,
+  parentesco VARCHAR(50) NOT NULL,
+  telefono VARCHAR(50) NULL DEFAULT NULL,
+  direccion VARCHAR(200) NULL DEFAULT NULL,
+  instruccion VARCHAR(200) NULL DEFAULT NULL,
   ocupacion VARCHAR(100) NULL DEFAULT NULL,
   id_beneficiario INTEGER,
   PRIMARY KEY (id)
@@ -318,24 +318,8 @@ CREATE SEQUENCE ProyUni_seq;
 
 CREATE TABLE ProyUni (
   id INTEGER DEFAULT NEXTVAL ('ProyUni_seq'),
+  id_proyecto INTEGER,
   id_unidad INTEGER,
-  id_proyecto INTEGER,
-  PRIMARY KEY (id)
-);
-
--- ---
--- Table 'ProyRol'
---
--- ---
-
-DROP TABLE IF EXISTS ProyRol;
-
-CREATE SEQUENCE ProyRol_seq;
-
-CREATE TABLE ProyRol (
-  id INTEGER DEFAULT NEXTVAL ('ProyRol_seq'),
-  id_proyecto INTEGER,
-  id_rol INTEGER,
   PRIMARY KEY (id)
 );
 
@@ -347,20 +331,19 @@ ALTER TABLE Canton ADD FOREIGN KEY (id_provincia) REFERENCES Provincia (id);
 ALTER TABLE RolAcc ADD FOREIGN KEY (id_rol) REFERENCES Rol (id);
 ALTER TABLE RolAcc ADD FOREIGN KEY (id_accion) REFERENCES Accion (id);
 ALTER TABLE Beneficiario ADD FOREIGN KEY (id_parroquia) REFERENCES Parroquia (id);
-ALTER TABLE Servicio ADD FOREIGN KEY (id_proyecto) REFERENCES Proyecto (id);
+ALTER TABLE Servicio ADD FOREIGN KEY (id_proyUni) REFERENCES ProyUni (id);
 ALTER TABLE Atencion ADD FOREIGN KEY (id_servicio) REFERENCES Servicio (id);
 ALTER TABLE Atencion ADD FOREIGN KEY (id_beneficiario) REFERENCES Beneficiario (id);
-ALTER TABLE UsuProyRol ADD FOREIGN KEY (id_usuario) REFERENCES Usuario (id);
-ALTER TABLE UsuProyRol ADD FOREIGN KEY (id_proyRol) REFERENCES ProyRol (id);
-ALTER TABLE ProyUniBene ADD FOREIGN KEY (id_proyUni) REFERENCES ProyUni (id);
-ALTER TABLE ProyUniBene ADD FOREIGN KEY (id_beneficiario) REFERENCES Beneficiario (id);
+ALTER TABLE Cargo ADD FOREIGN KEY (id_usuario) REFERENCES Usuario (id);
+ALTER TABLE Cargo ADD FOREIGN KEY (id_rol) REFERENCES Rol (id);
+ALTER TABLE Cargo ADD FOREIGN KEY (id_proyUni) REFERENCES ProyUni (id);
+ALTER TABLE Admision ADD FOREIGN KEY (id_proyUni) REFERENCES ProyUni (id);
+ALTER TABLE Admision ADD FOREIGN KEY (id_beneficiario) REFERENCES Beneficiario (id);
 ALTER TABLE Parroquia ADD FOREIGN KEY (id_canton) REFERENCES Canton (id);
 ALTER TABLE Unidad ADD FOREIGN KEY (id_compania) REFERENCES Compania (id);
 ALTER TABLE Responsable ADD FOREIGN KEY (id_beneficiario) REFERENCES Beneficiario (id);
-ALTER TABLE ProyUni ADD FOREIGN KEY (id_unidad) REFERENCES Unidad (id);
 ALTER TABLE ProyUni ADD FOREIGN KEY (id_proyecto) REFERENCES Proyecto (id);
-ALTER TABLE ProyRol ADD FOREIGN KEY (id_proyecto) REFERENCES Proyecto (id);
-ALTER TABLE ProyRol ADD FOREIGN KEY (id_rol) REFERENCES Rol (id);
+ALTER TABLE ProyUni ADD FOREIGN KEY (id_unidad) REFERENCES Unidad (id);
 
 -- ---
 -- Table Properties
@@ -373,8 +356,8 @@ ALTER TABLE ProyRol ADD FOREIGN KEY (id_rol) REFERENCES Rol (id);
 -- ALTER TABLE `Beneficiario` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 -- ALTER TABLE `Servicio` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 -- ALTER TABLE `Atencion` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
--- ALTER TABLE `UsuProyRol` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
--- ALTER TABLE `ProyUniBene` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `Cargo` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `Admision` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 -- ALTER TABLE `Compania` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 -- ALTER TABLE `Provincia` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 -- ALTER TABLE `Parroquia` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
@@ -383,7 +366,6 @@ ALTER TABLE ProyRol ADD FOREIGN KEY (id_rol) REFERENCES Rol (id);
 -- ALTER TABLE `Accion` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 -- ALTER TABLE `Responsable` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 -- ALTER TABLE `ProyUni` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
--- ALTER TABLE `ProyRol` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- ---
 -- Seed Data
@@ -408,11 +390,11 @@ INSERT INTO Proyecto (nombre) VALUES ('Personal Administrativo');
 INSERT INTO ProyUni (id_unidad,id_proyecto) VALUES ('1','1');
 INSERT INTO ProyUni (id_unidad,id_proyecto) VALUES ('2','2');
 
-INSERT INTO Servicio (tipo,id_proyecto) VALUES ('Medicina General','1');
-INSERT INTO Servicio (tipo,id_proyecto) VALUES ('Odontología','1');
-INSERT INTO Servicio (tipo,id_proyecto) VALUES ('Terapia de Lenguaje','1');
-INSERT INTO Servicio (tipo,id_proyecto) VALUES ('Terapia Física','1');
-INSERT INTO Servicio (tipo,id_proyecto) VALUES ('Psicología','1');
+INSERT INTO Servicio (tipo,id_proyUni) VALUES ('Medicina General','1');
+INSERT INTO Servicio (tipo,id_proyUni) VALUES ('Odontología','1');
+INSERT INTO Servicio (tipo,id_proyUni) VALUES ('Terapia de Lenguaje','1');
+INSERT INTO Servicio (tipo,id_proyUni) VALUES ('Terapia Física','1');
+INSERT INTO Servicio (tipo,id_proyUni) VALUES ('Psicología','1');
 
 INSERT INTO Rol (nombre) VALUES ('Administrador');
 INSERT INTO Rol (nombre) VALUES ('Asistente');
@@ -420,13 +402,6 @@ INSERT INTO Rol (nombre) VALUES ('Médico');
 INSERT INTO Rol (nombre) VALUES ('Terapeuta Físico');
 INSERT INTO Rol (nombre) VALUES ('Terapeuta Lenguaje');
 INSERT INTO Rol (nombre) VALUES ('Psicólogo');
-
-INSERT INTO ProyRol (id_proyecto,id_rol) VALUES('1','1');
-INSERT INTO ProyRol (id_proyecto,id_rol) VALUES('1','2');
-INSERT INTO ProyRol (id_proyecto,id_rol) VALUES('1','3');
-INSERT INTO ProyRol (id_proyecto,id_rol) VALUES('1','4');
-INSERT INTO ProyRol (id_proyecto,id_rol) VALUES('1','5');
-INSERT INTO ProyRol (id_proyecto,id_rol) VALUES('1','6');
 
 --INSERT INTO Accion (nombre) VALUES ('');
 
@@ -461,3 +436,42 @@ INSERT INTO Parroquia (nombre,id_canton) VALUES ('San José','3');
 INSERT INTO Canton (nombre,id_provincia) VALUES ('Arajuno','1');
 INSERT INTO Parroquia (nombre,id_canton) VALUES ('Arajuno','4');
 INSERT INTO Parroquia (nombre,id_canton) VALUES ('Curaray','4');
+
+-- ---
+-- Test Data
+-- ---
+
+-- INSERT INTO Proyecto (`id`,`nombre`,`estProy`) VALUES
+-- ('','','');
+-- INSERT INTO `Canton` (`id`,`nombre`,`id_provincia`) VALUES
+-- ('','','');
+-- INSERT INTO `Rol` (`id`,`nombre`,`estRol`) VALUES
+-- ('','','');
+-- INSERT INTO `RolAcc` (`id`,`id_rol`,`id_accion`) VALUES
+-- ('','','');
+-- INSERT INTO `Beneficiario` (`id`,`apellidos`,`nombres`,`identificacion`,`direccion`,`barrio`,`zona`,`telefono`,`fechaNacimiento`,`edad`,`lugarNacimiento`,`nacionalidad`,`grupoCultural`,`sexo`,`discapacidad`,`viveCon`,`estadoCivil`,`institucion`,`instruccion`,`empresa`,`ocupacion`,`seguro`,`referido`,`id_parroquia`) VALUES
+-- ('','','','','','','','','','','','','','','','','','','','','','','','');
+-- INSERT INTO `Servicio` (`id`,`tipo`,`estServ`,`id_ProyUni`) VALUES
+-- ('','','','');
+-- INSERT INTO `Atencion` (`id`,`id_servicio`,`id_beneficiario`,`fecha`,`observacion`,`estAtenc`) VALUES
+-- ('','','','','','');
+-- INSERT INTO `Cargo` (`id`,`id_usuario`,`id_Rol`,`id_ProyUni`) VALUES
+-- ('','','','');
+-- INSERT INTO `Admision` (`id`,`id_proyUni`,`id_beneficiario`,`fechaAdmi`,`estAdmi`) VALUES
+-- ('','','','','');
+-- INSERT INTO `Compania` (`id`,`nombre`,`detalle`,`ubicacion`) VALUES
+-- ('','','','');
+-- INSERT INTO `Provincia` (`id`,`nombre`) VALUES
+-- ('','');
+-- INSERT INTO `Parroquia` (`id`,`nombre`,`id_canton`) VALUES
+-- ('','','');
+-- INSERT INTO `Unidad` (`id`,`nombre`,`detalle`,`ubicacion`,`estUnid`,`id_compañia`) VALUES
+-- ('','','','','','');
+-- INSERT INTO `Usuario` (`id`,`nombre`,`apellido`,`identificacion`,`telefono`,`fechaIngreso`,`correo`,`contrasena`,`estUsua`,`estCont`) VALUES
+-- ('','','','','','','','','','');
+-- INSERT INTO `Accion` (`id`,`nombre`,`estAcc`) VALUES
+-- ('','','');
+-- INSERT INTO `Responsable` (`id`,`nombres`,`apellidos`,`identificacion`,`edad`,`parentesco`,`telefono`,`direccion`,`instruccion`,`ocupacion`,`id_beneficiario`) VALUES
+-- ('','','','','','','','','','','');
+-- INSERT INTO `ProyUni` (`id`,`id_proyecto`,`id_unidad`) VALUES
+-- ('','','');

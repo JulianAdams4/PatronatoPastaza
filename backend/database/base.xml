@@ -37,7 +37,7 @@
 		<type label="SET" length="1" sql="SET" quote=""/>
 		<type label="Bit" length="0" sql="bit" quote=""/>
 	</group>
-</datatypes><table x="505" y="305" name="Proyecto">
+</datatypes><table x="357" y="196" name="Proyecto">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -51,7 +51,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="518" y="647" name="Canton">
+<table x="721" y="442" name="Canton">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -66,7 +66,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="505" y="408" name="Rol">
+<table x="221" y="138" name="Rol">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -80,7 +80,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="344" y="457" name="RolAcc">
+<table x="60" y="266" name="RolAcc">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -96,15 +96,15 @@
 <part>id</part>
 </key>
 </table>
-<table x="987" y="229" name="Beneficiario">
+<table x="1025" y="48" name="Beneficiario">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
-<row name="apellidos" null="0" autoincrement="0">
-<datatype>VARCHAR(100)</datatype>
+<row name="nombre" null="0" autoincrement="0">
+<datatype>VARCHAR(200)</datatype>
 </row>
-<row name="nombres" null="0" autoincrement="0">
-<datatype>VARCHAR(100)</datatype>
+<row name="apellido" null="0" autoincrement="0">
+<datatype>VARCHAR(200)</datatype>
 </row>
 <row name="identificacion" null="1" autoincrement="0">
 <datatype>VARCHAR(20)</datatype>
@@ -174,7 +174,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="738" y="326" name="Servicio">
+<table x="693" y="239" name="Servicio">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -184,15 +184,15 @@
 <row name="estServ" null="0" autoincrement="0">
 <datatype>CHAR(1)</datatype>
 <default>'I'</default></row>
-<row name="id_proyecto" null="1" autoincrement="0">
+<row name="id_ProyUni" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="Proyecto" row="id" />
+<default>NULL</default><relation table="ProyUni" row="id" />
 </row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
-<table x="718" y="486" name="Atencion">
+<table x="842" y="242" name="Atencion">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -210,6 +210,9 @@
 <row name="observacion" null="1" autoincrement="0">
 <datatype>VARCHAR(300)</datatype>
 <default>NULL</default></row>
+<row name="tieneCosto" null="0" autoincrement="0">
+<datatype>CHAR(1)</datatype>
+<default>'N'</default></row>
 <row name="estAtenc" null="0" autoincrement="0">
 <datatype>CHAR(1)</datatype>
 <default>'P'</default></row>
@@ -217,7 +220,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="322" y="224" name="UsuProyRol">
+<table x="370" y="42" name="Cargo">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -225,15 +228,19 @@
 <datatype>INTEGER</datatype>
 <default>NULL</default><relation table="Usuario" row="id" />
 </row>
-<row name="id_proyRol" null="1" autoincrement="0">
+<row name="id_Rol" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="ProyRol" row="id" />
+<default>NULL</default><relation table="Rol" row="id" />
+</row>
+<row name="id_ProyUni" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="ProyUni" row="id" />
 </row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
-<table x="985" y="63" name="ProyUniBene">
+<table x="752" y="64" name="Admision">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -255,7 +262,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="277" y="85" name="Compania">
+<table x="203" y="405" name="Compania">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -272,7 +279,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="320" y="623" name="Provincia">
+<table x="572" y="402" name="Provincia">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -283,7 +290,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="719" y="673" name="Parroquia">
+<table x="860" y="494" name="Parroquia">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -298,12 +305,12 @@
 <part>id</part>
 </key>
 </table>
-<table x="501" y="124" name="Unidad">
+<table x="377" y="320" name="Unidad">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
 <row name="nombre" null="1" autoincrement="0">
-<datatype>VARCHAR</datatype>
+<datatype>VARCHAR(100)</datatype>
 <default>NULL</default></row>
 <row name="detalle" null="1" autoincrement="0">
 <datatype>VARCHAR(250)</datatype>
@@ -314,7 +321,7 @@
 <row name="estUnid" null="0" autoincrement="0">
 <datatype>CHAR(1)</datatype>
 <default>'I'</default></row>
-<row name="id_compañia" null="1" autoincrement="0">
+<row name="id_compania" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default><relation table="Compania" row="id" />
 </row>
@@ -322,15 +329,15 @@
 <part>id</part>
 </key>
 </table>
-<table x="78" y="227" name="Usuario">
+<table x="60" y="13" name="Usuario">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
 <row name="nombre" null="0" autoincrement="0">
-<datatype>VARCHAR(100)</datatype>
+<datatype>VARCHAR(200)</datatype>
 </row>
 <row name="apellido" null="0" autoincrement="0">
-<datatype>VARCHAR(100)</datatype>
+<datatype>VARCHAR(200)</datatype>
 </row>
 <row name="identificacion" null="0" autoincrement="0">
 <datatype>VARCHAR(30)</datatype>
@@ -357,7 +364,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="507" y="513" name="Accion">
+<table x="213" y="300" name="Accion">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -371,14 +378,14 @@
 <part>id</part>
 </key>
 </table>
-<table x="1228" y="47" name="Responsable">
+<table x="1221" y="49" name="Responsable">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
-<row name="nombres" null="0" autoincrement="0">
+<row name="nombre" null="0" autoincrement="0">
 <datatype>VARCHAR(200)</datatype>
 </row>
-<row name="apellidos" null="0" autoincrement="0">
+<row name="apellido" null="0" autoincrement="0">
 <datatype>VARCHAR(200)</datatype>
 </row>
 <row name="identificacion" null="1" autoincrement="0">
@@ -410,33 +417,17 @@
 <part>id</part>
 </key>
 </table>
-<table x="736" y="186" name="ProyUni">
+<table x="542" y="139" name="ProyUni">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
+<row name="id_proyecto" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="Proyecto" row="id" />
+</row>
 <row name="id_unidad" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default><relation table="Unidad" row="id" />
-</row>
-<row name="id_proyecto" null="1" autoincrement="0">
-<datatype>INTEGER</datatype>
-<default>NULL</default><relation table="Proyecto" row="id" />
-</row>
-<key type="PRIMARY" name="">
-<part>id</part>
-</key>
-</table>
-<table x="326" y="344" name="ProyRol">
-<row name="id" null="1" autoincrement="1">
-<datatype>INTEGER</datatype>
-<default>NULL</default></row>
-<row name="id_proyecto" null="1" autoincrement="0">
-<datatype>INTEGER</datatype>
-<default>NULL</default><relation table="Proyecto" row="id" />
-</row>
-<row name="id_rol" null="1" autoincrement="0">
-<datatype>INTEGER</datatype>
-<default>NULL</default><relation table="Rol" row="id" />
 </row>
 <key type="PRIMARY" name="">
 <part>id</part>
