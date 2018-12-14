@@ -138,6 +138,7 @@ CREATE TABLE Atencion (
   id_beneficiario INTEGER,
   fecha DATE NOT NULL,
   observacion VARCHAR(300) NULL DEFAULT NULL,
+  tieneCosto CHAR(1) NOT NULL DEFAULT 'N',
   estAtenc CHAR(1) NOT NULL DEFAULT 'P',
   PRIMARY KEY (id)
 );
@@ -190,7 +191,7 @@ CREATE TABLE Compania (
   id INTEGER DEFAULT NEXTVAL ('Compania_seq'),
   nombre VARCHAR(30) NOT NULL,
   detalle VARCHAR(300) NULL DEFAULT NULL,
-  ubicacion VARCHAR(300) NULL DEFAULT NULL,
+  direccion VARCHAR(300) NULL DEFAULT NULL,
   PRIMARY KEY (id)
 );
 
@@ -238,7 +239,7 @@ CREATE TABLE Unidad (
   id INTEGER DEFAULT NEXTVAL ('Unidad_seq'),
   nombre VARCHAR(100) NOT NULL,
   detalle VARCHAR(250) NULL DEFAULT NULL,
-  ubicacion VARCHAR(300) NULL DEFAULT NULL,
+  direccion VARCHAR(300) NULL DEFAULT NULL,
   estUnid CHAR(1) NOT NULL DEFAULT 'A',
   id_compania INTEGER,
   PRIMARY KEY (id)
@@ -297,7 +298,7 @@ CREATE TABLE Responsable (
   nombre VARCHAR(200) NOT NULL,
   apellido VARCHAR(200) NOT NULL,
   identificacion VARCHAR(20) NULL DEFAULT NULL,
-  edad INTEGER NOT NULL,
+  edad INTEGER NULL DEFAULT NULL,
   parentesco VARCHAR(50) NOT NULL,
   telefono VARCHAR(50) NULL DEFAULT NULL,
   direccion VARCHAR(200) NULL DEFAULT NULL,
@@ -374,6 +375,7 @@ ALTER TABLE ProyUni ADD FOREIGN KEY (id_unidad) REFERENCES Unidad (id);
 INSERT INTO Compania (nombre,detalle,direccion) VALUES ('Patronato','Servicio Social','Pastaza');
 INSERT INTO Unidad (nombre,detalle,direccion,id_compania) VALUES('Consultorio Tipo A','Servicios Medicos','Puyo','1');
 INSERT INTO Unidad (nombre,detalle,direccion,id_compania) VALUES('CITET','CITET','Fátima','1');
+INSERT INTO Unidad (nombre,detalle,direccion,id_compania) VALUES('Patronato','Patronato','Puyo','1');
 
 INSERT INTO Proyecto (nombre) VALUES ('Patronato Servicios Médicos');
 INSERT INTO Proyecto (nombre) VALUES ('CITET');
@@ -383,12 +385,13 @@ INSERT INTO Proyecto (nombre) VALUES ('Brigadas Médicas Fluviales');
 INSERT INTO Proyecto (nombre) VALUES ('Brigadas Médicas Terrestres');
 INSERT INTO Proyecto (nombre) VALUES ('Aprende a Emprender');
 INSERT INTO Proyecto (nombre) VALUES ('Apoyo Psicopedagógico');
-INSERT INTO Proyecto (nombre) VALUES ('Mi Presente y Mi Futuro en mis manos');
+INSERT INTO Proyecto (nombre) VALUES ('Mi Presente y Mi Futuro en mis Manos');
 INSERT INTO Proyecto (nombre) VALUES ('TIC');
 INSERT INTO Proyecto (nombre) VALUES ('Personal Administrativo');
 
 INSERT INTO ProyUni (id_unidad,id_proyecto) VALUES ('1','1');
 INSERT INTO ProyUni (id_unidad,id_proyecto) VALUES ('2','2');
+INSERT INTO ProyUni (id_unidad,id_proyecto) VALUES ('3','10');
 
 INSERT INTO Servicio (tipo,id_proyUni) VALUES ('Medicina General','1');
 INSERT INTO Servicio (tipo,id_proyUni) VALUES ('Odontología','1');
@@ -402,10 +405,69 @@ INSERT INTO Rol (nombre) VALUES ('Médico');
 INSERT INTO Rol (nombre) VALUES ('Terapeuta Físico');
 INSERT INTO Rol (nombre) VALUES ('Terapeuta Lenguaje');
 INSERT INTO Rol (nombre) VALUES ('Psicólogo');
+INSERT INTO Rol (nombre) VALUES ('Odontólogo');
 
---INSERT INTO Accion (nombre) VALUES ('');
+INSERT INTO Accion (nombre) VALUES ('ConsultarSM');
 
---INSERT INTO RolAcc (id_rol,id_accion) VALUES ('','');
+INSERT INTO RolAcc (id_rol,id_accion) VALUES ('1','1');
+INSERT INTO RolAcc (id_rol,id_accion) VALUES ('2','1');
+INSERT INTO RolAcc (id_rol,id_accion) VALUES ('3','1');
+INSERT INTO RolAcc (id_rol,id_accion) VALUES ('4','1');
+INSERT INTO RolAcc (id_rol,id_accion) VALUES ('5','1');
+INSERT INTO RolAcc (id_rol,id_accion) VALUES ('6','1');
+INSERT INTO RolAcc (id_rol,id_accion) VALUES ('7','1');
+
+INSERT INTO Usuario (nombre,apellido,identificacion,telefono,fechaIngreso,correo,contrasena) VALUES
+  ('Erick','Pérez','0912324323','0912344321','2018-12-13','erick94.perez@gmail.com','admin');
+INSERT INTO Usuario (nombre,apellido,identificacion,telefono,fechaIngreso,correo,contrasena) VALUES
+  ('Maribel','Moreno','0922324323','0922344321','2018-12-13','erick94.perez@gmail.com','admin');
+
+INSERT INTO Cargo (id_usuario,id_Rol,id_ProyUni) VALUES ('1','1','3');
+INSERT INTO Cargo (id_usuario,id_Rol,id_ProyUni) VALUES ('2','2','1');
+
+INSERT INTO Beneficiario (nombre,apellido,identificacion,direccion,barrio,zona,telefono,fechaNacimiento,
+  edad,lugarNacimiento,nacionalidad,grupoCultural,sexo,discapacidad,estadoCivil,empresa,ocupacion,
+  seguro,id_parroquia) VALUES
+  ('Juan','Fernandez','1010102020','Sur','Pomona','Urbana','0910102030','1982-10-01',
+    '36','Pastaza','Ecuatoriana','Mestizo','Hombre','No presenta','Soltero','Tienda','Tendero',
+    'No tiene','10');
+INSERT INTO Beneficiario (nombre,apellido,identificacion,direccion,barrio,zona,telefono,fechaNacimiento,
+  edad,lugarNacimiento,nacionalidad,grupoCultural,sexo,discapacidad,estadoCivil,empresa,ocupacion,
+  seguro,id_parroquia) VALUES
+  ('Lusmila','Tapia','2020302020','Norte','Pomona','Urbana','0930102030','1962-10-01',
+    '56','Pastaza','Ecuatoriana','Mestizo','Mujer','No presenta','Soltero','Costuras','Costurera',
+    'No tiene','10');
+INSERT INTO Beneficiario (nombre,apellido,identificacion,direccion,barrio,zona,telefono,fechaNacimiento,
+  edad,lugarNacimiento,nacionalidad,grupoCultural,sexo,discapacidad,instruccion,id_parroquia) VALUES
+  ('Evelyn','Tapia','4520342020','Norte','Pomona','Urbana','0930145630','2009-01-01',
+    '9','Pastaza','Ecuatoriana','Mestizo','Mujer','Auditiva','Cuarto Año Basico','5');
+INSERT INTO Beneficiario (nombre,apellido,identificacion,direccion,barrio,zona,telefono,fechaNacimiento,
+  edad,lugarNacimiento,nacionalidad,grupoCultural,sexo,discapacidad,instruccion,id_parroquia) VALUES
+  ('Jose','Lara','4530342050','Este','Araujo','Rural','0920145630','2010-01-01',
+    '8','Pastaza','Ecuatoriana','Mestizo','Hombre','Retraso','No asiste','4');
+
+INSERT INTO Responsable (nombre,apellido,parentesco,telefono,id_beneficiario) VALUES
+  ('Juana','Martin','Esposa','0929393929','1');
+INSERT INTO Responsable (nombre,apellido,parentesco,telefono,id_beneficiario) VALUES
+  ('Luisa','Martinez','Hermana','0919292919','2');
+INSERT INTO Responsable (nombre,apellido,identificacion,parentesco,id_beneficiario) VALUES
+  ('Luna','Lino','1029102934','Madre','3');
+INSERT INTO Responsable (nombre,apellido,identificacion,parentesco,id_beneficiario) VALUES
+  ('Marcos','Tapia','1034142934','Padre','3');
+INSERT INTO Responsable (nombre,apellido,identificacion,parentesco,id_beneficiario) VALUES
+  ('Marcos','Lara','2024242934','Padre','4');
+
+INSERT INTO Admision(id_proyUni,id_beneficiario,fechaAdmi) VALUES ('1','1','2018-12-14');
+INSERT INTO Admision(id_proyUni,id_beneficiario,fechaAdmi) VALUES ('1','2','2018-12-14');
+INSERT INTO Admision(id_proyUni,id_beneficiario,fechaAdmi) VALUES ('2','3','2018-12-14');
+INSERT INTO Admision(id_proyUni,id_beneficiario,fechaAdmi) VALUES ('2','4','2018-12-14');
+
+INSERT INTO Atencion (id_servicio,id_beneficiario,fecha,observacion,tieneCosto) VALUES
+('1','1','2018-12-14','S');
+INSERT INTO Atencion (id_servicio,id_beneficiario,fecha,tieneCosto) VALUES
+('1','1','2018-12-15','S');
+INSERT INTO Atencion (id_servicio,id_beneficiario,fecha,tieneCosto) VALUES
+('1','2','2018-12-14','S');
 
 INSERT INTO Provincia (nombre) VALUES ('Pastaza');
 INSERT INTO Canton (nombre,id_provincia) VALUES ('Pastaza','1');
@@ -436,42 +498,3 @@ INSERT INTO Parroquia (nombre,id_canton) VALUES ('San José','3');
 INSERT INTO Canton (nombre,id_provincia) VALUES ('Arajuno','1');
 INSERT INTO Parroquia (nombre,id_canton) VALUES ('Arajuno','4');
 INSERT INTO Parroquia (nombre,id_canton) VALUES ('Curaray','4');
-
--- ---
--- Test Data
--- ---
-
--- INSERT INTO Proyecto (`id`,`nombre`,`estProy`) VALUES
--- ('','','');
--- INSERT INTO `Canton` (`id`,`nombre`,`id_provincia`) VALUES
--- ('','','');
--- INSERT INTO `Rol` (`id`,`nombre`,`estRol`) VALUES
--- ('','','');
--- INSERT INTO `RolAcc` (`id`,`id_rol`,`id_accion`) VALUES
--- ('','','');
--- INSERT INTO `Beneficiario` (`id`,`apellidos`,`nombres`,`identificacion`,`direccion`,`barrio`,`zona`,`telefono`,`fechaNacimiento`,`edad`,`lugarNacimiento`,`nacionalidad`,`grupoCultural`,`sexo`,`discapacidad`,`viveCon`,`estadoCivil`,`institucion`,`instruccion`,`empresa`,`ocupacion`,`seguro`,`referido`,`id_parroquia`) VALUES
--- ('','','','','','','','','','','','','','','','','','','','','','','','');
--- INSERT INTO `Servicio` (`id`,`tipo`,`estServ`,`id_ProyUni`) VALUES
--- ('','','','');
--- INSERT INTO `Atencion` (`id`,`id_servicio`,`id_beneficiario`,`fecha`,`observacion`,`estAtenc`) VALUES
--- ('','','','','','');
--- INSERT INTO `Cargo` (`id`,`id_usuario`,`id_Rol`,`id_ProyUni`) VALUES
--- ('','','','');
--- INSERT INTO `Admision` (`id`,`id_proyUni`,`id_beneficiario`,`fechaAdmi`,`estAdmi`) VALUES
--- ('','','','','');
--- INSERT INTO `Compania` (`id`,`nombre`,`detalle`,`ubicacion`) VALUES
--- ('','','','');
--- INSERT INTO `Provincia` (`id`,`nombre`) VALUES
--- ('','');
--- INSERT INTO `Parroquia` (`id`,`nombre`,`id_canton`) VALUES
--- ('','','');
--- INSERT INTO `Unidad` (`id`,`nombre`,`detalle`,`ubicacion`,`estUnid`,`id_compañia`) VALUES
--- ('','','','','','');
--- INSERT INTO `Usuario` (`id`,`nombre`,`apellido`,`identificacion`,`telefono`,`fechaIngreso`,`correo`,`contrasena`,`estUsua`,`estCont`) VALUES
--- ('','','','','','','','','','');
--- INSERT INTO `Accion` (`id`,`nombre`,`estAcc`) VALUES
--- ('','','');
--- INSERT INTO `Responsable` (`id`,`nombres`,`apellidos`,`identificacion`,`edad`,`parentesco`,`telefono`,`direccion`,`instruccion`,`ocupacion`,`id_beneficiario`) VALUES
--- ('','','','','','','','','','','');
--- INSERT INTO `ProyUni` (`id`,`id_proyecto`,`id_unidad`) VALUES
--- ('','','');
