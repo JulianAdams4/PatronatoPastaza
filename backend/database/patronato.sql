@@ -372,6 +372,36 @@ ALTER TABLE ProyUni ADD FOREIGN KEY (id_unidad) REFERENCES Unidad (id);
 -- Seed Data
 -- ---
 
+INSERT INTO Provincia (nombre) VALUES ('Pastaza');
+INSERT INTO Canton (nombre,id_provincia) VALUES ('Pastaza','1');
+INSERT INTO Canton (nombre,id_provincia) VALUES ('Mera','1');
+INSERT INTO Canton (nombre,id_provincia) VALUES ('Arajuno','1');
+INSERT INTO Canton (nombre,id_provincia) VALUES ('Santa Clara','1');
+INSERT INTO Parroquia (nombre,id_canton) VALUES ('Puyo','1');
+INSERT INTO Parroquia (nombre,id_canton) VALUES ('Arajuno','1');
+INSERT INTO Parroquia (nombre,id_canton) VALUES ('Canelos','1');
+INSERT INTO Parroquia (nombre,id_canton) VALUES ('Curaray','1');
+INSERT INTO Parroquia (nombre,id_canton) VALUES ('Diez de Agosto','1');
+INSERT INTO Parroquia (nombre,id_canton) VALUES ('Fátima','1');
+INSERT INTO Parroquia (nombre,id_canton) VALUES ('Montalvo (Andoas)','1');
+INSERT INTO Parroquia (nombre,id_canton) VALUES ('Pomona','1');
+INSERT INTO Parroquia (nombre,id_canton) VALUES ('Río Corrientes','1');
+INSERT INTO Parroquia (nombre,id_canton) VALUES ('Río Tigre','1');
+INSERT INTO Parroquia (nombre,id_canton) VALUES ('Santa Clara','1');
+INSERT INTO Parroquia (nombre,id_canton) VALUES ('Sarayacu','1');
+INSERT INTO Parroquia (nombre,id_canton) VALUES ('Simón Bolívar','1');
+INSERT INTO Parroquia (nombre,id_canton) VALUES ('Tarqui','1');
+INSERT INTO Parroquia (nombre,id_canton) VALUES ('Teniente Hugo Ortiz','1');
+INSERT INTO Parroquia (nombre,id_canton) VALUES ('Veracruz (Indillama)','1');
+INSERT INTO Parroquia (nombre,id_canton) VALUES ('El Triunfo','1');
+INSERT INTO Parroquia (nombre,id_canton) VALUES ('Mera','2');
+INSERT INTO Parroquia (nombre,id_canton) VALUES ('Madre Tierra','2');
+INSERT INTO Parroquia (nombre,id_canton) VALUES ('Shell','2');
+INSERT INTO Parroquia (nombre,id_canton) VALUES ('Santa Clara','3');
+INSERT INTO Parroquia (nombre,id_canton) VALUES ('San José','3');
+INSERT INTO Parroquia (nombre,id_canton) VALUES ('Arajuno','4');
+INSERT INTO Parroquia (nombre,id_canton) VALUES ('Curaray','4');
+
 INSERT INTO Compania (nombre,detalle,direccion) VALUES ('Patronato','Servicio Social','Pastaza');
 INSERT INTO Unidad (nombre,detalle,direccion,id_compania) VALUES('Consultorio Tipo A','Servicios Medicos','Puyo','1');
 INSERT INTO Unidad (nombre,detalle,direccion,id_compania) VALUES('CITET','CITET','Fátima','1');
@@ -462,39 +492,9 @@ INSERT INTO Admision(id_proyUni,id_beneficiario,fechaAdmi) VALUES ('1','2','2018
 INSERT INTO Admision(id_proyUni,id_beneficiario,fechaAdmi) VALUES ('2','3','2018-12-14');
 INSERT INTO Admision(id_proyUni,id_beneficiario,fechaAdmi) VALUES ('2','4','2018-12-14');
 
-INSERT INTO Atencion (id_servicio,id_beneficiario,fecha,observacion,tieneCosto) VALUES
-('1','1','2018-12-14','S');
-INSERT INTO Atencion (id_servicio,id_beneficiario,fecha,tieneCosto) VALUES
-('1','1','2018-12-15','S');
-INSERT INTO Atencion (id_servicio,id_beneficiario,fecha,tieneCosto) VALUES
-('1','2','2018-12-14','S');
-
-INSERT INTO Provincia (nombre) VALUES ('Pastaza');
-INSERT INTO Canton (nombre,id_provincia) VALUES ('Pastaza','1');
-INSERT INTO Parroquia (nombre,id_canton) VALUES ('Puyo','1');
-INSERT INTO Parroquia (nombre,id_canton) VALUES ('Arajuno','1');
-INSERT INTO Parroquia (nombre,id_canton) VALUES ('Canelos','1');
-INSERT INTO Parroquia (nombre,id_canton) VALUES ('Curaray','1');
-INSERT INTO Parroquia (nombre,id_canton) VALUES ('Diez de Agosto','1');
-INSERT INTO Parroquia (nombre,id_canton) VALUES ('Fátima','1');
-INSERT INTO Parroquia (nombre,id_canton) VALUES ('Montalvo (Andoas)','1');
-INSERT INTO Parroquia (nombre,id_canton) VALUES ('Pomona','1');
-INSERT INTO Parroquia (nombre,id_canton) VALUES ('Río Corrientes','1');
-INSERT INTO Parroquia (nombre,id_canton) VALUES ('Río Tigre','1');
-INSERT INTO Parroquia (nombre,id_canton) VALUES ('Santa Clara','1');
-INSERT INTO Parroquia (nombre,id_canton) VALUES ('Sarayacu','1');
-INSERT INTO Parroquia (nombre,id_canton) VALUES ('Simón Bolívar','1');
-INSERT INTO Parroquia (nombre,id_canton) VALUES ('Tarqui','1');
-INSERT INTO Parroquia (nombre,id_canton) VALUES ('Teniente Hugo Ortiz','1');
-INSERT INTO Parroquia (nombre,id_canton) VALUES ('Veracruz (Indillama)','1');
-INSERT INTO Parroquia (nombre,id_canton) VALUES ('El Triunfo','1');
-INSERT INTO Canton (nombre,id_provincia) VALUES ('Mera','1');
-INSERT INTO Parroquia (nombre,id_canton) VALUES ('Mera','2');
-INSERT INTO Parroquia (nombre,id_canton) VALUES ('Madre Tierra','2');
-INSERT INTO Parroquia (nombre,id_canton) VALUES ('Shell','2');
-INSERT INTO Canton (nombre,id_provincia) VALUES ('Santa Clara','1');
-INSERT INTO Parroquia (nombre,id_canton) VALUES ('Santa Clara','3');
-INSERT INTO Parroquia (nombre,id_canton) VALUES ('San José','3');
-INSERT INTO Canton (nombre,id_provincia) VALUES ('Arajuno','1');
-INSERT INTO Parroquia (nombre,id_canton) VALUES ('Arajuno','4');
-INSERT INTO Parroquia (nombre,id_canton) VALUES ('Curaray','4');
+INSERT INTO Atencion (id_servicio,id_beneficiario,fecha,observacion,tieneCosto,estAtenc) VALUES
+('1','1','2018-12-14',NULL,'S','P');
+INSERT INTO Atencion (id_servicio,id_beneficiario,fecha,observacion,tieneCosto,estAtenc) VALUES
+('1','1','2018-12-15',NULL,'S','P');
+INSERT INTO Atencion (id_servicio,id_beneficiario,fecha,observacion,tieneCosto,estAtenc) VALUES
+('1','2','2018-12-14',NULL,'S','P');

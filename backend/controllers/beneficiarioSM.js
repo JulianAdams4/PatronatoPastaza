@@ -1,21 +1,21 @@
-const db = require('../database')
+const db = require("../database");
 
-const consultarBeneficiarioSM = (req, res, next) => {
-  db.select().table('beneficiario')
-  .then(function(collection){
-    res.json({
-      error: false,
-      data: collection
+const consultarBeneficiarioSM = (req, res) => {
+  db.select().table("beneficiario")
+    .then((collection) => {
+      return res.json({
+        error: false,
+        data: collection
+      });
     })
-  })
-  .catch(function(err){
-    res.status(500).json({
-      error: true,
-      data:{
-        message:err.message
-      }
-    })
-  })
+    .catch((err) => {
+      return res.status(500).json({
+        error: true,
+        data:{
+          message:err.message
+        }
+      });
+    });
 };
 
 module.exports = {

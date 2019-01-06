@@ -1,10 +1,13 @@
-const knex = require('knex')({
-  client: 'pg',
+/*global process */
+require("dotenv").config();
+
+const knex = require("knex")({
+  client: "pg",
   connection: {
-    host: 'localhost',
-    user: 'julian',
-    password: '1234',
-    database: 'patronato'
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME
   }
 });
 
