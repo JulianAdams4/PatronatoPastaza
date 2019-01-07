@@ -1,3 +1,12 @@
-import axios from "axios";
+import request from "superagent";
 
-export const sendLogin = ({ correo, contrasena }) => axios.post("/login", { correo, contrasena });
+const timeout = {
+  response: 20000,
+  deadline: 40000,
+};
+
+export const sendLogin = ({ correo, contrasena }) => request
+  .post("/api/login")
+  .send({ correo, contrasena })
+  .ok(res => res.status)
+  .timeout(timeout);

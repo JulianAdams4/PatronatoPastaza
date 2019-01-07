@@ -2,7 +2,6 @@
 const express = require("express");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
-const passport = require("passport");
 const path = require("path");
 const apiRoute = require("./routes");
 
@@ -34,13 +33,23 @@ app.use("/api", apiRoute);
 const buildPath = "./../frontend/build";
 app.use(express.static(path.join(__dirname, buildPath)));
 
+const noCache = (req, res, next) => {
+  res.header("Cache-Control", "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0");
+  res.header("Expires", "Fri, 31 Dec 1998 12:00:00 GMT");
+  next();
+};
+
 // Return all requests to React app
-app.get("/", (req, res) => {
+app.get("/", noCache, (req, res) => {
   return res.sendFile(path.join(__dirname, buildPath, "index.html"));
 });
 // Protected routes by jwt
-app.use("*", passport.authenticate("jwt", { session: false }), (req, res) => {
-  res.sendFile(path.join(__dirname, buildPath, "index.html"));
+app.use("*", noCache, (req, res) => {
+  return res.sendFile(path.join(__dirname, buildPath, "index.html"));
 });
 
-app.listen(process.env.SERVER_PORT);
+
+app.listen(process.env.SERVER_PORT, () => {
+  // eslint-disable-next-line no-console
+  console.log("Server listen on port: ", process.env.SERVER_PORT);
+});

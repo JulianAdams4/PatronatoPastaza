@@ -10,7 +10,7 @@ const db = require("../database");
 
 
 passport.use(new JWTStrategy({
-  jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+  jwtFromRequest: ExtractJWT.fromHeader("authorization"),
   secretOrKey   : process.env.SECRET_PASS
 },
 (jwtPayload, cb) => {

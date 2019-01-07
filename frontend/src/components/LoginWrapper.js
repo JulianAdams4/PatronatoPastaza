@@ -6,7 +6,7 @@ import IsEmail from "isemail";
 import { sendLogin } from "../services/requestsInterface";
 import Login from "./Login";
 import "react-toastify/dist/ReactToastify.min.css";
-import { saveTokenInStorage } from "../utils.js/storage";
+import { saveTokenInStorage, getTokenFromStorage } from "../utils.js/storage";
 
 class LoginWrapper extends Component {
   constructor() {
@@ -61,6 +61,13 @@ class LoginWrapper extends Component {
     );
   }
 
+  componentDidMount() {
+    const token = getTokenFromStorage();
+    if (token) {
+      this.setState({ successLogin: true });
+    }
+  }
+
   checkDisableSubmitButton = () => {
     const isValidEmail = this.state.inputEmail.isValid;
     const isValidPass = this.state.inputPassword.isValid;
@@ -84,12 +91,14 @@ class LoginWrapper extends Component {
         correo: this.state.inputEmail.value,
         contrasena: sha256(this.state.inputPassword.value),
       };
-      const { data } = await sendLogin(formValues);
-      if (!data.error) {
-        this.setState({ successLogin: true }, () => {
-          const { token } = data;
-          saveTokenInStorage(token);
-        });
+      const { status, body } = await sendLogin(formValues);
+      const { token } = body;
+      if (status === 200) {
+        setTimeout(() => {
+          this.setState({ successLogin: true }, () => {
+            saveTokenInStorage(token);
+          });
+        }, 2000);
       } else {
         this.setState({
           inputEmail: {
@@ -105,7 +114,7 @@ class LoginWrapper extends Component {
             isLoading: false,
           },
         });
-        toast.error(data.message, {
+        toast.error(body.data.message, {
           position: "bottom-right",
           autoClose: 5000,
           hideProgressBar: true,
@@ -142,10 +151,6 @@ class LoginWrapper extends Component {
     }, () => {
       this.checkDisableSubmitButton();
     });
-  }
-
-  showNotify = () => {
-
   }
 }
 
