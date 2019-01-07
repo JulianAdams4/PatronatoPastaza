@@ -1,21 +1,23 @@
-import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
-import { ToastContainer, toast, Slide } from 'react-toastify';
-import Login from './Login';
-import 'react-toastify/dist/ReactToastify.min.css';
-
-const NOTIFICATION_DELAY = 5000;
+import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
+import { ToastContainer, toast, Slide } from "react-toastify";
+import sha256 from "sha256";
+import IsEmail from "isemail";
+import { sendLogin } from "../services/requestsInterface";
+import Login from "./Login";
+import "react-toastify/dist/ReactToastify.min.css";
+import { saveTokenInStorage } from "../utils.js/storage";
 
 class LoginWrapper extends Component {
   constructor() {
     super();
     this.state = {
       inputEmail: {
-        value: '',
+        value: "",
         isValid: false,
       },
       inputPassword: {
-        value: '',
+        value: "",
         isValid: false,
       },
       submitButton: {
@@ -77,48 +79,48 @@ class LoginWrapper extends Component {
         isDisabled: true,
         isLoading: true,
       },
-    }, () => {
+    }, async () => {
       const formValues = {
-        email: this.state.inputEmail.value,
-        password: this.state.inputPassword.value, // Need hash
+        correo: this.state.inputEmail.value,
+        contrasena: sha256(this.state.inputPassword.value),
       };
-      setTimeout(() => {
-        if (formValues.email !== 'jadams@espol.edu.ec') {
-          this.setState({
-            inputEmail: {
-              ...this.state.inputEmail,
-              isValid: false,
-            },
-            inputPassword: {
-              ...this.state.inputPassword,
-              isValid: false,
-            },
-            submitButton: {
-              isDisabled: false,
-              isLoading: false,
-            },
-          });
-          toast.error('Usuario o contraseña incorrectos', {
-            position: 'bottom-right',
-            autoClose: 5000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: false,
-            draggable: true,
-            className: 'custom-notification-background',
-          });
-        } else {
-          this.setState({
-            successLogin: true,
-          });
-        }
-      }, NOTIFICATION_DELAY);
+      const { data } = await sendLogin(formValues);
+      if (!data.error) {
+        this.setState({ successLogin: true }, () => {
+          const { token } = data;
+          saveTokenInStorage(token);
+        });
+      } else {
+        this.setState({
+          inputEmail: {
+            ...this.state.inputEmail,
+            isValid: false,
+          },
+          inputPassword: {
+            ...this.state.inputPassword,
+            isValid: false,
+          },
+          submitButton: {
+            isDisabled: false,
+            isLoading: false,
+          },
+        });
+        toast.error(data.message, {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          className: "custom-notification-background",
+        });
+      }
     });
   }
 
   handleChangeInputEmailValue = (ev) => {
     const inputValue = ev.target.value;
-    const isValidInputValue = inputValue.length > 1; // temporal
+    const isValidInputValue = IsEmail.validate(inputValue);
     this.setState({
       inputEmail: {
         value: inputValue,

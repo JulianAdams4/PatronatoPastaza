@@ -262,7 +262,7 @@ CREATE TABLE Usuario (
   telefono VARCHAR(20) NULL DEFAULT NULL,
   fechaIngreso DATE NOT NULL,
   correo VARCHAR(100) NOT NULL,
-  contrasena VARCHAR(20) NOT NULL,
+  contrasena VARCHAR(100) NOT NULL,
   estUsua CHAR(1) NOT NULL DEFAULT 'A',
   estCont CHAR(1) NOT NULL DEFAULT 'P',
   PRIMARY KEY (id)
@@ -448,9 +448,11 @@ INSERT INTO RolAcc (id_rol,id_accion) VALUES ('6','1');
 INSERT INTO RolAcc (id_rol,id_accion) VALUES ('7','1');
 
 INSERT INTO Usuario (nombre,apellido,identificacion,telefono,fechaIngreso,correo,contrasena) VALUES
-  ('Erick','Pérez','0912324323','0912344321','2018-12-13','erick94.perez@gmail.com','admin');
+  ('Erick','Pérez','0912324323','0912344321','2018-12-06','erialper@espol.edu.ec','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918');
 INSERT INTO Usuario (nombre,apellido,identificacion,telefono,fechaIngreso,correo,contrasena) VALUES
-  ('Maribel','Moreno','0922324323','0922344321','2018-12-13','erick94.perez@gmail.com','admin');
+  ('Maribel','Moreno','0922324323','0922344321','2018-12-06','mabemore@espol.edu.ec','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918');
+INSERT INTO Usuario (nombre,apellido,identificacion,telefono,fechaIngreso,correo,contrasena) VALUES
+  ('Julian','Adams','0950322529','0981262314','2018-12-06','jadams@espol.edu.ec','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918');
 
 INSERT INTO Cargo (id_usuario,id_Rol,id_ProyUni) VALUES ('1','1','3');
 INSERT INTO Cargo (id_usuario,id_Rol,id_ProyUni) VALUES ('2','2','1');

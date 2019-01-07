@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import './login.scss';
+import React from "react";
+import PropTypes from "prop-types";
+import "./login.scss";
 
 const Login = (props) => {
   const {
@@ -16,12 +16,12 @@ const Login = (props) => {
   } = props;
 
   const isValidEmailClass = inputEmailValue.length > 0
-    ? isInputEmailValid ? '' : 'input-invalid'
-    : '';
+    ? isInputEmailValid ? "" : "input-invalid"
+    : "";
 
   const isValidPasswordClass = inputPasswordValue.length > 0
-    ? isInputPasswordValid ? '' : 'input-invalid'
-    : '';
+    ? isInputPasswordValid ? "" : "input-invalid"
+    : "";
 
   return (
     <div className="login-container">

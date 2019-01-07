@@ -21,7 +21,3 @@ const consultarBeneficiarioSM = (req, res) => {
 module.exports = {
   consultarBeneficiarioSM
 };
-
-//select beneficiario.id,nombre,apellido,identificacion,telefono
-//from beneficiario inner join admision on beneficiario.id = admision.id_beneficiario
-//inner join proyuni on admision.id_proyuni = proyuni.id where proyuni.id=2

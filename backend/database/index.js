@@ -11,4 +11,8 @@ const knex = require("knex")({
   }
 });
 
+// psql postgres -c 'drop database patronato'
+// psql postgres -c 'create database patronato'
+// psql patronato < /home/julian/Documentos/PatronatoPastaza/backend/database/patronato.sql
+
 module.exports = knex;
