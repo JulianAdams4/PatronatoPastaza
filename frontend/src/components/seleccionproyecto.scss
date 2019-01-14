@@ -1,0 +1,72 @@
+#seleccionProyecto {
+  margin: 0 auto;
+
+  &.container {
+    padding: 25px;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+  }
+
+  > .button-container {
+    display: flex;
+    flex-direction: row-reverse;
+
+    button {
+      height: 60px;
+      width: 180px;
+      background-color: #fff;
+      border: 2px solid #47525e;
+      border-radius: 7px;
+      font-size: 17px;
+      cursor: pointer;
+
+      &:focus {
+        outline: none;
+      }
+
+      &:hover {
+        background-color: rgba($color: #000, $alpha: 0.03);
+      }
+    }
+  }
+
+  > .proyectos-container {
+    display: flex;
+    flex-direction: column;
+    padding-top: 70px;
+    align-items: center;
+    justify-content: center;
+
+    .titulo {
+      font-size: 40px;
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .lista-proyecto {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: start;
+      max-width: 770px;
+
+      .proyecto {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        width: 250px;
+        height: 250px;
+        margin: 3px;
+        background-color: #e5e9f2;
+        border: none;
+        border-radius: 7px;
+      }
+
+      p {
+        margin: 30px auto;
+      }
+    }
+  }
+}

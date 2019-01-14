@@ -403,6 +403,7 @@ INSERT INTO Parroquia (nombre,id_canton) VALUES ('Arajuno','4');
 INSERT INTO Parroquia (nombre,id_canton) VALUES ('Curaray','4');
 
 INSERT INTO Compania (nombre,detalle,direccion) VALUES ('Patronato','Servicio Social','Pastaza');
+
 INSERT INTO Unidad (nombre,detalle,direccion,id_compania) VALUES('Consultorio Tipo A','Servicios Medicos','Puyo','1');
 INSERT INTO Unidad (nombre,detalle,direccion,id_compania) VALUES('CITET','CITET','Fátima','1');
 INSERT INTO Unidad (nombre,detalle,direccion,id_compania) VALUES('Patronato','Patronato','Puyo','1');
@@ -456,6 +457,8 @@ INSERT INTO Usuario (nombre,apellido,identificacion,telefono,fechaIngreso,correo
 
 INSERT INTO Cargo (id_usuario,id_Rol,id_ProyUni) VALUES ('1','1','3');
 INSERT INTO Cargo (id_usuario,id_Rol,id_ProyUni) VALUES ('2','2','1');
+INSERT INTO Cargo (id_usuario,id_Rol,id_ProyUni) VALUES ('3','1','1');
+INSERT INTO Cargo (id_usuario,id_Rol,id_ProyUni) VALUES ('3','1','2');
 
 INSERT INTO Beneficiario (nombre,apellido,identificacion,direccion,barrio,zona,telefono,fechaNacimiento,
   edad,lugarNacimiento,nacionalidad,grupoCultural,sexo,discapacidad,estadoCivil,empresa,ocupacion,

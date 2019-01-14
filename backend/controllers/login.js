@@ -9,26 +9,33 @@ const login = async (req, res) => {
   res.header("Expires", "Fri, 31 Dec 1998 12:00:00 GMT");
 
   try {
-    const [user] = await db
+    const [usuario] = await db
       .select()
       .table("usuario")
       .where({
         correo: req.body.correo,
         contrasena: req.body.contrasena
       });
-    if (!user) 
+    if (!usuario) 
       return res.status(404).json({ error: true, data: { message: "Usuario o contraseña incorrectos" } });
 
-    if (user) {
+    if (usuario) {
+      const proyectos = await db
+        .select("proyecto.nombre")
+        .from("proyecto")
+        .leftJoin("proyuni", "proyecto.id", "proyuni.id_proyecto")
+        .leftJoin("cargo", "cargo.id_proyuni", "proyuni.id")
+        .leftJoin("usuario", "usuario.id", "cargo.id_usuario")
+        .where("usuario.id", usuario.id);
       // Return user data without password
-      delete user.contrasena;
+      delete usuario.contrasena;
       // Create a token
-      const token = jwt.sign(user, process.env.SECRET_PASS, {
+      const token = jwt.sign(usuario, process.env.SECRET_PASS, {
         expiresIn: process.env.SESSION_DURATION
       });
       req.session = token;
       req.headers["authorization"] = token;
-      return res.status(200).send({ error: false, token });
+      return res.status(200).send({ error: false, token, proyectos });
     }      
   } catch (err) {
     return res.status(500).json({
