@@ -50,6 +50,7 @@ CREATE TABLE Rol (
   id INTEGER DEFAULT NEXTVAL ('Rol_seq'),
   nombre VARCHAR(50) NOT NULL,
   estRol CHAR(1) NOT NULL DEFAULT 'A',
+  id_servicio INTEGER,
   PRIMARY KEY (id)
 );
 
@@ -393,19 +394,20 @@ INSERT INTO ProyUni (id_unidad,id_proyecto) VALUES ('1','1');
 INSERT INTO ProyUni (id_unidad,id_proyecto) VALUES ('2','2');
 INSERT INTO ProyUni (id_unidad,id_proyecto) VALUES ('3','10');
 
+INSERT INTO Servicio (tipo,id_proyUni) VALUES ('General','1');
 INSERT INTO Servicio (tipo,id_proyUni) VALUES ('Medicina General','1');
 INSERT INTO Servicio (tipo,id_proyUni) VALUES ('Odontología','1');
 INSERT INTO Servicio (tipo,id_proyUni) VALUES ('Terapia de Lenguaje','1');
 INSERT INTO Servicio (tipo,id_proyUni) VALUES ('Terapia Física','1');
 INSERT INTO Servicio (tipo,id_proyUni) VALUES ('Psicología','1');
 
-INSERT INTO Rol (nombre) VALUES ('Administrador');
-INSERT INTO Rol (nombre) VALUES ('Asistente');
-INSERT INTO Rol (nombre) VALUES ('Médico');
-INSERT INTO Rol (nombre) VALUES ('Terapeuta Físico');
-INSERT INTO Rol (nombre) VALUES ('Terapeuta Lenguaje');
-INSERT INTO Rol (nombre) VALUES ('Psicólogo');
-INSERT INTO Rol (nombre) VALUES ('Odontólogo');
+INSERT INTO Rol (nombre,id_servicio) VALUES ('Administrador','1');
+INSERT INTO Rol (nombre,id_servicio) VALUES ('Asistente','1');
+INSERT INTO Rol (nombre,id_servicio) VALUES ('Médico','2');
+INSERT INTO Rol (nombre,id_servicio) VALUES ('Terapeuta Físico','5');
+INSERT INTO Rol (nombre,id_servicio) VALUES ('Terapeuta Lenguaje','4');
+INSERT INTO Rol (nombre,id_servicio) VALUES ('Psicólogo','6');
+INSERT INTO Rol (nombre,id_servicio) VALUES ('Odontólogo','3');
 
 INSERT INTO Accion (nombre) VALUES ('ConsultarSM');
 
@@ -462,7 +464,7 @@ INSERT INTO Admision(id_proyUni,id_beneficiario,fechaAdmi) VALUES ('1','2','2018
 INSERT INTO Admision(id_proyUni,id_beneficiario,fechaAdmi) VALUES ('2','3','2018-12-14');
 INSERT INTO Admision(id_proyUni,id_beneficiario,fechaAdmi) VALUES ('2','4','2018-12-14');
 
-INSERT INTO Atencion (id_servicio,id_beneficiario,fecha,observacion,tieneCosto) VALUES
+INSERT INTO Atencion (id_servicio,id_beneficiario,fecha,tieneCosto) VALUES
 ('1','1','2018-12-14','S');
 INSERT INTO Atencion (id_servicio,id_beneficiario,fecha,tieneCosto) VALUES
 ('1','1','2018-12-15','S');
@@ -476,14 +478,14 @@ INSERT INTO Parroquia (nombre,id_canton) VALUES ('Arajuno','1');
 INSERT INTO Parroquia (nombre,id_canton) VALUES ('Canelos','1');
 INSERT INTO Parroquia (nombre,id_canton) VALUES ('Curaray','1');
 INSERT INTO Parroquia (nombre,id_canton) VALUES ('Diez de Agosto','1');
-INSERT INTO Parroquia (nombre,id_canton) VALUES ('Fátima','1');
+INSERT INTO Parroquia (nombre,id_canton) VALUES ('F�tima','1');
 INSERT INTO Parroquia (nombre,id_canton) VALUES ('Montalvo (Andoas)','1');
 INSERT INTO Parroquia (nombre,id_canton) VALUES ('Pomona','1');
-INSERT INTO Parroquia (nombre,id_canton) VALUES ('Río Corrientes','1');
-INSERT INTO Parroquia (nombre,id_canton) VALUES ('Río Tigre','1');
+INSERT INTO Parroquia (nombre,id_canton) VALUES ('R��o Corrientes','1');
+INSERT INTO Parroquia (nombre,id_canton) VALUES ('R��o Tigre','1');
 INSERT INTO Parroquia (nombre,id_canton) VALUES ('Santa Clara','1');
 INSERT INTO Parroquia (nombre,id_canton) VALUES ('Sarayacu','1');
-INSERT INTO Parroquia (nombre,id_canton) VALUES ('Simón Bolívar','1');
+INSERT INTO Parroquia (nombre,id_canton) VALUES ('Sim�n Bol��var','1');
 INSERT INTO Parroquia (nombre,id_canton) VALUES ('Tarqui','1');
 INSERT INTO Parroquia (nombre,id_canton) VALUES ('Teniente Hugo Ortiz','1');
 INSERT INTO Parroquia (nombre,id_canton) VALUES ('Veracruz (Indillama)','1');
@@ -494,7 +496,7 @@ INSERT INTO Parroquia (nombre,id_canton) VALUES ('Madre Tierra','2');
 INSERT INTO Parroquia (nombre,id_canton) VALUES ('Shell','2');
 INSERT INTO Canton (nombre,id_provincia) VALUES ('Santa Clara','1');
 INSERT INTO Parroquia (nombre,id_canton) VALUES ('Santa Clara','3');
-INSERT INTO Parroquia (nombre,id_canton) VALUES ('San José','3');
+INSERT INTO Parroquia (nombre,id_canton) VALUES ('San Jos�','3');
 INSERT INTO Canton (nombre,id_provincia) VALUES ('Arajuno','1');
 INSERT INTO Parroquia (nombre,id_canton) VALUES ('Arajuno','4');
 INSERT INTO Parroquia (nombre,id_canton) VALUES ('Curaray','4');
