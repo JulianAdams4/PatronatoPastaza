@@ -20,10 +20,20 @@ const consultarBeneficiarioSM = (req, res, next) => {
   })
 };
 
-const consultarNombreBeneficiarioSM = (req, res, next) => {
+const filtrarBeneficiarioSM = (req, res, next) => {
   db.select('beneficiario.id','nombre','apellido','identificacion','telefono').from('beneficiario')
   .join('admision','beneficiario.id','admision.id_beneficiario')
-  .where('nombre','like','%L%')
+  .where((qb) => {
+    if (req.body.nombre!="") {
+      qb.where('nombre', 'like', '%'+req.body.nombre+'%');
+    }
+    if (req.body.apellido!="") {
+      qb.orWhere('apellido', 'like', '%'+req.body.apellido+'%');
+    }
+    if (req.body.identificacion!="") {
+      qb.orWhere('identificacion', 'like', '%'+req.body.identificacion+'%');
+    }
+  })
   .andWhere('id_proyuni',1)
   .then(function(collection){
     res.json({
@@ -41,36 +51,7 @@ const consultarNombreBeneficiarioSM = (req, res, next) => {
   })
 };
 
-const consultarAtenderPorServicioSM = (req, res, next) => {
-  db.select('beneficiario.id','beneficiario.nombre','beneficiario.apellido','beneficiario.identificacion','atencion.estatenc').from('beneficiario')
-  .join('atencion','beneficiario.id','atencion.id_beneficiario')
-  .where({
-    id_servicio: 1,
-    estatenc: 'P',
-    fecha: '2018-12-14'
-  })
-  .then(function(collection){
-    res.json({
-      error: false,
-      data: collection
-    })
-  })
-  .catch(function(err){
-    res.status(500).json({
-      error: true,
-      data:{
-        message:err.message
-      }
-    })
-  })
-};
-
 module.exports = {
-  consultarAtenderPorServicioSM,
   consultarBeneficiarioSM,
-  consultarNombreBeneficiarioSM
+  filtrarBeneficiarioSM
 };
-
-//select beneficiario.id,nombre,apellido,identificacion,telefono
-//from beneficiario inner join admision on beneficiario.id = admision.id_beneficiario
-//inner join proyuni on admision.id_proyuni = proyuni.id where proyuni.id=2

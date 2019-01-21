@@ -2,9 +2,7 @@ const controlador = require('../controllers/beneficiarioSM')
 const express = require('express');
 const router = express.Router();
 
-router.get('/nombre', controlador.consultarNombreBeneficiarioSM);
-
-router.get('/atender', controlador.consultarAtenderPorServicioSM);
+router.post('/filtrar', controlador.filtrarBeneficiarioSM);
 
 router.get('/', controlador.consultarBeneficiarioSM);
 //router.post('/',);
