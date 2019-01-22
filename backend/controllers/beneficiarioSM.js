@@ -66,8 +66,8 @@ db('beneficiario').insert({
 const consultarBeneficiarioPorID = (req, res, next) => {
   db.select('beneficiario.nombre','beneficiario.apellido','beneficiario.identificacion','beneficiario.telefono',
             'beneficiario.direccion','beneficiario.barrio','parroquia.nombre as parroquia', 'canton.nombre as canton', 'provincia.nombre as provincia',
-            'beneficiario.zona','beneficiario.fechaNacimiento','beneficiario.lugarNacimiento','beneficiario.nacionalidad','beneficiario.grupoCultural',
-            'beneficiario.sexo','beneficiario.estadoCivil','beneficiario.instruccion','beneficiario.ocupación','beneficiario.empresa','beneficiario.seguro',
+            'beneficiario.zona','beneficiario.nacionalidad',
+            'beneficiario.sexo','beneficiario.instruccion','beneficiario.empresa','beneficiario.seguro',
             'beneficiario.referido','responsable.nombre as resNombre', 'responsable.apellido as resApellido', 'responsable.parentesco as resParentesco',
             'responsable.direccion as resdireccion', 'responsable.telefono as resTelefono')
   .from('beneficiario')
