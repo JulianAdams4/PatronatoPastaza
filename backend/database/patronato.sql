@@ -18,6 +18,7 @@ CREATE TABLE Proyecto (
   id INTEGER DEFAULT NEXTVAL ('Proyecto_seq'),
   nombre VARCHAR(100) NOT NULL,
   estProy CHAR(1) NOT NULL DEFAULT 'A',
+  codigoProy VARCHAR(50) DEFAULT '',
   PRIMARY KEY (id)
 );
 
@@ -50,6 +51,7 @@ CREATE TABLE Rol (
   id INTEGER DEFAULT NEXTVAL ('Rol_seq'),
   nombre VARCHAR(50) NOT NULL,
   estRol CHAR(1) NOT NULL DEFAULT 'A',
+  id_servicio INTEGER DEFAULT NULL,
   PRIMARY KEY (id)
 );
 
@@ -280,6 +282,8 @@ CREATE SEQUENCE Accion_seq;
 CREATE TABLE Accion (
   id INTEGER DEFAULT NEXTVAL ('Accion_seq'),
   nombre VARCHAR(50) NOT NULL,
+  parentId INTEGER DEFAULT NULL,
+  urlAcc VARCHAR(50) DEFAULT NULL,
   estAcc CHAR(1) NOT NULL DEFAULT 'A',
   PRIMARY KEY (id)
 );
@@ -345,6 +349,7 @@ ALTER TABLE Unidad ADD FOREIGN KEY (id_compania) REFERENCES Compania (id);
 ALTER TABLE Responsable ADD FOREIGN KEY (id_beneficiario) REFERENCES Beneficiario (id);
 ALTER TABLE ProyUni ADD FOREIGN KEY (id_proyecto) REFERENCES Proyecto (id);
 ALTER TABLE ProyUni ADD FOREIGN KEY (id_unidad) REFERENCES Unidad (id);
+ALTER TABLE Accion ADD FOREIGN KEY (parentId) REFERENCES Accion (id);
 
 -- ---
 -- Table Properties
@@ -373,10 +378,12 @@ ALTER TABLE ProyUni ADD FOREIGN KEY (id_unidad) REFERENCES Unidad (id);
 -- ---
 
 INSERT INTO Provincia (nombre) VALUES ('Pastaza');
+
 INSERT INTO Canton (nombre,id_provincia) VALUES ('Pastaza','1');
 INSERT INTO Canton (nombre,id_provincia) VALUES ('Mera','1');
 INSERT INTO Canton (nombre,id_provincia) VALUES ('Arajuno','1');
 INSERT INTO Canton (nombre,id_provincia) VALUES ('Santa Clara','1');
+
 INSERT INTO Parroquia (nombre,id_canton) VALUES ('Puyo','1');
 INSERT INTO Parroquia (nombre,id_canton) VALUES ('Arajuno','1');
 INSERT INTO Parroquia (nombre,id_canton) VALUES ('Canelos','1');
@@ -408,17 +415,17 @@ INSERT INTO Unidad (nombre,detalle,direccion,id_compania) VALUES('Consultorio Ti
 INSERT INTO Unidad (nombre,detalle,direccion,id_compania) VALUES('CITET','CITET','Fátima','1');
 INSERT INTO Unidad (nombre,detalle,direccion,id_compania) VALUES('Patronato','Patronato','Puyo','1');
 
-INSERT INTO Proyecto (nombre) VALUES ('Patronato Servicios Médicos');
-INSERT INTO Proyecto (nombre) VALUES ('CITET');
-INSERT INTO Proyecto (nombre) VALUES ('Años Dorados');
-INSERT INTO Proyecto (nombre) VALUES ('Por una Vida Mejor');
-INSERT INTO Proyecto (nombre) VALUES ('Brigadas Médicas Fluviales');
-INSERT INTO Proyecto (nombre) VALUES ('Brigadas Médicas Terrestres');
-INSERT INTO Proyecto (nombre) VALUES ('Aprende a Emprender');
-INSERT INTO Proyecto (nombre) VALUES ('Apoyo Psicopedagógico');
-INSERT INTO Proyecto (nombre) VALUES ('Mi Presente y Mi Futuro en mis Manos');
-INSERT INTO Proyecto (nombre) VALUES ('TIC');
-INSERT INTO Proyecto (nombre) VALUES ('Personal Administrativo');
+INSERT INTO Proyecto (nombre,codigoProy) VALUES ('Patronato Servicios Médicos', 'serviciosmedicos'); -- 1
+INSERT INTO Proyecto (nombre,codigoProy) VALUES ('CITET', 'citet'); -- 2
+INSERT INTO Proyecto (nombre,codigoProy) VALUES ('Años Dorados', 'aniosdorados'); -- 3
+INSERT INTO Proyecto (nombre,codigoProy) VALUES ('Por una Vida Mejor', 'porunavidamejor'); -- 4
+INSERT INTO Proyecto (nombre,codigoProy) VALUES ('Brigadas Médicas Fluviales', 'brigadasfluviales'); -- 5
+INSERT INTO Proyecto (nombre,codigoProy) VALUES ('Brigadas Médicas Terrestres', 'brigadasterrestres'); -- 6
+INSERT INTO Proyecto (nombre,codigoProy) VALUES ('Pastaza Aprende a Emprender', 'aprendeaemprender'); -- 7
+INSERT INTO Proyecto (nombre,codigoProy) VALUES ('Apoyo Psicopedagógico', 'apoyopsicopedagogico'); -- 8
+INSERT INTO Proyecto (nombre,codigoProy) VALUES ('Mi Presente y Mi Futuro en mis Manos', 'presentefuturoenmismanos'); -- 9
+INSERT INTO Proyecto (nombre,codigoProy) VALUES ('TIC', 'tic'); -- 10
+INSERT INTO Proyecto (nombre,codigoProy) VALUES ('Personal Administrativo', 'administracion'); -- 11
 
 INSERT INTO ProyUni (id_unidad,id_proyecto) VALUES ('1','1');
 INSERT INTO ProyUni (id_unidad,id_proyecto) VALUES ('2','2');
@@ -438,7 +445,12 @@ INSERT INTO Rol (nombre) VALUES ('Terapeuta Lenguaje');
 INSERT INTO Rol (nombre) VALUES ('Psicólogo');
 INSERT INTO Rol (nombre) VALUES ('Odontólogo');
 
-INSERT INTO Accion (nombre) VALUES ('ConsultarSM');
+INSERT INTO Accion (id, nombre) VALUES ('1', 'Pacientes');
+INSERT INTO Accion (id, nombre) VALUES ('2', 'Citas medicas');
+INSERT INTO Accion (id, nombre, parentId, urlAcc) VALUES ('3', 'Ingreso', '1', '/pacientes/ingreso');
+INSERT INTO Accion (id, nombre, parentId, urlAcc) VALUES ('4', 'Consulta', '1', '/pacientes/consulta');
+INSERT INTO Accion (id, nombre, parentId, urlAcc) VALUES ('5', 'Ingreso', '2', '/citas/ingreso');
+INSERT INTO Accion (id, nombre, parentId, urlAcc) VALUES ('6', 'Consulta', '2', '/citas/consulta');
 
 INSERT INTO RolAcc (id_rol,id_accion) VALUES ('1','1');
 INSERT INTO RolAcc (id_rol,id_accion) VALUES ('2','1');

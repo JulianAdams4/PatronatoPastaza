@@ -20,13 +20,6 @@ const login = async (req, res) => {
       return res.status(404).json({ error: true, data: { message: "Usuario o contraseña incorrectos" } });
 
     if (usuario) {
-      const proyectos = await db
-        .select("proyecto.nombre")
-        .from("proyecto")
-        .leftJoin("proyuni", "proyecto.id", "proyuni.id_proyecto")
-        .leftJoin("cargo", "cargo.id_proyuni", "proyuni.id")
-        .leftJoin("usuario", "usuario.id", "cargo.id_usuario")
-        .where("usuario.id", usuario.id);
       // Return user data without password
       delete usuario.contrasena;
       // Create a token
@@ -35,7 +28,7 @@ const login = async (req, res) => {
       });
       req.session = token;
       req.headers["authorization"] = token;
-      return res.status(200).send({ error: false, token, proyectos });
+      return res.status(200).send({ error: false, token });
     }      
   } catch (err) {
     return res.status(500).json({

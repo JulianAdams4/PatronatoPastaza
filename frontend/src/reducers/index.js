@@ -1,6 +1,13 @@
-import { combineReducers } from "redux-immutable";
-import proyectos from "./proyectos";
+import { reducer as formReducer } from 'redux-form'
+import ThemeOptions from './ThemeOptions';
+import Proyectos from './Proyectos';
+import Layout from './Layout';
+import Auth from './Auth';
 
-export default combineReducers({
-  proyectos,
-});
+export default {
+  Auth,
+  ThemeOptions,
+  Layout,
+  form: formReducer,
+  Proyectos
+};

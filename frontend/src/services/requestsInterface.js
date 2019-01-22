@@ -1,5 +1,5 @@
 import request from "superagent";
-import { getTokenFromStorage } from "../utils.js/storage";
+import { getTokenFromStorage } from "./../utils/storage";
 
 const timeout = {
   response: 20000,
@@ -12,8 +12,31 @@ export const sendLogin = ({ correo, contrasena }) => request
   .ok(res => res.status)
   .timeout(timeout);
 
+export const doLogout = () => request
+  .get("/api/login/out")
+  .ok(res => res.status)
+  .timeout(timeout);
+
 export const getUserProjects = () => request
-  .post("/api/usuario/proyecto")
+  .get("/api/usuario/proyecto")
+  .set("authorization", getTokenFromStorage())
+  .ok(res => res.status)
+  .timeout(timeout);
+
+export const getProvincias = () => request
+  .get('/api/beneficiarioSM/provincia')
+  .set("authorization", getTokenFromStorage())
+  .ok(res => res.status)
+  .timeout(timeout);
+
+export const getCantonByProvinceId = provinceId => request
+  .get(`/api/beneficiarioSM/canton/${provinceId}`)
+  .set("authorization", getTokenFromStorage())
+  .ok(res => res.status)
+  .timeout(timeout);
+
+export const getParroquiaByCantonId = cantonId => request
+  .get(`/api/beneficiarioSM/parroquia/${cantonId}`)
   .set("authorization", getTokenFromStorage())
   .ok(res => res.status)
   .timeout(timeout);
