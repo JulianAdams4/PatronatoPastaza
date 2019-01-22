@@ -6,9 +6,7 @@ if(req.body.nombre != '' && req.body.apellido != '' && req.body.edad != '' &&
    req.body.nacionalidad != '' && req.body.grupoCultural != '' && req.body.sexo != '' &&
    req.body.zona != '' && req.body.estadoCivil != '' && req.body.resNombre != '' &&
    req.body.resApellido != '' && req.body.resParentesco != ''){
-*/
 
-/*
 db('beneficiario').insert({
   nombre: req.body.nombre,
   apellido: req.body.apellido,
@@ -65,6 +63,35 @@ db('beneficiario').insert({
 })
 */
 
+const consultarBeneficiarioPorID = (req, res, next) => {
+  db.select('beneficiario.nombre','beneficiario.apellido','beneficiario.identificacion','beneficiario.telefono',
+            'beneficiario.direccion','beneficiario.barrio','parroquia.nombre as parroquia', 'canton.nombre as canton', 'provincia.nombre as provincia',
+            'beneficiario.zona','beneficiario.fechaNacimiento','beneficiario.lugarNacimiento','beneficiario.nacionalidad','beneficiario.grupoCultural',
+            'beneficiario.sexo','beneficiario.estadoCivil','beneficiario.instruccion','beneficiario.ocupación','beneficiario.empresa','beneficiario.seguro',
+            'beneficiario.referido','responsable.nombre as resNombre', 'responsable.apellido as resApellido', 'responsable.parentesco as resParentesco',
+            'responsable.direccion as resdireccion', 'responsable.telefono as resTelefono')
+  .from('beneficiario')
+  .join('responsable','beneficiario.id','responsable.id_beneficiario')
+  .join('parroquia','beneficiario.id_parroquia','parroquia.id')
+  .join('canton','canton.id','parroquia.id_canton')
+  .join('provincia','provincia.id','canton.id_provincia')
+  .where('beneficiario.id',req.params.idBeneficiario)
+  .limit(1)
+  .then(function(collection){
+    res.json({
+      error: false,
+      data: collection
+    })
+  })
+  .catch(function(err){
+    res.status(500).json({
+      error: true,
+      data:{
+        message:err.message
+      }
+    })
+  })
+};
 
 const ingresarBeneficiarioSM = (req, res, next) => {
   console.log(req.body.nombre);
@@ -222,6 +249,7 @@ const consultarParroquia = (req, res, next) => {
 };
 
 module.exports = {
+  consultarBeneficiarioPorID,
   ingresarBeneficiarioSM,
   consultarBeneficiarioSM,
   filtrarBeneficiarioSM,

@@ -2,6 +2,8 @@ const controlador = require('../controllers/beneficiarioSM')
 const express = require('express');
 const router = express.Router();
 
+router.get('/:idBeneficiario', controlador.consultarBeneficiarioPorID);
+
 router.post('/', controlador.ingresarBeneficiarioSM);
 
 router.post('/filtrar', controlador.filtrarBeneficiarioSM);
