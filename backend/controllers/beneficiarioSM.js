@@ -6,18 +6,70 @@ if(req.body.nombre != '' && req.body.apellido != '' && req.body.edad != '' &&
    req.body.nacionalidad != '' && req.body.grupoCultural != '' && req.body.sexo != '' &&
    req.body.zona != '' && req.body.estadoCivil != '' && req.body.resNombre != '' &&
    req.body.resApellido != '' && req.body.resParentesco != ''){
-
 */
+
+/*
+db('beneficiario').insert({
+  nombre: req.body.nombre,
+  apellido: req.body.apellido,
+  identificacion: req.body.identificacion,
+  direccion: req.body.direccion,
+  barrio: req.body.barrio,
+  zona: req.body.zona,
+  telefono: req.body.telefono,
+  fechaNacimiento: req.body.fechaNacimiento,
+  edad: req.body.edad,
+  lugarNacimiento: req.body.lugarNacimiento,
+  nacionalidad: req.body.nacionalidad,
+  grupoCultural: req.body.grupoCultural,
+  sexo: req.body.sexo,
+  estadoCivil: req.body.estadoCivil,
+  instruccion: req.body.instruccion,
+  empresa: req.body.empresa,
+  ocupacion: req.body.ocupacion,
+  seguro: req.body.seguro,
+  referido: req.body.referido,
+  id_parroquia: req.body.parroquia
+})
+.then(function(id){
+  db('responsable').insert({
+    nombre: req.body.resNombre,
+    apellido: req.body.resApellido,
+    parentesco: req.body.resParentesco,
+    telefono: req.body.resTelefono,
+    direccion: req.body.resDireccion,
+    id_beneficiario: id,
+  })
+  .then(function(id){
+    res.json({
+      error: false,
+      data: id
+    })
+  })
+  .catch(function(err){
+    res.status(500).json({
+      error: true,
+      data:{
+        message:err.message
+      }
+    })
+  })
+})
+.catch(function(err){
+  res.status(500).json({
+    error: true,
+    data:{
+      message:err.message
+    }
+  })
+})
+*/
+
 
 const ingresarBeneficiarioSM = (req, res, next) => {
   console.log(req.body.nombre);
   console.log(req.body.apellido);
-  if(req.body.nombre!="" && req.body.apellido!=""){
-    console.log(req.body.apellido);
-    res.status(200).json({
-      error: false
-    });
-  }else{
+  if(req.body.nombre == '' && req.body.apellido == ''){
     console.log(req.body.nombre);
     res.status(500).json({
       error: true,
@@ -25,63 +77,12 @@ const ingresarBeneficiarioSM = (req, res, next) => {
         message:'Información Faltante'
       }
     });
+  }else{
+    console.log(req.body.apellido);
+    res.status(200).json({
+      error: false
+    });
   }
-   /*
-    db('beneficiario').insert({
-      nombre: req.body.nombre,
-      apellido: req.body.apellido,
-      identificacion: req.body.identificacion,
-      direccion: req.body.direccion,
-      barrio: req.body.barrio,
-      zona: req.body.zona,
-      telefono: req.body.telefono,
-      fechaNacimiento: req.body.fechaNacimiento,
-      edad: req.body.edad,
-      lugarNacimiento: req.body.lugarNacimiento,
-      nacionalidad: req.body.nacionalidad,
-      grupoCultural: req.body.grupoCultural,
-      sexo: req.body.sexo,
-      estadoCivil: req.body.estadoCivil,
-      instruccion: req.body.instruccion,
-      empresa: req.body.empresa,
-      ocupacion: req.body.ocupacion,
-      seguro: req.body.seguro,
-      referido: req.body.referido,
-      id_parroquia: req.body.parroquia
-    })
-    .then(function(id){
-      db('responsable').insert({
-        nombre: req.body.resNombre,
-        apellido: req.body.resApellido,
-        parentesco: req.body.resParentesco,
-        telefono: req.body.resTelefono,
-        direccion: req.body.resDireccion,
-        id_beneficiario: id,
-      })
-      .then(function(id){
-        res.json({
-          error: false,
-          data: id
-        })
-      })
-      .catch(function(err){
-        res.status(500).json({
-          error: true,
-          data:{
-            message:err.message
-          }
-        })
-      })
-    })
-    .catch(function(err){
-      res.status(500).json({
-        error: true,
-        data:{
-          message:err.message
-        }
-      })
-    })
-    */
 };
 
 const consultarBeneficiarioSM = (req, res, next) => {

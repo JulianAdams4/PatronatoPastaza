@@ -4,4 +4,6 @@ const router = express.Router();
 
 router.get('/atender', controlador.consultarAtenderPorServicioSM);
 
+router.get('/servicio', controlador.consultarServiciosSM);
+
 module.exports = router;
