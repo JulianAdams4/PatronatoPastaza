@@ -5,7 +5,7 @@
   padding: 1% 5%;
 
   > .titulo {
-    margin-bottom: 5%;
+    margin-bottom: 3%;
     border-bottom: 1px solid #d3d3d3;
   }
 
@@ -38,7 +38,9 @@ ol.progtrckr {
   list-style-type: none;
   padding: 0;
   margin: 0% auto 5% auto;
-  width: 95%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
 }
 
 ol.progtrckr li {
@@ -46,7 +48,7 @@ ol.progtrckr li {
   text-align: center;
   line-height: 4.5rem;
   cursor: pointer;
-  width: 25%;
+  flex-grow: 1;
 }
 
 ol.progtrckr li span {

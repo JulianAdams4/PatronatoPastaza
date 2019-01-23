@@ -5,7 +5,7 @@ import sha256 from "sha256";
 import IsEmail from "isemail";
 import Login from "./Login";
 import "react-toastify/dist/ReactToastify.min.css";
-import { getTokenFromStorage, saveTokenInStorage, getCurrentProject } from "../../utils/storage";
+import { getTokenFromStorage, saveTokenInStorage, getCurrentProject, saveUserRol, saveUserName } from "../../utils/storage";
 import { sendLogin } from "../../services/requestsInterface";
 
 class LoginWrapper extends Component {
@@ -96,9 +96,13 @@ class LoginWrapper extends Component {
         contrasena: sha256(this.state.inputPassword.value),
       };
       const { status, body } = await sendLogin(formValues);
-      const { token } = body;
+      console.log(body);
+      const { token, nombres, rol } = body;
       if (status === 200) {
         saveTokenInStorage(token);
+        saveUserRol(rol);
+        saveUserName(nombres);
+        
         setTimeout(() => {
           this.setState({ successLogin: true });
         }, 2000);

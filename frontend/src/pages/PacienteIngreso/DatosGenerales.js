@@ -2,18 +2,13 @@ import React, { Component } from 'react';
 import { Col, ControlLabel, Form, FormGroup, FormControl, Checkbox } from 'react-bootstrap';
 import validation from 'react-validation-mixin';
 import strategy from 'joi-validation-strategy';
-import Joi from 'joi-browser';
+import Joi from 'joi';
 import Autosuggest from 'react-autosuggest';
-import { SingleDatePicker } from 'react-dates';
-// import moment from 'moment';
-
-const tamanoMinimo = {
-  nombres: 3,
-  apellidos: 3,
-  identificacion: 9,
-  lugarNacimiento: 6,
-  telefono: 6
-}
+import DatePicker from 'react-datepicker';
+import 'moment/locale/es';
+import 'react-datepicker/dist/react-datepicker-cssmodules.min.css';
+import 'react-datepicker/dist/react-datepicker.min.css';
+import moment from 'moment';
 
 const estadosCiviles = [
   { value: 'SOLTERO' },
@@ -25,19 +20,30 @@ class DatosGenerales extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      nombres: '',
-      apellidos: '',
-      identificacion: '',
+      nombres: props.nombres,
+      apellidos: props.apellidos,
+      identificacion: props.identificacion,
       noTieneIdentificacion: false,
-      lugarNacimiento: '',
-      fechaNacimiento: '',
-      fechaNacimientoMoment: null,
-      estadoCivil: '',
+      lugarNacimiento: props.lugarNacimiento,
+      fechaNacimiento: props.fechaNacimiento,
+      estadoCivil: props.estadoCivil,
       estadoCivilTouched: false,
-      nacionalidad: '',
-      grupoEtnico: '',
-      sexo: '',
-      telefono: ''
+      nacionalidad: props.nacionalidad,
+      grupoCultural: props.grupoCultural,
+      sexo: props.sexo,
+      telefono: props.telefono,
+
+
+      nombresError:  null,
+      apellidosError:  null,
+      identificacionError:  null,
+      lugarNacimientoError:  null,
+      fechaNacimientoError:  null,
+      estadoCivilError:  null,
+      nacionalidadError:  null,
+      grupoCulturalError:  null,
+      sexoError:  null,
+      telefonoError:  null
     };
 
     this.validatorTypes = {
@@ -48,8 +54,7 @@ class DatosGenerales extends Component {
         .required()
         .label('Apellidos'),
       identificacion: Joi.string()
-        .required()
-        .length(10)
+        .required() 
         .label('La identificación'),
       lugarNacimiento: Joi.string()
         .required()
@@ -63,7 +68,7 @@ class DatosGenerales extends Component {
       nacionalidad: Joi.string()
         .required()
         .label('Nacionalidad'),
-      grupoEtnico: Joi.string()
+      grupoCultural: Joi.string()
         .required()
         .label('Grupo Étnico'),
       sexo: Joi.string()
@@ -79,7 +84,7 @@ class DatosGenerales extends Component {
       <Form horizontal autoComplete="off">
         <FormGroup
           controlId="ingresoPacienteNombres"
-          validationState={this.validarNombres()}
+          validationState={this.state.nombresError}
         >
           <Col componentClass={ControlLabel} sm={3}>
             Nombres:
@@ -93,16 +98,17 @@ class DatosGenerales extends Component {
               onChange={this.handleChange}
               required
             />
-            {this.validarNombres() === 'error' 
+            {this.state.nombresError === 'error' 
               ? this.props.getValidationMessages('nombres').map(this.renderHelpText)
               : null
             }
           </Col>
         </FormGroup>
+        
 
         <FormGroup
           controlId="ingresoPacienteApellidos"
-          validationState={this.validarApellidos()}
+          validationState={this.state.apellidosError}
         >
           <Col componentClass={ControlLabel} sm={3}>
             Apellidos:
@@ -116,16 +122,17 @@ class DatosGenerales extends Component {
               onChange={this.handleChange}
               required
             />
-            {this.validarApellidos() === 'error' 
+            {this.state.apellidosError === 'error' 
               ? this.props.getValidationMessages('apellidos').map(this.renderHelpText)
               : null
             }
           </Col>
         </FormGroup>
+        
 
         <FormGroup
           controlId="ingresoPacienteIdentificacion"
-          validationState={this.validarIdentificacion()}
+          validationState={this.state.identificacionError}
         >
           <Col componentClass={ControlLabel} sm={3}>
             Identificación:
@@ -139,7 +146,7 @@ class DatosGenerales extends Component {
               onChange={this.handleChange}
               disabled={this.state.noTieneIdentificacion}
             />
-            {this.validarIdentificacion() === 'error' 
+            {this.state.identificacionError === 'error' 
               ? this.props.getValidationMessages('identificacion').map(this.renderHelpText)
               : null
             }
@@ -147,7 +154,6 @@ class DatosGenerales extends Component {
           <Col sm={3}>
             <Checkbox 
               inline 
-              onChange={this.validarIdentificacion}
               onClick={this.handleClickNoTieneIdentificacion}
               checked={this.state.noTieneIdentificacion}
               name="identificacion"
@@ -156,10 +162,11 @@ class DatosGenerales extends Component {
             </Checkbox>
           </Col>
         </FormGroup>
+        
 
         <FormGroup
           controlId="ingresoPacienteLugarNacimiento"
-          validationState={this.validarLugarNacimiento()}
+          validationState={this.state.lugarNacimientoError}
         >
           <Col componentClass={ControlLabel} sm={3}>
             Lugar de nacimiento:
@@ -173,44 +180,42 @@ class DatosGenerales extends Component {
               onChange={this.handleChange}
               required
             />
-            {this.validarLugarNacimiento() === 'error' 
+            {this.state.lugarNacimientoError === 'error' 
               ? this.props.getValidationMessages('lugarNacimiento').map(this.renderHelpText)
               : null
             }
           </Col>
         </FormGroup>
 
+
         <Col md={12} sm={12}>
         <Col md={6} sm={12}>
           <FormGroup
             controlId="ingresoPacienteFechaNacimiento"
-            validationState={this.validarFechaNacimiento()}
+            validationState={this.state.fechaNacimientoError}
           >
             <Col componentClass={ControlLabel} sm={5}>
               Fecha de nacimiento:
             </Col>
             <Col sm={7} style={{ paddingLeft: '9%' }} >
-              <SingleDatePicker
-                required={true}
-                date={this.state.fechaNacimientoMoment}
-                onDateChange={date => {
-                  this.setState({
-                    fechaNacimientoMoment: date,
-                    fechaNacimiento: date.toDate()
-                  });
-                }}
-                focused={this.state.fechaNacimientoFocused}
-                onFocusChange={
-                  ({ focused }) => this.setState({ fechaNacimientoFocused: focused })
-                }
-                numberOfMonths={1}
-                placeholder="Ingrese fecha"
-              />
-             {!this.props.isValid('fechaNacimiento')
+            <DatePicker
+              locale="es"
+              value={this.state.fechaNacimiento}
+              selected={this.state.startDate}
+              onChange={this.onChangleFechaNacimiento}
+              showYearDropdown
+              showMonthDropdown
+              showDayDropdown
+              scrollableYearDropdown
+              dateFormatCalendar="MMMM"
+              placeholderText="Ingrese una fecha"
+              maxDate={moment()}
+              dropdownMode="select"
+            />
+             {this.state.fechaNacimientoError === 'error'
                 ? this.props.getValidationMessages('fechaNacimiento').map(this.renderHelpText)
                 : null
               }
-
             </Col>
           </FormGroup>
         </Col>
@@ -219,7 +224,7 @@ class DatosGenerales extends Component {
         <Col md={6} sm={12}>
           <FormGroup 
             controlId="ingresoPacienteEstadoCivil"
-            validationState={this.validarEstadoCivil()}
+            validationState={this.state.estadoCivilError}
           >
             <Col componentClass={ControlLabel} sm={3}>
               Estado civil:
@@ -237,7 +242,7 @@ class DatosGenerales extends Component {
                 onChange: this.onChangeEstadoCivil
               }}
             />
-            {!this.props.isValid('estadoCivil')
+            {this.state.estadoCivilError === 'error'
               ? this.props.getValidationMessages('estadoCivil').map(this.renderHelpText)
               : null
             }
@@ -248,7 +253,10 @@ class DatosGenerales extends Component {
         
         <Col md={12} sm={12}>
         <Col md={6} sm={12}>
-          <FormGroup controlId="ingresoPacienteNacionalidad">
+          <FormGroup
+            controlId="ingresoPacienteNacionalidad"
+            validationState={this.state.nacionalidadError}
+          >
             <Col componentClass={ControlLabel} sm={5}>
               Nacionalidad:
             </Col>
@@ -261,7 +269,7 @@ class DatosGenerales extends Component {
                 onChange={this.handleChange}
                 required
               />
-            {!this.props.isValid('nacionalidad')
+            {this.state.nacionalidadError === 'error'
               ? this.props.getValidationMessages('nacionalidad').map(this.renderHelpText)
               : null
             }
@@ -271,21 +279,24 @@ class DatosGenerales extends Component {
 
 
         <Col md={6} sm={12}>
-          <FormGroup controlId="ingresoPacienteGrupoEtnico">
+          <FormGroup 
+            controlId="ingresoPacienteGrupoEtnico"
+            validationState={this.state.grupoCulturalError}
+          >
             <Col componentClass={ControlLabel} sm={3}>
-              Grupo étnico:
+              Grupo cultural:
             </Col>
             <Col sm={7} style={{ marginLeft: '2%' }} >
               <FormControl
                 type="text"
-                name="grupoEtnico"
-                value={this.state.grupoEtnico}
+                name="grupoCultural"
+                value={this.state.grupoCultural}
                 placeholder="Ingrese grupo étnico"
                 onChange={this.handleChange}
                 required
               />
-              {!this.props.isValid('grupoEtnico')
-                ? this.props.getValidationMessages('grupoEtnico').map(this.renderHelpText)
+              {this.state.grupoCulturalError === 'error'
+                ? this.props.getValidationMessages('grupoCultural').map(this.renderHelpText)
                 : null
               }
             </Col>
@@ -295,7 +306,10 @@ class DatosGenerales extends Component {
 
         <Col sm={12}>
         <Col sm={6}>
-          <FormGroup controlId="ingresoPacienteSexo">
+          <FormGroup
+            controlId="ingresoPacienteSexo"
+            validationState={this.state.sexoError}
+          >
             <Col componentClass={ControlLabel} sm={5}>
               Sexo:
             </Col>
@@ -312,7 +326,7 @@ class DatosGenerales extends Component {
                 <option value="masculino">Masculino</option>
                 <option value="femenino">Femenino</option>
               </FormControl>
-              {!this.props.isValid('sexo')
+              {this.state.sexoError === 'error'
                 ? this.props.getValidationMessages('sexo').map(this.renderHelpText)
                 : null
               }
@@ -324,7 +338,7 @@ class DatosGenerales extends Component {
         <Col sm={6}>
           <FormGroup
             controlId="ingresoPacienteTelefono"
-            validationState={this.validarTelefono()}
+            validationState={this.state.telefonoError}
           >
             <Col componentClass={ControlLabel} sm={3}>
               Teléfono:
@@ -337,7 +351,7 @@ class DatosGenerales extends Component {
                 placeholder="Ingrese teléfono"
                 onChange={this.handleChange}
               />
-             {!this.props.isValid('telefono')
+             {this.state.telefonoError === 'error'
                 ? this.props.getValidationMessages('telefono').map(this.renderHelpText)
                 : null
               }
@@ -369,86 +383,36 @@ class DatosGenerales extends Component {
   onChangeEstadoCivil = (ev, { newValue }) => {
     this.setState({
       estadoCivil: newValue,
+      estadoCivilError: newValue.length > 0 ? 'success': 'error',
       estadoCivilTouched: true
     });
-  };
-  
-  // onSuggestionsFetchRequested = ({ value }) => {
-  //   this.setState({
-  //     suggestions: this.getSuggestions(value)
-  //   });
-  // };
-
-  // onSuggestionsClearRequested = () => {
-  //   this.setState({
-  //     suggestions: []
-  //   });
-  // };
-
-  validarNombres = () => {
-    const length = this.state.nombres.length;
-    if (length > tamanoMinimo.nombres) return 'success';
-    else if (length > 0 || !this.props.isValid('nombres')) return 'error';
-    return null;
-  };
-
-  validarApellidos = () => {
-    const length = this.state.apellidos.length;
-    if (length > tamanoMinimo.apellidos) return 'success';
-    else if (length > 0 || !this.props.isValid('apellidos')) return 'error';
-    return null;
-  };
-
-  validarIdentificacion = () => {
-    if (this.state.noTieneIdentificacion === true)
-      return 'success';
-    const length = this.state.identificacion.length;
-    if (length > tamanoMinimo.identificacion) return 'success';
-    else if (length > 0 || !this.props.isValid('nombres')) return 'error';
-    return null;
-  }
-
-  validarLugarNacimiento = () => {
-    const length = this.state.lugarNacimiento.length;
-    if (length > tamanoMinimo.lugarNacimiento) return 'success';
-    else if (length > 0|| !this.props.isValid('lugarNacimiento')) return 'error';
-    return null;
-  };
-
-  validarFechaNacimiento = () => {
-    const length = this.state.fechaNacimiento.length;
-    if (!this.state.fechaNacimientoMoment) {
-      if (this.state.fechaNacimiento === '') return null;
-      return 'error';
-    }
-    if (length > 0 && this.state.fechaNacimientoMoment) return 'success'
-    else return 'error';
-  };
-
-  validarTelefono = () => {
-    const length = this.state.telefono.length;
-    if (length > tamanoMinimo.telefono) return 'success';
-    else if (length > 0|| !this.props.isValid('telefono')) return 'error';
-    return null;
-  }
-
-  validarEstadoCivil = () => {
-    if (this.state.estadoCivilTouched) return null;
-    if (!this.props.isValid('estadoCivil')) return 'error';
-    return 'success';
   };
 
   handleChange = (e) => {
     const inputName = e.target.name;
     let inputValue = e.target.value;
+    let inputError = inputName === 'identificacion' 
+      ? inputValue.length === 10 ? 'success' : 'error'
+      : inputValue.length > 0 ? 'success' : 'error';
+
     this.setState({
-      [inputName]: inputValue
+      [inputName]: inputValue,
+      [`${inputName}Error`]: inputError
+    });
+  }
+
+  onChangleFechaNacimiento = params => {
+    const date = params.format('DD-MM-YYYY');
+    this.setState({
+      fechaNacimiento: date,
+      fechaNacimientoError: 'success'
     });
   }
 
   handleClickNoTieneIdentificacion = () => {
     this.setState(prevState => ({
       identificacion: '',
+      identificacionError: 'success',
       noTieneIdentificacion: !prevState.noTieneIdentificacion
     }));
   };
@@ -456,8 +420,18 @@ class DatosGenerales extends Component {
   isValidated = () => {
     return new Promise((resolve, reject) => {
       this.props.validate((error) => {
-        console.log("IS VALIDATED: ", error);
-        if (error) return reject();
+        if (error) {
+          const errorFields = Object.keys(error);
+          const newState = errorFields.reduce((result, item) => {
+            return {
+              ...result,
+              [`${item}Error`]: 'error'
+            }
+          }, {});
+          this.setState(newState);
+          reject();
+          return;
+        }
         resolve();
       });
     });
@@ -474,7 +448,7 @@ class DatosGenerales extends Component {
       fechaNacimiento: this.state.fechaNacimiento,
       estadoCivil: this.state.estadoCivil,
       nacionalidad: this.state.nacionalidad,
-      grupoEtnico: this.state.grupoEtnico,
+      grupoCultural: this.state.grupoCultural,
       sexo: this.state.sexo,
       telefono: this.state.telefono,
     };

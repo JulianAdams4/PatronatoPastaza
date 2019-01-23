@@ -14,21 +14,38 @@ const login = async (req, res) => {
       .table("usuario")
       .where({
         correo: req.body.correo,
-        contrasena: req.body.contrasena
+        contrasena: req.body.contrasena,
+        estusua: "A" // Active user
       });
     if (!usuario) 
       return res.status(404).json({ error: true, data: { message: "Usuario o contraseña incorrectos" } });
 
     if (usuario) {
+      const [infoAdicional] = await db
+        .select("rol.nombre as nombreRol", "cargo.id_proyuni as id_proyuni")
+        .from("cargo")
+        .leftJoin("rol", "rol.id", "cargo.id_rol")
+        .where({ id_usuario: usuario.id });
+      console.log(infoAdicional);
       // Return user data without password
       delete usuario.contrasena;
       // Create a token
-      const token = jwt.sign(usuario, process.env.SECRET_PASS, {
+      const payload = Object.assign(usuario, {
+        cargo: infoAdicional.nombreRol,
+        id_proyuni: infoAdicional.id_proyuni
+      });
+      console.log(payload);
+      const token = jwt.sign(payload, process.env.SECRET_PASS, {
         expiresIn: process.env.SESSION_DURATION
       });
       req.session = token;
       req.headers["authorization"] = token;
-      return res.status(200).send({ error: false, token });
+      return res.status(200).json({
+        error: false,
+        token,
+        nombres: `${usuario.nombre} ${usuario.apellido}`,
+        rol: infoAdicional.nombreRol
+      });
     }      
   } catch (err) {
     return res.status(500).json({

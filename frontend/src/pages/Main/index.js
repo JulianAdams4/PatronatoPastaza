@@ -6,7 +6,6 @@ import { withRouter } from 'react-router-dom';
 
 import { setMobileNavVisibility } from '../../reducers/Layout';
 import Header from './Header';
-import Footer from './Footer';
 import SideBar from '../../components/SideBar';
 
 //================
@@ -62,7 +61,6 @@ const Main = ({
                 <Route path="/citas/consulta" component={CitaConsulta} />
 
                 <Route path="/usuario/cerrarSesion" component={CerrarSesion} />
-                <Footer />
               </div>
             </div>
           )

@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import StepZilla from "react-stepzilla";
 import DatosGenerales from './DatosGenerales';
 import Procedencia from './Procedencia';
+import Ocupacion from './Ocupacion';
+import DatosReferencia from './DatosReferencia';
+import Final from './Final';
 import './dashboard.scss';
 
 
@@ -11,7 +14,6 @@ class Dashboard extends Component {
     this.state = {
       disableSubmit: true,
       disableNextStep: true,
-      formData: {
         datosGenerales: {
           nombres: '',
           apellidos: '',
@@ -20,7 +22,7 @@ class Dashboard extends Component {
           fechaNacimiento: '',
           estadoCivil: '',
           nacionalidad: '',
-          grupoEtnico: '',
+          grupoCultural: '',
           sexo: '',
           telefono: ''
         },
@@ -33,7 +35,6 @@ class Dashboard extends Component {
           barrio: '',
         },
         datosOcupacion: {
-          institucion: '',
           instruccion: '',
           ocupacion: '',
           empresa: '',
@@ -45,7 +46,6 @@ class Dashboard extends Component {
           viveCon: '',
           telefonoReferencia: ''
         }
-      }
     }
   }
 
@@ -61,9 +61,26 @@ class Dashboard extends Component {
               <div className="formulario">
                 <StepZilla 
                   steps={[
-                    { name: 'Procedencia', component: <Procedencia {...this.state.formData.datosProcedencia} /> },
-                    { name: 'Datos Generales', component: <DatosGenerales {...this.state.formData.datosGenerales} /> },
-                    
+                    { 
+                      name: 'Datos Generales', 
+                      component: <DatosGenerales {...this.state.datosGenerales} guardarData={this.actualizarDatosGenerales} />
+                    },
+                    { 
+                      name: 'Procedencia', 
+                      component: <Procedencia {...this.state.datosProcedencia} />
+                    },
+                    { 
+                      name: 'Ocupación', 
+                      component: <Ocupacion {...this.state.datosOcupacion} />
+                    },
+                    { 
+                      name: 'Datos de referencia', 
+                      component: <DatosReferencia {...this.state.datosReferencia} />
+                    },
+                    {
+                      name: 'Final',
+                      component: <Final />
+                    }
                   ]}
                   showNavigation={true}
                   showSteps={true}
@@ -75,7 +92,7 @@ class Dashboard extends Component {
                   backButtonText={"Atrás"}
                   nextButtonCls={"btn btn-prev btn-primary btn-lg pull-right"}
                   backButtonCls={"btn btn-next btn-primary btn-lg pull-left"}
-                  hocValidationAppliedTo={[0, 1]}
+                  hocValidationAppliedTo={[0, 1, 2, 3]}
                   nextTextOnFinalActionStep="Guardar"
                 />
               </div>
@@ -83,6 +100,12 @@ class Dashboard extends Component {
         </div>
       </div>
     );
+  }
+
+  actualizarDatosGenerales = (validData) => {
+    this.setState({
+      datosGenerales: validData
+    });
   }
 };
 

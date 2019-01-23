@@ -66,22 +66,16 @@ a {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    height: 210px;
+    height: 120px;
     width: 100%;
     background-color: white;
     .logo {
       width: 75%;
       margin-right: 10px;
     }
-    .brand-name {
-      color: #EA4C89;
-      font-family: "SF UI Text";
-      font-size: 16px;
-      font-weight: 600;
-      line-height: 19px;
-      text-align: center;
-    }
   }
+
+
   .user-wrapper {
     .user {
       margin: 0 auto;
@@ -91,12 +85,14 @@ a {
       justify-content: space-between;
       padding: 20px;
       padding-left: 30px;
+      cursor: pointer;
+      
       .avatar {
         width: 61px;
         height: 61px;
         border-radius: 50%;
         background-color: rgba($color: #000, $alpha: 0.2);
-        font-size: 18px;
+        font-size: 25px;
         margin-right: 20px;
         display: flex;
         align-items: center;
@@ -105,15 +101,16 @@ a {
           margin: 0px auto;
         }
       }
+
       .userinfo {
         flex-grow: 1;
         .username {
-          font-size: 14px;
+          font-size: 15px;
           font-weight: 600;
-          line-height: 19px;
+          line-height: 20px;
         }
         .title {
-          font-size: 12px;
+          font-size: 14px;
           font-weight: 300;
           line-height: 17px;
         }
@@ -128,38 +125,38 @@ a {
       }
     }
     .user-nav > li {
-      background-color: #F9FAFC;
+      line-height: 40px;
+      font-size: 15px;
+      background-color: rgba($color: #fff, $alpha: 0.1);
 
       > a {
-        padding: 20px 0px 20px 80px;
-        color: black;
+        padding-left: 74px;
+        color: #fff;
         &:hover, &:active {
-          // color: $azul-patronato;
-          background: #F9FAFC;
-          font-weight: bold;
+          background: rgba($color: #ffffff, $alpha: 0.05);
         }
-        &:focus{
-          color: $azul-patronato;
-          background: transparent;
-        }
+        // &:focus{
+        //   background: rgba($color: #ffffff, $alpha: 0.15);
+        // }
       }
     }
   }
 
+
+
   > .sidebar-wrapper > .nav {
     > li {
-      border-bottom: 1px solid rgba($color: #8492A6, $alpha: 0.2);
+      border-bottom: 1px solid rgba($color: #8492A6, $alpha: 0.1);
+      
       &.active > a {
-        color: $azul-patronato;
-        background: white;
+        color: #fff;
       }
       > a {
-        padding: 20px 30px;
-        font-size: 14px;
-        color: $sidebar-color;
+        color: #fff;
+        padding: 20px 40px;
+        font-size: 15px;
         &:hover {
-          background: #F9FAFC;
-          font-weight: bolder;
+          background: rgba($color: #ffffff, $alpha: 0.15);
         }
       }
 
@@ -172,20 +169,23 @@ a {
         list-style-type: circle;
 
         > li  {
-          padding: 10px 5px;
-          background-color: #F9FAFC;
+          color: #fff;
+          background-color: rgba($color: #fff, $alpha: 0.05);
+          line-height: 40px;
+
           &.active a {
-            background: #F9FAFC;
-            color: $azul-patronato;
+            background: rgba($color: #ffffff, $alpha: 0.15);
+            color: #fff;
           }
           > a {
             padding-left: 74px;
             font-size: 13px;
-            color: black;
+            color: #fff;
+
             &:hover {
-              background: #F9FAFC;
-              font-weight: bold;
+              background: rgba($color: #ffffff, $alpha: 0.15);
             }
+
           }
         }
       }

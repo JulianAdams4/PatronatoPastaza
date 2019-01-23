@@ -104,21 +104,21 @@ $btn-rectangle-radius:         3px !default;
 
 $height-base:                  40px !default;
 
-$font-size-base:               14px !default;
-$font-size-small:              12px !default;
-$font-size-medium:             16px !default;
-$font-size-large:              18px !default;
-$font-size-large-navbar:       20px !default;
+$font-size-base:               15px !default;
+$font-size-small:              13px !default;
+$font-size-medium:             17px !default;
+$font-size-large:              19px !default;
+$font-size-large-navbar:       21px !default;
 
-$font-size-h1:                 52px !default;
-$font-size-h2:                 36px !default;
-$font-size-h3:                 28px !default;
-$font-size-h4:                 22px !default;
-$font-size-h5:                 16px !default;
-$font-size-h6:                 14px !default;
-$font-paragraph:               16px !default;
-$font-size-navbar:             16px !default;
-$font-size-small:              12px !default;
+$font-size-h1:                 53px !default;
+$font-size-h2:                 37px !default;
+$font-size-h3:                 29px !default;
+$font-size-h4:                 23px !default;
+$font-size-h5:                 17px !default;
+$font-size-h6:                 15px !default;
+$font-paragraph:               17px !default;
+$font-size-navbar:             17px !default;
+$font-size-small:              13px !default;
 
 $font-weight-light:          300 !default;
 $font-weight-normal:         400 !default;
@@ -130,8 +130,9 @@ $line-height:                 20px !default;
 $line-height-lg:              54px !default;
 
 $sidebar-width:               300px;
-$sidebar-color: #000;
-$sidebar-bg: #fff;
+$sidebar-color: #fff;
+$sidebar-bg: rgba(43,163,197, 1.0);
+
 $sidebar-sub-menu-bg: lighten($sidebar-bg, 4%);
 
 $border-radius-top:        10px 10px 0 0 !default;
@@ -266,5 +267,5 @@ $orange-navbar:             lighten($new-orange, 10%);
 $red-navbar:                lighten($new-red, 10%);
 
 
-$button-border-radius: 38px;
-$azul-patronato: #00A6FF;
+$button-border-radius: 38px; 
+$azul-patronato: #2BA3C5;

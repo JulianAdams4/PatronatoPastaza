@@ -10,5 +10,9 @@
     "Israel Zurita <correo@espol.edu.ec>"
   ],
   "license": "MIT",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "sweetalert": "^2.1.2",
+    "sweetalert-react": "^0.4.11"
+  }
 }

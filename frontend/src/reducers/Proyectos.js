@@ -9,7 +9,6 @@ export const anadirProyectosAlStore = proyectos => ({
 });
 
 export const cargarProyectos = async () => {
-  console.log("Se llama a cargarProyectos");
   try {
     const { status, body } = await getUserProjects();
     if (status === 200) {

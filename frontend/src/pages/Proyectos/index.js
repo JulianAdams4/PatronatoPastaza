@@ -40,7 +40,7 @@ class SeleccionProyecto extends Component {
             {this.state.proyectos.length ? (
               this.state.proyectos.map((proyecto, index) => (
                 // eslint-disable-next-line react/no-array-index-key
-                <div key={index} className="proyecto" onClick={() => this.onSelectProject(proyecto.code)}>
+                <div key={index} className="proyecto" onClick={() => this.onSelectProject(proyecto.codigoproy)}>
                   {proyecto.nombre}
                 </div>
               ))
@@ -70,7 +70,6 @@ class SeleccionProyecto extends Component {
         });
         return;
       }
-      console.log(proyectos)
       this.setState({ proyectos });
     }
   }
