@@ -89,7 +89,6 @@ CREATE TABLE Beneficiario (
   zona VARCHAR(10) NULL DEFAULT NULL,
   telefono VARCHAR(50) NULL DEFAULT NULL,
   fechaNacimiento DATE NULL DEFAULT NULL,
-  edad INTEGER NOT NULL,
   lugarNacimiento VARCHAR(100) NULL DEFAULT NULL,
   nacionalidad VARCHAR(50) NOT NULL,
   grupoCultural VARCHAR(50) NOT NULL,
@@ -137,9 +136,10 @@ CREATE TABLE Atencion (
   id INTEGER DEFAULT NEXTVAL ('Atencion_seq'),
   id_servicio INTEGER,
   id_beneficiario INTEGER,
+  id_usuario Integer,
   fecha DATE NOT NULL,
   observacion VARCHAR(300) NULL DEFAULT NULL,
-  tieneCosto CHAR(1) NOT NULL DEFAULT 'N',
+  valor CHAR(20) NOT NULL,
   estAtenc CHAR(1) NOT NULL DEFAULT 'P',
   PRIMARY KEY (id)
 );
@@ -326,6 +326,126 @@ CREATE TABLE ProyUni (
 );
 
 -- ---
+-- Table 'Nacionalidad'
+--
+-- ---
+
+DROP TABLE IF EXISTS Nacionalidad;
+
+CREATE SEQUENCE Nacionalidad_seq;
+
+CREATE TABLE Nacionalidad (
+  id INTEGER DEFAULT NEXTVAL ('Nacionalidad_seq'),
+  nombre VARCHAR(30) NOT NULL,
+  PRIMARY KEY (id)
+);
+
+-- ---
+-- Table 'GrupoCultural'
+--
+-- ---
+
+DROP TABLE IF EXISTS GrupoCultural;
+
+CREATE SEQUENCE GrupoCultural_seq;
+
+CREATE TABLE GrupoCultural (
+  id INTEGER DEFAULT NEXTVAL ('GrupoCultural_seq'),
+  nombre VARCHAR(30) NOT NULL,
+  PRIMARY KEY (id)
+);
+
+-- ---
+-- Table 'EstadoCivil'
+--
+-- ---
+
+DROP TABLE IF EXISTS EstadoCivil;
+
+CREATE SEQUENCE EstadoCivil_seq;
+
+CREATE TABLE EstadoCivil (
+  id INTEGER DEFAULT NEXTVAL ('EstadoCivil_seq'),
+  nombre VARCHAR(30) NOT NULL,
+  PRIMARY KEY (id)
+);
+
+-- ---
+-- Table 'Instruccion'
+--
+-- ---
+
+DROP TABLE IF EXISTS Instruccion;
+
+CREATE SEQUENCE Instruccion_seq;
+
+CREATE TABLE Instruccion (
+  id INTEGER DEFAULT NEXTVAL ('Instruccion_seq'),
+  nombre VARCHAR(30) NOT NULL,
+  PRIMARY KEY (id)
+);
+
+-- ---
+-- Table 'Parentesco'
+--
+-- ---
+
+DROP TABLE IF EXISTS Parentesco;
+
+CREATE SEQUENCE Parentesco_seq;
+
+CREATE TABLE Parentesco (
+  id INTEGER DEFAULT NEXTVAL ('Parentesco_seq'),
+  nombre VARCHAR(30) NOT NULL,
+  PRIMARY KEY (id)
+);
+
+-- ---
+-- Table 'Discapacidad'
+--
+-- ---
+
+DROP TABLE IF EXISTS Discapacidad;
+
+CREATE SEQUENCE Discapacidad_seq;
+
+CREATE TABLE Discapacidad (
+  id INTEGER DEFAULT NEXTVAL ('Discapacidad_seq'),
+  nombre VARCHAR(30) NOT NULL,
+  PRIMARY KEY (id)
+);
+
+-- ---
+-- Table 'Institucion'
+--
+-- ---
+
+DROP TABLE IF EXISTS Institucion;
+
+CREATE SEQUENCE Institucion_seq;
+
+CREATE TABLE Institucion (
+  id INTEGER DEFAULT NEXTVAL ('Institucion_seq'),
+  nombre VARCHAR(100) NOT NULL,
+  PRIMARY KEY (id)
+);
+
+-- ---
+-- Table 'TipoExoneración'
+--
+-- ---
+
+DROP TABLE IF EXISTS TipoExoneracion;
+
+CREATE SEQUENCE TipoExoneracion_seq;
+
+CREATE TABLE TipoExoneracion (
+  id INTEGER DEFAULT NEXTVAL ('TipoExoneracion_seq'),
+  nombre VARCHAR(30) NOT NULL,
+  PRIMARY KEY (id)
+);
+
+-- ---
 -- Foreign Keys
 -- ---
 
@@ -400,6 +520,8 @@ INSERT INTO Servicio (tipo,id_proyUni) VALUES ('Odontología','1');
 INSERT INTO Servicio (tipo,id_proyUni) VALUES ('Terapia de Lenguaje','1');
 INSERT INTO Servicio (tipo,id_proyUni) VALUES ('Terapia Física','1');
 INSERT INTO Servicio (tipo,id_proyUni) VALUES ('Psicología','1');
+INSERT INTO Servicio (tipo,id_proyUni) VALUES ('Equinoterapia','1');
+INSERT INTO Servicio (tipo,id_proyUni) VALUES ('Estimulación Temprana','1');
 
 INSERT INTO Rol (nombre,id_servicio) VALUES ('Administrador','1');
 INSERT INTO Rol (nombre,id_servicio) VALUES ('Asistente','1');
@@ -408,6 +530,9 @@ INSERT INTO Rol (nombre,id_servicio) VALUES ('Terapeuta Físico','5');
 INSERT INTO Rol (nombre,id_servicio) VALUES ('Terapeuta Lenguaje','4');
 INSERT INTO Rol (nombre,id_servicio) VALUES ('Psicólogo','6');
 INSERT INTO Rol (nombre,id_servicio) VALUES ('Odontólogo','3');
+INSERT INTO Rol (nombre,id_servicio) VALUES ('Equinoterapeuta','7');
+INSERT INTO Rol (nombre,id_servicio) VALUES ('Especialista','8');
+
 
 INSERT INTO Accion (nombre) VALUES ('ConsultarSM');
 
@@ -423,9 +548,12 @@ INSERT INTO Usuario (nombre,apellido,identificacion,telefono,fechaIngreso,correo
   ('Erick','Pérez','0912324323','0912344321','2018-12-13','erick94.perez@gmail.com','admin');
 INSERT INTO Usuario (nombre,apellido,identificacion,telefono,fechaIngreso,correo,contrasena) VALUES
   ('Maribel','Moreno','0922324323','0922344321','2018-12-13','erick94.perez@gmail.com','admin');
+INSERT INTO Usuario (nombre,apellido,identificacion,telefono,fechaIngreso,correo,contrasena) VALUES
+  ('Rosa','Moreno','0923554523','0932674321','2018-12-13','erick94.perez@gmail.com','admin');
 
 INSERT INTO Cargo (id_usuario,id_Rol,id_ProyUni) VALUES ('1','1','3');
 INSERT INTO Cargo (id_usuario,id_Rol,id_ProyUni) VALUES ('2','2','1');
+INSERT INTO Cargo (id_usuario,id_Rol,id_ProyUni) VALUES ('3','3','1');
 
 INSERT INTO Beneficiario (nombre,apellido,identificacion,direccion,barrio,zona,telefono,fechaNacimiento,
   edad,lugarNacimiento,nacionalidad,grupoCultural,sexo,discapacidad,estadoCivil,empresa,ocupacion,
@@ -464,12 +592,12 @@ INSERT INTO Admision(id_proyUni,id_beneficiario,fechaAdmi) VALUES ('1','2','2018
 INSERT INTO Admision(id_proyUni,id_beneficiario,fechaAdmi) VALUES ('2','3','2018-12-14');
 INSERT INTO Admision(id_proyUni,id_beneficiario,fechaAdmi) VALUES ('2','4','2018-12-14');
 
-INSERT INTO Atencion (id_servicio,id_beneficiario,fecha,tieneCosto) VALUES
-('1','1','2018-12-14','S');
-INSERT INTO Atencion (id_servicio,id_beneficiario,fecha,tieneCosto) VALUES
-('1','1','2018-12-15','S');
-INSERT INTO Atencion (id_servicio,id_beneficiario,fecha,tieneCosto) VALUES
-('1','2','2018-12-14','S');
+INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,valor) VALUES
+('1','1','3','2018-12-14','Pagado');
+INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,tieneCosto) VALUES
+('1','1','3','2018-12-15','Pagado');
+INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,tieneCosto) VALUES
+('1','2','3','2018-12-14','Pagado');
 
 INSERT INTO Provincia (nombre) VALUES ('Pastaza');
 INSERT INTO Canton (nombre,id_provincia) VALUES ('Pastaza','1');
@@ -481,11 +609,11 @@ INSERT INTO Parroquia (nombre,id_canton) VALUES ('Diez de Agosto','1');
 INSERT INTO Parroquia (nombre,id_canton) VALUES ('F�tima','1');
 INSERT INTO Parroquia (nombre,id_canton) VALUES ('Montalvo (Andoas)','1');
 INSERT INTO Parroquia (nombre,id_canton) VALUES ('Pomona','1');
-INSERT INTO Parroquia (nombre,id_canton) VALUES ('R��o Corrientes','1');
-INSERT INTO Parroquia (nombre,id_canton) VALUES ('R��o Tigre','1');
+INSERT INTO Parroquia (nombre,id_canton) VALUES ('Río Corrientes','1');
+INSERT INTO Parroquia (nombre,id_canton) VALUES ('Río Tigre','1');
 INSERT INTO Parroquia (nombre,id_canton) VALUES ('Santa Clara','1');
 INSERT INTO Parroquia (nombre,id_canton) VALUES ('Sarayacu','1');
-INSERT INTO Parroquia (nombre,id_canton) VALUES ('Sim�n Bol��var','1');
+INSERT INTO Parroquia (nombre,id_canton) VALUES ('Simón Bolívar','1');
 INSERT INTO Parroquia (nombre,id_canton) VALUES ('Tarqui','1');
 INSERT INTO Parroquia (nombre,id_canton) VALUES ('Teniente Hugo Ortiz','1');
 INSERT INTO Parroquia (nombre,id_canton) VALUES ('Veracruz (Indillama)','1');
@@ -496,7 +624,50 @@ INSERT INTO Parroquia (nombre,id_canton) VALUES ('Madre Tierra','2');
 INSERT INTO Parroquia (nombre,id_canton) VALUES ('Shell','2');
 INSERT INTO Canton (nombre,id_provincia) VALUES ('Santa Clara','1');
 INSERT INTO Parroquia (nombre,id_canton) VALUES ('Santa Clara','3');
-INSERT INTO Parroquia (nombre,id_canton) VALUES ('San Jos�','3');
+INSERT INTO Parroquia (nombre,id_canton) VALUES ('San José','3');
 INSERT INTO Canton (nombre,id_provincia) VALUES ('Arajuno','1');
 INSERT INTO Parroquia (nombre,id_canton) VALUES ('Arajuno','4');
 INSERT INTO Parroquia (nombre,id_canton) VALUES ('Curaray','4');
+
+INSERT INTO Nacionalidad (nombre) VALUES ('Argentina');
+INSERT INTO Nacionalidad (nombre) VALUES ('Boliviana');
+INSERT INTO Nacionalidad (nombre) VALUES ('Brasileña');
+INSERT INTO Nacionalidad (nombre) VALUES ('Chilena');
+INSERT INTO Nacionalidad (nombre) VALUES ('Colombiana');
+INSERT INTO Nacionalidad (nombre) VALUES ('Ecuatoriana');
+INSERT INTO Nacionalidad (nombre) VALUES ('Paraguaya');
+INSERT INTO Nacionalidad (nombre) VALUES ('Peruana');
+INSERT INTO Nacionalidad (nombre) VALUES ('Uruguaya');
+INSERT INTO Nacionalidad (nombre) VALUES ('Venezolana');
+
+INSERT INTO GrupoCultural (nombre) VALUES ('Mestizo');
+INSERT INTO GrupoCultural (nombre) VALUES ('Afro-Ecuatoriano');
+INSERT INTO GrupoCultural (nombre) VALUES ('Montubio');
+INSERT INTO GrupoCultural (nombre) VALUES ('Blancos');
+INSERT INTO GrupoCultural (nombre) VALUES ('Shuar');
+INSERT INTO GrupoCultural (nombre) VALUES ('Ashuar');
+INSERT INTO GrupoCultural (nombre) VALUES ('Huaorani');
+INSERT INTO GrupoCultural (nombre) VALUES ('Siona-Secoya');
+
+INSERT INTO EstadoCivil (nombre) VALUES ('Soltero (a)');
+INSERT INTO EstadoCivil (nombre) VALUES ('Casado (a)');
+INSERT INTO EstadoCivil (nombre) VALUES ('Union Libre');
+INSERT INTO EstadoCivil (nombre) VALUES ('Divorciado (a)');
+INSERT INTO EstadoCivil (nombre) VALUES ('Viudo (a)')
+
+INSERT INTO Instruccion (nombre) VALUES ('Sin Estudios');
+INSERT INTO Instruccion (nombre) VALUES ('Primaria');
+INSERT INTO Instruccion (nombre) VALUES ('Secundaria');
+INSERT INTO Instruccion (nombre) VALUES ('Superior');
+
+INSERT INTO Parentesco (nombre) VALUES ('Madre');
+INSERT INTO Parentesco (nombre) VALUES ('Padre');
+INSERT INTO Parentesco (nombre) VALUES ('Hermano (a)');
+INSERT INTO Parentesco (nombre) VALUES ('Tio (a)');
+INSERT INTO Parentesco (nombre) VALUES ('Primo (a)');
+INSERT INTO Parentesco (nombre) VALUES ('Sobrino (a)');
+
+INSERT INTO TipoExoneracion (nombre) VALUES ('Pagado');
+INSERT INTO TipoExoneracion (nombre) VALUES ('Convenio');
+INSERT INTO TipoExoneracion (nombre) VALUES ('Proyecto');
+INSERT INTO TipoExoneracion (nombre) VALUES ('Grupo Prioritario');

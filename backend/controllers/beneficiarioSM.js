@@ -1,8 +1,7 @@
 const db = require('../database')
 
-
 /*
-if(req.body.nombre != '' && req.body.apellido != '' && req.body.edad != '' &&
+if(req.body.nombre != '' && req.body.apellido != '' &&
    req.body.nacionalidad != '' && req.body.grupoCultural != '' && req.body.sexo != '' &&
    req.body.zona != '' && req.body.estadoCivil != '' && req.body.resNombre != '' &&
    req.body.resApellido != '' && req.body.resParentesco != ''){
@@ -65,9 +64,9 @@ db('beneficiario').insert({
 
 const consultarBeneficiarioPorID = (req, res, next) => {
   db.select('beneficiario.nombre','beneficiario.apellido','beneficiario.identificacion','beneficiario.telefono',
-            'beneficiario.direccion','beneficiario.barrio','parroquia.nombre as parroquia', 'canton.nombre as canton', 'provincia.nombre as provincia',
-            'beneficiario.zona','beneficiario.nacionalidad',
-            'beneficiario.sexo','beneficiario.instruccion','beneficiario.empresa','beneficiario.seguro',
+            'beneficiario.direccion','beneficiario.barrio', 'parroquia.nombre as parroquia', 'canton.nombre as canton', 'provincia.nombre as provincia',
+            'beneficiario.zona', 'beneficiario.fechanacimiento', 'beneficiario.lugarnacimiento', 'beneficiario.nacionalidad', 'beneficiario.grupocultural',
+            'beneficiario.sexo', 'beneficiario.estadocivil', 'beneficiario.instruccion', 'beneficiario.ocupacion','beneficiario.empresa','beneficiario.seguro',
             'beneficiario.referido','responsable.nombre as resNombre', 'responsable.apellido as resApellido', 'responsable.parentesco as resParentesco',
             'responsable.direccion as resdireccion', 'responsable.telefono as resTelefono')
   .from('beneficiario')
@@ -165,6 +164,7 @@ const filtrarBeneficiarioSM = (req, res, next) => {
 
 const filtrarBeneficiario = (req, res, next) => {
   db.select('beneficiario.id','nombre','apellido','identificacion','telefono').from('beneficiario')
+  .join('admision', 'admision.id_beneficiario', 'beneficiario.id')
   .where((qb) => {
     if (req.body.nombre!="") {
       qb.where('nombre', 'like', '%'+req.body.nombre+'%');
@@ -176,6 +176,8 @@ const filtrarBeneficiario = (req, res, next) => {
       qb.orWhere('identificacion', 'like', '%'+req.body.identificacion+'%');
     }
   })
+  .whereNot('admision.id_proyuni',1)
+  .limit(10)
   .then(function(collection){
     res.json({
       error: false,
@@ -193,7 +195,7 @@ const filtrarBeneficiario = (req, res, next) => {
 };
 
 const consultarProvincia = (req, res, next) => {
-  db.select('nombre').from('provincia')
+  db.select('id','nombre').from('provincia')
   .then(function(collection){
     res.json({
       error: false,
@@ -211,7 +213,7 @@ const consultarProvincia = (req, res, next) => {
 };
 
 const consultarCanton = (req, res, next) => {
-  db.select('nombre').from('canton')
+  db.select('id','nombre').from('canton')
   .where('id_provincia',req.params.id)
   .then(function(collection){
     res.json({
@@ -230,8 +232,98 @@ const consultarCanton = (req, res, next) => {
 };
 
 const consultarParroquia = (req, res, next) => {
-  db.select('nombre').from('parroquia')
+  db.select('id','nombre').from('parroquia')
   .where('id_canton',req.params.id)
+  .then(function(collection){
+    res.json({
+      error: false,
+      data: collection
+    })
+  })
+  .catch(function(err){
+    res.status(500).json({
+      error: true,
+      data:{
+        message:err.message
+      }
+    })
+  })
+};
+
+const consultarNacionalidad = (req, res, next) => {
+  db.select('nombre').from('nacionalidad')
+  .then(function(collection){
+    res.json({
+      error: false,
+      data: collection
+    })
+  })
+  .catch(function(err){
+    res.status(500).json({
+      error: true,
+      data:{
+        message:err.message
+      }
+    })
+  })
+};
+
+const consultarGrupoCultural = (req, res, next) => {
+  db.select('nombre').from('grupocultural')
+  .then(function(collection){
+    res.json({
+      error: false,
+      data: collection
+    })
+  })
+  .catch(function(err){
+    res.status(500).json({
+      error: true,
+      data:{
+        message:err.message
+      }
+    })
+  })
+};
+
+const consultarEstadoCivil = (req, res, next) => {
+  db.select('nombre').from('estadocivil')
+  .then(function(collection){
+    res.json({
+      error: false,
+      data: collection
+    })
+  })
+  .catch(function(err){
+    res.status(500).json({
+      error: true,
+      data:{
+        message:err.message
+      }
+    })
+  })
+};
+
+const consultarInstruccion = (req, res, next) => {
+  db.select('nombre').from('instruccion')
+  .then(function(collection){
+    res.json({
+      error: false,
+      data: collection
+    })
+  })
+  .catch(function(err){
+    res.status(500).json({
+      error: true,
+      data:{
+        message:err.message
+      }
+    })
+  })
+};
+
+const consultarParentesco = (req, res, next) => {
+  db.select('nombre').from('parentesco')
   .then(function(collection){
     res.json({
       error: false,
@@ -256,5 +348,10 @@ module.exports = {
   filtrarBeneficiario,
   consultarProvincia,
   consultarCanton,
-  consultarParroquia
+  consultarParroquia,
+  consultarNacionalidad,
+  consultarGrupoCultural,
+  consultarEstadoCivil,
+  consultarInstruccion,
+  consultarParentesco
 };

@@ -1,5 +1,26 @@
 const db = require('../database')
 
+const consultarEspecialista = (req, res, next) => {
+  db.select('usuario.id','usuario.nombre','usuario.apellido').from('usuario')
+  .join('cargo','usuario.id','cargo.id_usuario')
+  .join('rol','rol.id','cargo.id_rol')
+  .where('rol.id_servicio',req.params.idServicio)
+  .then(function(collection){
+    res.json({
+      error: false,
+      data: collection
+    })
+  })
+  .catch(function(err){
+    res.status(500).json({
+      error: true,
+      data:{
+        message:err.message
+      }
+    })
+  })
+};
+
 const consultarAtenderPorServicioSM = (req, res, next) => {
   db.select('beneficiario.id','beneficiario.nombre','beneficiario.apellido','beneficiario.identificacion','atencion.estatenc').from('beneficiario')
   .join('atencion','beneficiario.id','atencion.id_beneficiario')
@@ -68,8 +89,27 @@ const consultarServiciosSM = (req, res, next) => {
   })
 };
 
+const consultarExoneracion = (req, res, next) => {
+  db.select('nombre').from('tipoexoneracion')
+  .then(function(collection){
+    res.json({
+      error: false,
+      data: collection
+    })
+  })
+  .catch(function(err){
+    res.status(500).json({
+      error: true,
+      data:{
+        message:err.message
+      }
+    })
+  })
+};
 
 module.exports = {
+  consultarEspecialista,
   consultarAtenderPorServicioSM,
-  consultarServiciosSM
+  consultarServiciosSM,
+  consultarExoneracion
 };
