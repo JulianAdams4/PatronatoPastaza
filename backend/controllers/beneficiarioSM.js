@@ -262,6 +262,126 @@ const consultarParroquia = (req, res) => {
     });
 };
 
+const consultarNacionalidad = (req, res) => {
+  db.select("nombre").from("nacionalidad")
+    .then(function(collection){
+      res.json({
+        error: false,
+        data: collection
+      });
+    })
+    .catch(function(err){
+      res.status(500).json({
+        error: true,
+        data:{
+          message:err.message
+        }
+      });
+    });
+};
+
+const consultarGrupoCultural = (req, res) => {
+  db.select("nombre").from("grupocultural")
+    .then(function(collection){
+      res.json({
+        error: false,
+        data: collection
+      });
+    })
+    .catch(function(err){
+      res.status(500).json({
+        error: true,
+        data:{
+          message:err.message
+        }
+      });
+    });
+};
+
+const consultarEstadoCivil = (req, res) => {
+  db.select("nombre").from("estadocivil")
+    .then(function(collection){
+      res.json({
+        error: false,
+        data: collection
+      });
+    })
+    .catch(function(err){
+      res.status(500).json({
+        error: true,
+        data:{
+          message:err.message
+        }
+      });
+    });
+};
+
+const consultarInstruccion = (req, res) => {
+  db.select("nombre").from("instruccion")
+    .then(function(collection){
+      res.json({
+        error: false,
+        data: collection
+      });
+    })
+    .catch(function(err){
+      res.status(500).json({
+        error: true,
+        data:{
+          message:err.message
+        }
+      });
+    });
+};
+
+const consultarParentesco = (req, res) => {
+  db.select("nombre").from("parentesco")
+    .then(function(collection){
+      res.json({
+        error: false,
+        data: collection
+      });
+    })
+    .catch(function(err){
+      res.status(500).json({
+        error: true,
+        data:{
+          message:err.message
+        }
+      });
+    });
+};
+
+const consultarBeneficiarioPorID = (req, res) => {
+  db.select("beneficiario.nombre","beneficiario.apellido","beneficiario.identificacion","beneficiario.telefono",
+    "beneficiario.direccion","beneficiario.barrio", "parroquia.nombre as parroquia", "canton.nombre as canton", "provincia.nombre as provincia",
+    "beneficiario.zona", "beneficiario.fechanacimiento", "beneficiario.lugarnacimiento", "beneficiario.nacionalidad", "beneficiario.grupocultural",
+    "beneficiario.sexo", "beneficiario.estadocivil", "beneficiario.instruccion", "beneficiario.ocupacion","beneficiario.empresa","beneficiario.seguro",
+    "beneficiario.referido","responsable.nombre as resNombre", "responsable.apellido as resApellido", "responsable.parentesco as resParentesco",
+    "responsable.direccion as resdireccion", "responsable.telefono as resTelefono")
+    .from("beneficiario")
+    .join("responsable","beneficiario.id","responsable.id_beneficiario")
+    .join("parroquia","beneficiario.id_parroquia","parroquia.id")
+    .join("canton","canton.id","parroquia.id_canton")
+    .join("provincia","provincia.id","canton.id_provincia")
+    .where("beneficiario.id",req.params.idBeneficiario)
+    .limit(1)
+    .then(function(collection){
+      res.json({
+        error: false,
+        data: collection
+      });
+    })
+    .catch(function(err){
+      res.status(500).json({
+        error: true,
+        data:{
+          message:err.message
+        }
+      });
+    });
+};
+
 module.exports = {
   ingresarBeneficiarioSM,
   consultarBeneficiarioSM,
@@ -269,5 +389,11 @@ module.exports = {
   filtrarBeneficiario,
   consultarProvincia,
   consultarCanton,
-  consultarParroquia
+  consultarParroquia,
+  consultarNacionalidad,
+  consultarGrupoCultural,
+  consultarEstadoCivil,
+  consultarInstruccion,
+  consultarParentesco,
+  consultarBeneficiarioPorID
 };
