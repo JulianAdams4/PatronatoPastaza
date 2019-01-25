@@ -3,6 +3,7 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import generateData from './generateData';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 import './citaconsulta.scss';
+import { obtenerBeneficiarios } from '../../services/requestsInterface';
 
 class CitaConsulta extends Component {
   constructor() {
@@ -69,7 +70,7 @@ class CitaConsulta extends Component {
                     # Historia
                   </TableHeaderColumn>
                   <TableHeaderColumn
-                    dataField='name'
+                    dataField='nombre'
                     width="20%"
                     filter={{
                       type: 'TextFilter',
@@ -79,7 +80,7 @@ class CitaConsulta extends Component {
                     Nombres
                   </TableHeaderColumn>
                   <TableHeaderColumn
-                    dataField='country'
+                    dataField='apellido'
                     width="20%"
                     filter={{
                       type: 'TextFilter',
@@ -89,7 +90,7 @@ class CitaConsulta extends Component {
                     Apellidos
                   </TableHeaderColumn>
                   <TableHeaderColumn
-                    dataField='salary'
+                    dataField='identificacion'
                     width="15%"
                     filter={{
                       type: 'TextFilter',
@@ -99,9 +100,9 @@ class CitaConsulta extends Component {
                     Identificación
                   </TableHeaderColumn>
                   <TableHeaderColumn
-                    dataField='job'
+                    dataField='telefono'
                     width="15%">
-                    Hora
+                    Teléfono
                   </TableHeaderColumn>
                 </BootstrapTable>
               </div>
@@ -113,9 +114,11 @@ class CitaConsulta extends Component {
   }
 
   async componentDidMount() {
-    this.setState({
-      data: generateData(500, false)
+    const { body } = await obtenerBeneficiarios({
+      nombre: '', apellido: '', identificacion: ''
     });
+    console.log(body)
+    this.setState({ data: body.data });
   }
 
   removeItem = itemId => {

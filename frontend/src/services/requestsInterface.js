@@ -40,3 +40,15 @@ export const getParroquiaByCantonId = cantonId => request
   .set("authorization", getTokenFromStorage())
   .ok(res => res.status)
   .timeout(timeout);
+
+export const obtenerBeneficiarios = ({ nombre, apellido, identificacion }) => request
+  .post("/api/beneficiarioSM/todos")
+  .send({ nombre, apellido, identificacion })
+  .ok(res => res.status)
+  .timeout(timeout);
+
+export const filtrarBeneficiarios = ({ nombre, apellido, identificacion }) => request
+  .post("/api/beneficiarioSM/filtrar")
+  .send({ nombre, apellido, identificacion })
+  .ok(res => res.status)
+  .timeout(timeout);

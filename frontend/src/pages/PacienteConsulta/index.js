@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
-import generateData from './generateData';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 import './pacienteconsulta.scss';
+import { filtrarBeneficiarios } from '../../services/requestsInterface';
 
 class PacienteConsulta extends Component {
   constructor() {
@@ -61,7 +61,7 @@ class PacienteConsulta extends Component {
                     # Historia
                   </TableHeaderColumn>
                   <TableHeaderColumn
-                    dataField='name'
+                    dataField='nombre'
                     width="20%"
                     filter={{
                       type: 'TextFilter',
@@ -71,7 +71,7 @@ class PacienteConsulta extends Component {
                     Nombres
                   </TableHeaderColumn>
                   <TableHeaderColumn
-                    dataField='country'
+                    dataField='apellido'
                     width="20%"
                     filter={{
                       type: 'TextFilter',
@@ -81,7 +81,7 @@ class PacienteConsulta extends Component {
                     Apellidos
                   </TableHeaderColumn>
                   <TableHeaderColumn
-                    dataField='salary'
+                    dataField='identificacion'
                     width="15%"
                     filter={{
                       type: 'TextFilter',
@@ -91,7 +91,7 @@ class PacienteConsulta extends Component {
                     Identificación
                   </TableHeaderColumn>
                   <TableHeaderColumn
-                    dataField='job'
+                    dataField='telefono'
                     width="15%">
                     Hora
                   </TableHeaderColumn>
@@ -105,9 +105,12 @@ class PacienteConsulta extends Component {
   }
 
   async componentDidMount() {
-    this.setState({
-      data: generateData(500, false)
+    const { body } = await filtrarBeneficiarios({
+      nombre: '',
+      apellido: '',
+      identificacion: ''
     });
+    this.setState({ data: body.data });
   }
 
   removeItem = itemId => {
@@ -116,8 +119,14 @@ class PacienteConsulta extends Component {
     });
   }
 
-  onFilterChange = (params) => {
-    console.log(params);
+  onFilterChange = async ({ nombre, apellido, identificacion }) => {
+    const searchParams = {
+      nombre: nombre ? nombre.value : "",
+      apellido: apellido ? apellido.value : '',
+      identificacion: identificacion ? identificacion.value : ""
+    };
+    const { body } = await filtrarBeneficiarios(searchParams);
+    this.setState({ data: body.data });
   }
 
   onSearchChange = (params) => {
