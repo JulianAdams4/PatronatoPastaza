@@ -4,7 +4,10 @@ const consultarEspecialista = (req, res, next) => {
   db.select('usuario.id','usuario.nombre','usuario.apellido').from('usuario')
   .join('cargo','usuario.id','cargo.id_usuario')
   .join('rol','rol.id','cargo.id_rol')
-  .where('rol.id_servicio',req.params.idServicio)
+  .where({
+    'rol.id_servicio':req.params.idServicio,
+    'usuario.estusua':'A'
+  })
   .then(function(collection){
     res.json({
       error: false,
@@ -26,7 +29,6 @@ const consultarAtenderPorServicioSM = (req, res, next) => {
   .join('atencion','beneficiario.id','atencion.id_beneficiario')
   .where({
     id_servicio: 1,
-    estatenc: 'P',
     fecha: '2018-12-14'
   })
   .then(function(collection){

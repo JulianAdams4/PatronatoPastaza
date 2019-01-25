@@ -466,7 +466,7 @@ ALTER TABLE Unidad ADD FOREIGN KEY (id_compania) REFERENCES Compania (id);
 ALTER TABLE Responsable ADD FOREIGN KEY (id_beneficiario) REFERENCES Beneficiario (id);
 ALTER TABLE ProyUni ADD FOREIGN KEY (id_proyecto) REFERENCES Proyecto (id);
 ALTER TABLE ProyUni ADD FOREIGN KEY (id_unidad) REFERENCES Unidad (id);
-
+ALTER TABLE Atencion ADD FOREIGN KEY (id_usuario) REFERENCES Usuario (id);
 -- ---
 -- Table Properties
 -- ---

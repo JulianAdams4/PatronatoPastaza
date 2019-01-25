@@ -60,6 +60,26 @@ db('beneficiario').insert({
     }
   })
 })
+
+const ingresarBeneficiarioSM = (req, res, next) => {
+  console.log(req.body.nombre);
+  console.log(req.body.apellido);
+  if(req.body.nombre == '' && req.body.apellido == ''){
+    console.log(req.body.nombre);
+    res.status(500).json({
+      error: true,
+      data:{
+        message:'Información Faltante'
+      }
+    });
+  }else{
+    console.log(req.body.apellido);
+    res.status(200).json({
+      error: false
+    });
+  }
+};
+
 */
 
 const consultarBeneficiarioPorID = (req, res, next) => {
@@ -90,25 +110,6 @@ const consultarBeneficiarioPorID = (req, res, next) => {
       }
     })
   })
-};
-
-const ingresarBeneficiarioSM = (req, res, next) => {
-  console.log(req.body.nombre);
-  console.log(req.body.apellido);
-  if(req.body.nombre == '' && req.body.apellido == ''){
-    console.log(req.body.nombre);
-    res.status(500).json({
-      error: true,
-      data:{
-        message:'Información Faltante'
-      }
-    });
-  }else{
-    console.log(req.body.apellido);
-    res.status(200).json({
-      error: false
-    });
-  }
 };
 
 const consultarBeneficiarioSM = (req, res, next) => {
@@ -341,9 +342,8 @@ const consultarParentesco = (req, res, next) => {
 };
 
 module.exports = {
-  consultarBeneficiarioPorID,
-  ingresarBeneficiarioSM,
   consultarBeneficiarioSM,
+  consultarBeneficiarioPorID,
   filtrarBeneficiarioSM,
   filtrarBeneficiario,
   consultarProvincia,
