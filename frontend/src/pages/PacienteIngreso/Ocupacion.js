@@ -3,6 +3,7 @@ import { Col, ControlLabel, Form, FormGroup, FormControl, Checkbox } from 'react
 import validation from 'react-validation-mixin';
 import strategy from 'joi-validation-strategy';
 import Joi from 'joi';
+import { ingresoPacientePasos } from './index';
 
 class Procedencia extends Component {
   constructor(props, context) {
@@ -202,7 +203,7 @@ class Procedencia extends Component {
    
   handleClickNoTieneSeguro = () => {
     this.setState(prevState => ({
-      tipoSeguro: '',
+      tipoSeguro: 'NO TIENE',
       noTieneSeguro: !prevState.noTieneSeguro
     }));
   };
@@ -219,10 +220,12 @@ class Procedencia extends Component {
             }
           }, {});
           this.setState(newState);
-          reject();
-          return
+          return reject();
+        } else {
+          const validData = this.getValidatorData();
+          this.props.guardarData(ingresoPacientePasos.DATOS_OCUPACION, validData);
+          return resolve();
         }
-        resolve();
       });
     });
   }

@@ -1,4 +1,5 @@
 const db = require("../database");
+const moment = require("moment");
 
 
 /*
@@ -11,29 +12,40 @@ if(req.body.nombre != '' && req.body.apellido != '' && req.body.edad != '' &&
 const ingresarBeneficiarioSM = async (req, res) => {
   const tieneNombres = req.body.nombre !== "";
   const tieneApellidos = req.body.apellido !== "";
-  const tieneEdad = req.body.edad !== "";
+  const tieneLugarNacimiento = req.body.lugarNacimiento !== "";
+  const tieneFechaNacimiento = req.body.fechaNacimiento !== "";
+  const tieneEstadoCivil =  req.body.estadoCivil !== "";
   const tieneNacionalidad = req.body.nacionalidad !== "";
   const tieneGrupoCultural = req.body.grupoCultural !== "";
   const tieneSexo =  req.body.sexo !== "";
+  const tieneDireccion = req.body.direccion !== "";
   const tieneZona =  req.body.zona !== "";
-  const tieneEstadoCivil =  req.body.estadoCivil !== "";
+  const tieneBarrio =  req.body.barrio !== "";
+  const tieneInstrunccion =  req.body.instruccion !== "";
+  const tieneOcupacion = req.body.ocupacion !== "";
   const tieneResNombre =  req.body.resNombre !== "";
   const tieneResApellido =  req.body.resApellido !== "";
   const tieneResParentezco =  req.body.resParentesco !== "";
-  const tieneTodosLosCampos = [
+
+  const tieneTodosLosCamposObligatorios = [
     tieneNombres,
     tieneApellidos,
-    tieneEdad,
+    tieneLugarNacimiento,
+    tieneFechaNacimiento,
+    tieneEstadoCivil,
     tieneNacionalidad,
     tieneGrupoCultural,
     tieneSexo,
+    tieneDireccion,
     tieneZona,
-    tieneEstadoCivil,
+    tieneBarrio,
+    tieneInstrunccion,
+    tieneOcupacion,
     tieneResNombre,
     tieneResApellido,
     tieneResParentezco
   ];
-  if (tieneTodosLosCampos.includes(false)) {
+  if (tieneTodosLosCamposObligatorios.includes(false)) {
     return res.status(422).json({
       error: true,
       data:{ message: "Información Faltante" }
@@ -45,24 +57,23 @@ const ingresarBeneficiarioSM = async (req, res) => {
       nombre: req.body.nombre,
       apellido: req.body.apellido,
       identificacion: req.body.identificacion,
-      direccion: req.body.direccion,
-      barrio: req.body.barrio,
-      zona: req.body.zona,
-      telefono: req.body.telefono,
-      fechaNacimiento: req.body.fechaNacimiento,
-      edad: req.body.edad,
-      lugarNacimiento: req.body.lugarNacimiento,
+      lugarnacimiento: req.body.lugarNacimiento,
+      fechanacimiento: req.body.fechaNacimiento,
+      estadocivil: req.body.estadoCivil,
       nacionalidad: req.body.nacionalidad,
-      grupoCultural: req.body.grupoCultural,
+      grupocultural: req.body.grupoCultural,
       sexo: req.body.sexo,
-      estadoCivil: req.body.estadoCivil,
+      telefono: req.body.telefono,
+      direccion: req.body.direccion,
+      id_parroquia: req.body.parroquia,
+      zona: req.body.zona,
+      barrio: req.body.barrio,
       instruccion: req.body.instruccion,
-      empresa: req.body.empresa,
       ocupacion: req.body.ocupacion,
+      empresa: req.body.empresa,
       seguro: req.body.seguro,
-      referido: req.body.referido,
-      id_parroquia: req.body.parroquia
-    });
+      referido: req.body.referido
+    }).returning("id");
     if (!idBeneficiario) {
       return res.status(500).json({
         error: true,
@@ -73,11 +84,11 @@ const ingresarBeneficiarioSM = async (req, res) => {
     const [idResponsable] = await trx("responsable").insert({
       nombre: req.body.resNombre,
       apellido: req.body.resApellido,
-      parentesco: req.body.resParentesco,
+      parentesco: req.body.resParentezco,
       telefono: req.body.resTelefono,
       direccion: req.body.resDireccion,
       id_beneficiario: idBeneficiario,
-    });
+    }).returning("id");
     if (!idResponsable) {
       return res.status(500).json({
         error: true,
@@ -87,8 +98,9 @@ const ingresarBeneficiarioSM = async (req, res) => {
 
     const [idAdmision] = await trx("admision").insert({
       id_proyuni: "1", // !!!!
-      id_beneficiario: idBeneficiario
-    });
+      id_beneficiario: idBeneficiario,
+      fechaadmi: moment().format("YYYY-MM-DD")
+    }).returning("id");
     if (!idAdmision) {
       return res.status(500).json({
         error: true,

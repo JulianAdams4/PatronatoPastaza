@@ -52,3 +52,9 @@ export const filtrarBeneficiarios = ({ nombre, apellido, identificacion }) => re
   .send({ nombre, apellido, identificacion })
   .ok(res => res.status)
   .timeout(timeout);
+
+export const ingresarBeneficiario = params => request
+  .post("/api/beneficiarioSM/crear")
+  .send(params)
+  .ok(res => res.status)
+  .timeout(timeout);

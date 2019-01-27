@@ -3,16 +3,17 @@ import { Col, ControlLabel, Form, FormGroup, FormControl } from 'react-bootstrap
 import validation from 'react-validation-mixin';
 import strategy from 'joi-validation-strategy';
 import Joi from 'joi';
+import { ingresoPacientePasos } from './index';
 
 class Procedencia extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      nombreRes: '',
-      apellidoRes: '',
-      parentezco: '',
-      direccionRes: '',
-      telefonoRes: '',
+      resNombre: props.resNombre,
+      resApellido: props.resApellido,
+      resParentezco: props.resParentezco,
+      resDireccion: props.resDireccion,
+      resTelefono: props.resTelefono,
 
       nombreResError: null,
       apellidoResError: null,
@@ -24,18 +25,18 @@ class Procedencia extends Component {
     };
 
     this.validatorTypes = {
-      nombreRes: Joi.string()
+      resNombre: Joi.string()
         .required()
         .label('Nombres'),
-      apellidoRes: Joi.string()
+      resApellido: Joi.string()
         .required()
         .label('Apellidos'),
-      parentezco: Joi.string()
+      resParentezco: Joi.string()
         .required()
         .label('Parentezco'),
-      direccionRes: Joi.optional()
+      resDireccion: Joi.optional()
         .label('Dirección'),
-      telefonoRes: Joi.optional()
+      resTelefono: Joi.optional()
         .label('Teléfono')
     };
   }
@@ -56,12 +57,12 @@ class Procedencia extends Component {
           </Col>
           <Col sm={8}>
             <FormControl
-              name="nombreRes"
-              value={this.state.nombreRes}
+              name="resNombre"
+              value={this.state.resNombre}
               onChange={this.handleChange}
             />
             { this.state.nombreResError === 'error' ? (
-              this.props.getValidationMessages('nombresRes').map(this.renderHelpText)
+              this.props.getValidationMessages('resNombre').map(this.renderHelpText)
             ): null}
           </Col>
         </FormGroup>
@@ -76,12 +77,12 @@ class Procedencia extends Component {
           </Col>
           <Col sm={8}>
             <FormControl
-              name="apellidoRes"
-              value={this.state.apellidoRes}
+              name="resApellido"
+              value={this.state.resApellido}
               onChange={this.handleChange}
             />
             { this.state.apellidoResError === 'error' ? (
-              this.props.getValidationMessages('apellidoRes').map(this.renderHelpText)
+              this.props.getValidationMessages('resApellido').map(this.renderHelpText)
             ): null}
           </Col>
         </FormGroup>
@@ -96,7 +97,7 @@ class Procedencia extends Component {
           </Col>
           <Col sm={8}>
             <FormControl
-              name="parentezco"
+              name="resParentezco"
               componentClass="select"
               defaultValue=""
               onChange={this.handleChange}
@@ -111,7 +112,7 @@ class Procedencia extends Component {
               )}
             </FormControl>
             { this.state.parentezcoError === 'error' ? (
-              this.props.getValidationMessages('parentezco').map(this.renderHelpText)
+              this.props.getValidationMessages('resParentezco').map(this.renderHelpText)
             ): null}
           </Col>
         </FormGroup>
@@ -127,13 +128,13 @@ class Procedencia extends Component {
           <Col sm={8}>
             <FormControl
               type="text"
-              name="direccionRes"
-              value={this.state.direccionRes}
+              name="resDireccion"
+              value={this.state.resDireccion}
               placeholder="Ingrese empresa"
               onChange={this.handleChange}
             />
             {this.state.direccionResError === 'error' ? (
-              this.props.getValidationMessages('direccionRes').map(this.renderHelpText)
+              this.props.getValidationMessages('resDireccion').map(this.renderHelpText)
             ): null}
           </Col>
         </FormGroup>
@@ -144,18 +145,18 @@ class Procedencia extends Component {
           validationState={this.state.telefonoResError}
         >
           <Col componentClass={ControlLabel} sm={3}>
-            Empresa:
+            Teléfono:
           </Col>
           <Col sm={8}>
             <FormControl
               type="text"
-              name="telefonoRes"
-              value={this.state.telefonoRes}
+              name="resTelefono"
+              value={this.state.resTelefono}
               placeholder="Ingrese teléfono"
               onChange={this.handleChange}
             />
             {this.state.telefonoResError === 'error' ? (
-              this.props.getValidationMessages('telefonoRes').map(this.renderHelpText)
+              this.props.getValidationMessages('resTelefono').map(this.renderHelpText)
             ): null}
           </Col>
         </FormGroup>
@@ -177,7 +178,7 @@ class Procedencia extends Component {
   handleChange = (e) => {
     const inputName = e.target.name;
     let inputValue = e.target.value;
-    const optionalFields = ['direccionRes', 'telefonoRes']
+    const optionalFields = ['resDireccion', 'resTelefono']
     let fieldError = optionalFields.includes(inputName) 
       ? null
       : inputValue.length > 0 ? 'success' : 'error'
@@ -199,21 +200,23 @@ class Procedencia extends Component {
             }
           }, {});
           this.setState(newState);
-          reject();
-          return
+          return reject();
+        } else {
+          const validData = this.getValidatorData();
+          this.props.guardarData(ingresoPacientePasos.DATOS_REFERENCIA, validData);
+          return resolve();
         }
-        resolve();
       });
     });
   }
 
   getValidatorData() {
     return {
-      nombreRes: this.state.nombreRes,
-      apellidoRes: this.state.apellidoRes,
-      parentezco: this.state.parentezco,
-      direccionRes: this.state.direccionRes,
-      telefonoRes: this.state.telefonoRes
+      resNombre: this.state.resNombre,
+      resApellido: this.state.resApellido,
+      resParentezco: this.state.resParentezco,
+      resDireccion: this.state.resDireccion,
+      resTelefono: this.state.resTelefono
     };
   }
 

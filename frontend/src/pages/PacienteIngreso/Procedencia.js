@@ -8,17 +8,19 @@ import {
   getCantonByProvinceId,
   getParroquiaByCantonId
 } from '../../services/requestsInterface';
+import { ingresoPacientePasos } from './index';
 
 class Procedencia extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      direccion: '',
+      direccion: props.direccion,
       provincia: '',
       canton: '',
       parroquia: '',
-      zona: '',
-      barrio: '',
+      id_parroquia: props.id_parroquia,
+      zona: props.zona,
+      barrio: props.barrio,
 
       direccionError: null,
       provinciaError: null,
@@ -286,8 +288,13 @@ class Procedencia extends Component {
 
   onChangeParroquia = (e) => {
     const inputName = e.target.name;
-    let inputValue = e.target.value;
+    const inputValue = e.target.value;
+    const [parroquiaSelected] = this.state.allParroquias.filter(
+      parroq => parroq.nombre === inputValue
+    );
+    const id_parroquia = parroquiaSelected.id;
     this.setState({
+      id_parroquia,
       [inputName]: inputValue,
       [`${inputName}Error`]: inputValue.length > 0
         ? 'success'
@@ -307,10 +314,16 @@ class Procedencia extends Component {
             }
           }, {});
           this.setState(newState);
-          reject();
-          return
+          return reject();
         }
-        resolve();
+        else {
+          const validData = this.getValidatorData();
+          delete validData.provincia;
+          delete validData.canton;
+          delete validData.parroquia;
+          this.props.guardarData(ingresoPacientePasos.DATOS_PROCEDENCIA, validData);
+          return resolve();
+        }
       });
     });
   }
@@ -321,6 +334,7 @@ class Procedencia extends Component {
       provincia: this.state.provincia,
       canton: this.state.canton,
       parroquia: this.state.parroquia,
+      id_parroquia: this.state.id_parroquia,
       zona: this.state.zona,
       barrio: this.state.barrio
     };

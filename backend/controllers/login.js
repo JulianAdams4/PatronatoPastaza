@@ -26,7 +26,6 @@ const login = async (req, res) => {
         .from("cargo")
         .leftJoin("rol", "rol.id", "cargo.id_rol")
         .where({ id_usuario: usuario.id });
-      console.log(infoAdicional);
       // Return user data without password
       delete usuario.contrasena;
       // Create a token
@@ -34,7 +33,6 @@ const login = async (req, res) => {
         cargo: infoAdicional.nombreRol,
         id_proyuni: infoAdicional.id_proyuni
       });
-      console.log(payload);
       const token = jwt.sign(payload, process.env.SECRET_PASS, {
         expiresIn: process.env.SESSION_DURATION
       });

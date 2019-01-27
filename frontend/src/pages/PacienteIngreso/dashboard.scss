@@ -16,9 +16,13 @@
 
     .multi-step {
       height: 80%;
+      display: flex;
+      flex-direction: column;
     }
 
     form {
+      // display: flex;
+      // flex-direction: column;
       height: 60%;
       margin-left: 2%;
       margin-bottom: 3%;

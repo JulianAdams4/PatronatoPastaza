@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
-import generateData from './generateData';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 import './citaconsulta.scss';
 import { obtenerBeneficiarios } from '../../services/requestsInterface';
@@ -117,7 +116,6 @@ class CitaConsulta extends Component {
     const { body } = await obtenerBeneficiarios({
       nombre: '', apellido: '', identificacion: ''
     });
-    console.log(body)
     this.setState({ data: body.data });
   }
 

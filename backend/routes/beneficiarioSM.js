@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.get("/", controlador.consultarBeneficiarioSM);
 
-router.post("/", controlador.ingresarBeneficiarioSM);
+router.post("/crear", controlador.ingresarBeneficiarioSM);
 
 router.post("/filtrar", controlador.filtrarBeneficiarioSM);
 

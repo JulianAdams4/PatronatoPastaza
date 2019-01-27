@@ -7,45 +7,49 @@ import DatosReferencia from './DatosReferencia';
 import Final from './Final';
 import './dashboard.scss';
 
+const ingresoPacientePasos = {
+  DATOS_GENERALES: 'datosGenerales',
+  DATOS_PROCEDENCIA: 'datosProcedencia',
+  DATOS_OCUPACION: 'datosOcupacion',
+  DATOS_REFERENCIA: 'datosReferencia'
+};
 
-class Dashboard extends Component {
+class IngresoPaciente extends Component {
   constructor(props){
     super(props);
     this.state = {
-      disableSubmit: true,
-      disableNextStep: true,
-        datosGenerales: {
-          nombres: '',
-          apellidos: '',
-          identificacion: '',
-          lugarNacimiento: '',
-          fechaNacimiento: '',
-          estadoCivil: '',
-          nacionalidad: '',
-          grupoCultural: '',
-          sexo: '',
-          telefono: ''
-        },
-        datosProcedencia: {
-          direccion: '',
-          provincia: '',
-          canton: '',
-          parroquia: '',
-          zona: '',
-          barrio: '',
-        },
-        datosOcupacion: {
-          instruccion: '',
-          ocupacion: '',
-          empresa: '',
-          tipoSeguro: '',
-          referido: ''
-        },
-        datosReferencia: {
-          discapacidad: '',
-          viveCon: '',
-          telefonoReferencia: ''
-        }
+      datosGenerales: {
+        nombre: '',
+        apellido: '',
+        identificacion: '',
+        lugarNacimiento: '',
+        fechaNacimiento: '',
+        estadoCivil: '',
+        nacionalidad: '',
+        grupoCultural: '',
+        sexo: '',
+        telefono: ''
+      },
+      datosProcedencia: {
+        direccion: '',
+        id_parroquia: '',
+        zona: '',
+        barrio: '',
+      },
+      datosOcupacion: {
+        instruccion: '',
+        ocupacion: '',
+        empresa: '',
+        tipoSeguro: '',
+        referido: '',
+      },
+      datosReferencia: {
+        resNombre: '',
+        resApellido: '',
+        resParentezco: '',
+        resDireccion: '',
+        resTelefono: ''
+      }
     }
   }
 
@@ -53,6 +57,7 @@ class Dashboard extends Component {
     return (
       <div className="content">
         <div className="container-fluid">
+          <div className="row">
             <div id="formulario-ingreso-paciente" className="col-md-12">
               <div className="titulo">
                 <h2>Ingreso de Paciente</h2>
@@ -63,23 +68,46 @@ class Dashboard extends Component {
                   steps={[
                     { 
                       name: 'Datos Generales', 
-                      component: <DatosGenerales {...this.state.datosGenerales} guardarData={this.actualizarDatosGenerales} />
+                      component:
+                        <DatosGenerales 
+                          {...this.state.datosGenerales} 
+                          guardarData={this.actualizarDatosFrom} 
+                        />
                     },
                     { 
                       name: 'Procedencia', 
-                      component: <Procedencia {...this.state.datosProcedencia} />
+                      component: <Procedencia 
+                        {...this.state.datosProcedencia}
+                        guardarData={this.actualizarDatosFrom} 
+                        />
                     },
                     { 
                       name: 'Ocupación', 
-                      component: <Ocupacion {...this.state.datosOcupacion} />
+                      component: 
+                        <Ocupacion 
+                          {...this.state.datosOcupacion} 
+                          guardarData={this.actualizarDatosFrom}
+                        />
                     },
                     { 
                       name: 'Datos de referencia', 
-                      component: <DatosReferencia {...this.state.datosReferencia} />
+                      component: 
+                        <DatosReferencia 
+                          {...this.state.datosReferencia}
+                          guardarData={this.actualizarDatosFrom}
+                        />
                     },
                     {
                       name: 'Final',
-                      component: <Final />
+                      component: 
+                        <Final 
+                          formData={{
+                            ...this.state.datosGenerales,
+                            ...this.state.datosProcedencia,
+                            ...this.state.datosOcupacion,
+                            ...this.state.datosReferencia
+                          }}
+                        />
                     }
                   ]}
                   showNavigation={true}
@@ -97,16 +125,15 @@ class Dashboard extends Component {
                 />
               </div>
             </div>
+          </div>
         </div>
       </div>
     );
   }
 
-  actualizarDatosGenerales = (validData) => {
-    this.setState({
-      datosGenerales: validData
-    });
+  actualizarDatosFrom = (seccion, validData) => {
+    this.setState({ [seccion]: validData });
   }
 };
 
-export default Dashboard;
+export { IngresoPaciente as default, ingresoPacientePasos };

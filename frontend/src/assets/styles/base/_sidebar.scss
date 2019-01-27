@@ -215,14 +215,12 @@ a {
     }
   }
   .line {
-    box-sizing: border-box;
-    height: 1px;
-    width: 100%;
-    border: 1px solid #8492A6;
-    opacity: 0.1;
+    padding: 0px 10px;
+    > hr {
+      margin: 0px;
+      opacity: 0.5;
+    }
   }
-
-
 }
 
 .main-panel {

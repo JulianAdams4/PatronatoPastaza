@@ -96,7 +96,6 @@ class LoginWrapper extends Component {
         contrasena: sha256(this.state.inputPassword.value),
       };
       const { status, body } = await sendLogin(formValues);
-      console.log(body);
       const { token, nombres, rol } = body;
       if (status === 200) {
         saveTokenInStorage(token);

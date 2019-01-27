@@ -19,6 +19,7 @@ class Nav extends Component {
             <b className="caret"></b>
             </p>
           </a>
+          
           <Collapse in={this.state.componentMenuOpen}>
             <div>
               <ul className="nav">
@@ -32,6 +33,7 @@ class Nav extends Component {
             </div>
           </Collapse>
         </li>
+        <div className="line"><hr /></div>
 
         <li className={this.isPathActive('/citas') || this.state.formMenuOpen ? 'active' : null}>
           <a onClick={() => this.setState({ formMenuOpen: !this.state.formMenuOpen })} data-toggle="collapse">

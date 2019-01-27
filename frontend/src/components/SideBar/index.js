@@ -24,7 +24,7 @@ class SideBar extends Component {
 
         <div className="sidebar-wrapper">
           <UserInfo />
-          <div className="line"></div>
+          <div className="line"><hr /></div>
           <Nav />
         </div>
         <div

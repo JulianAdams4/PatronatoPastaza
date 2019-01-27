@@ -9,6 +9,7 @@ import 'moment/locale/es';
 import 'react-datepicker/dist/react-datepicker-cssmodules.min.css';
 import 'react-datepicker/dist/react-datepicker.min.css';
 import moment from 'moment';
+import { ingresoPacientePasos } from './index';
 
 const estadosCiviles = [
   { value: 'SOLTERO' },
@@ -20,8 +21,8 @@ class DatosGenerales extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      nombres: props.nombres,
-      apellidos: props.apellidos,
+      nombre: props.nombre,
+      apellido: props.apellido,
       identificacion: props.identificacion,
       noTieneIdentificacion: false,
       lugarNacimiento: props.lugarNacimiento,
@@ -32,7 +33,6 @@ class DatosGenerales extends Component {
       grupoCultural: props.grupoCultural,
       sexo: props.sexo,
       telefono: props.telefono,
-
 
       nombresError:  null,
       apellidosError:  null,
@@ -47,10 +47,10 @@ class DatosGenerales extends Component {
     };
 
     this.validatorTypes = {
-      nombres: Joi.string()
+      nombre: Joi.string()
         .required()
         .label('Nombres'),
-      apellidos: Joi.string()
+      apellido: Joi.string()
         .required()
         .label('Apellidos'),
       identificacion: Joi.string()
@@ -74,8 +74,8 @@ class DatosGenerales extends Component {
       sexo: Joi.string()
         .required()
         .label('Sexo'),
-      telefono: Joi.string()
-        .optional(),
+      telefono: Joi.optional()
+        .label('Teléfono')
     };
   }
 
@@ -92,14 +92,14 @@ class DatosGenerales extends Component {
           <Col sm={8}>
             <FormControl
               type="text"
-              name="nombres"
-              value={this.state.nombres}
-              placeholder="Ingrese nombres"
+              name="nombre"
+              value={this.state.nombre}
+              placeholder="Ingrese nombre"
               onChange={this.handleChange}
               required
             />
             {this.state.nombresError === 'error' 
-              ? this.props.getValidationMessages('nombres').map(this.renderHelpText)
+              ? this.props.getValidationMessages('nombre').map(this.renderHelpText)
               : null
             }
           </Col>
@@ -116,14 +116,14 @@ class DatosGenerales extends Component {
           <Col sm={8}>
             <FormControl
               type="text"
-              name="apellidos"
-              value={this.state.apellidos}
-              placeholder="Ingrese los apellidos"
+              name="apellido"
+              value={this.state.apellido}
+              placeholder="Ingrese los apellido"
               onChange={this.handleChange}
               required
             />
             {this.state.apellidosError === 'error' 
-              ? this.props.getValidationMessages('apellidos').map(this.renderHelpText)
+              ? this.props.getValidationMessages('apellido').map(this.renderHelpText)
               : null
             }
           </Col>
@@ -429,20 +429,26 @@ class DatosGenerales extends Component {
             }
           }, {});
           this.setState(newState);
-          reject();
-          return;
+          return reject();
         }
-        resolve();
+        else {
+          let validData = this.getValidatorData();
+          if (validData.identificacion === '##########') {
+            validData = { ...validData, identificacion: '' };
+          }
+          this.props.guardarData(ingresoPacientePasos.DATOS_GENERALES, validData);
+          return resolve();
+        }
       });
     });
   }
 
   getValidatorData() {
     return {
-      nombres: this.state.nombres,
-      apellidos: this.state.apellidos,
+      nombre: this.state.nombre,
+      apellido: this.state.apellido,
       identificacion: this.state.noTieneIdentificacion === true 
-        ? '0000000000' 
+        ? '##########' 
         : this.state.identificacion,
       lugarNacimiento: this.state.lugarNacimiento,
       fechaNacimiento: this.state.fechaNacimiento,
