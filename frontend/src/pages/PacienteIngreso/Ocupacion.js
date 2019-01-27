@@ -4,6 +4,7 @@ import validation from 'react-validation-mixin';
 import strategy from 'joi-validation-strategy';
 import Joi from 'joi';
 import { ingresoPacientePasos } from './index';
+import { obtenerInstrucciones } from '../../services/requestsInterface';
 
 class Procedencia extends Component {
   constructor(props, context) {
@@ -61,8 +62,8 @@ class Procedencia extends Component {
               <option value="" disabled>Seleccione nivel instrucción</option>
               { this.state.allInstruccion.length && (
                 this.state.allInstruccion.map((instrucc, index) => (
-                  <option key={index} value={`${instrucc}`}>
-                    {instrucc}
+                  <option key={index} value={`${instrucc.nombre}`}>
+                    {instrucc.nombre}
                   </option>
                 ))
               )}
@@ -177,16 +178,16 @@ class Procedencia extends Component {
     );
   }
 
-  componentDidMount() {
-    this.setState({
-      allInstruccion: [
-        'Sin estudios',
-        'Primaria',
-        'Secundaria',
-        'Superior'
-      ]
-    })
+  async componentDidMount() {
+    await this.getInstrucciones();
   }
+
+  getInstrucciones = async () => {
+    const { status, body } = await obtenerInstrucciones();
+    if (status === 200) {
+      this.setState({ allInstruccion: body.data });
+    }
+  };
 
   handleChange = (e) => {
     const inputName = e.target.name;

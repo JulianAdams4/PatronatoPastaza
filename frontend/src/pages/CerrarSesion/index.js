@@ -1,16 +1,20 @@
 import React, { Component } from "react";
 import Alert from 'sweetalert-react';
+import { Redirect } from 'react-router-dom';
 import { doLogout } from "../../services/requestsInterface";
 import { deleteSessionToken } from "../../utils/storage";
 
 class CerrarSesion extends Component {
   state = {
-    showErrorMessage: false
+    showErrorMessage: false,
+    redirectToLogin: false
   }
 
   render() {
-    return (
-      <div>
+    return this.state.redirectToLogin ? (
+      <Redirect to="/" />
+    ) : (
+      <div className="content" >
         <p>
           Cerrando sesión...
         </p>
@@ -28,10 +32,13 @@ class CerrarSesion extends Component {
 
   async componentDidMount() {
     const { status } = await doLogout();
-    if (status === 201) {
+    if (status === 200) {
       deleteSessionToken();
-      window.location.replace('/');
-      window.location.reload();
+      this.setState({
+        redirectToLogin: true 
+      }, () => {
+        window.location.reload();
+      });
     }
     else {
       this.setState({ showErrorMessage: true })

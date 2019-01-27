@@ -63,7 +63,7 @@ class LoginWrapper extends Component {
 
   componentDidMount() {
     if (getCurrentProject()) {
-      window.location.replace("/proyectos")
+      this.setState({ successLogin: true });
     }
     else {
       if (getTokenFromStorage()) {

@@ -3,13 +3,18 @@ import { Col, ControlLabel, Form, FormGroup, FormControl, Checkbox } from 'react
 import validation from 'react-validation-mixin';
 import strategy from 'joi-validation-strategy';
 import Joi from 'joi';
-import Autosuggest from 'react-autosuggest';
 import DatePicker from 'react-datepicker';
+import moment from 'moment';
 import 'moment/locale/es';
+import { ingresoPacientePasos } from './index';
+import {
+  obtenerNacionalidades,
+  obtenerEstadosCiviles,
+  obtenerGruposCulturales
+} from '../../services/requestsInterface';
 import 'react-datepicker/dist/react-datepicker-cssmodules.min.css';
 import 'react-datepicker/dist/react-datepicker.min.css';
-import moment from 'moment';
-import { ingresoPacientePasos } from './index';
+
 
 const estadosCiviles = [
   { value: 'SOLTERO' },
@@ -34,8 +39,8 @@ class DatosGenerales extends Component {
       sexo: props.sexo,
       telefono: props.telefono,
 
-      nombresError:  null,
-      apellidosError:  null,
+      nombreError:  null,
+      apellidoError:  null,
       identificacionError:  null,
       lugarNacimientoError:  null,
       fechaNacimientoError:  null,
@@ -43,7 +48,11 @@ class DatosGenerales extends Component {
       nacionalidadError:  null,
       grupoCulturalError:  null,
       sexoError:  null,
-      telefonoError:  null
+      telefonoError:  null,
+
+      allNacionalidades: [],
+      allGruposCulturales: [],
+      allEstadosCiviles: []
     };
 
     this.validatorTypes = {
@@ -84,7 +93,7 @@ class DatosGenerales extends Component {
       <Form horizontal autoComplete="off">
         <FormGroup
           controlId="ingresoPacienteNombres"
-          validationState={this.state.nombresError}
+          validationState={this.state.nombreError}
         >
           <Col componentClass={ControlLabel} sm={3}>
             Nombres:
@@ -98,7 +107,7 @@ class DatosGenerales extends Component {
               onChange={this.handleChange}
               required
             />
-            {this.state.nombresError === 'error' 
+            {this.state.nombreError === 'error' 
               ? this.props.getValidationMessages('nombre').map(this.renderHelpText)
               : null
             }
@@ -108,7 +117,7 @@ class DatosGenerales extends Component {
 
         <FormGroup
           controlId="ingresoPacienteApellidos"
-          validationState={this.state.apellidosError}
+          validationState={this.state.apellidoError}
         >
           <Col componentClass={ControlLabel} sm={3}>
             Apellidos:
@@ -122,7 +131,7 @@ class DatosGenerales extends Component {
               onChange={this.handleChange}
               required
             />
-            {this.state.apellidosError === 'error' 
+            {this.state.apellidoError === 'error' 
               ? this.props.getValidationMessages('apellido').map(this.renderHelpText)
               : null
             }
@@ -229,23 +238,27 @@ class DatosGenerales extends Component {
             <Col componentClass={ControlLabel} sm={3}>
               Estado civil:
             </Col>
-            <Col sm={7}>
-            <Autosuggest
-              suggestions={estadosCiviles}
-              onSuggestionsFetchRequested={() => {}}
-              onSuggestionsClearRequested={() => {}}
-              getSuggestionValue={this.getSuggestionValue}
-              renderSuggestion={this.renderSuggestion}
-              inputProps={{
-                placeholder: 'Ingresa un estado civil',
-                value: this.state.estadoCivil,
-                onChange: this.onChangeEstadoCivil
-              }}
-            />
-            {this.state.estadoCivilError === 'error'
-              ? this.props.getValidationMessages('estadoCivil').map(this.renderHelpText)
-              : null
-            }
+            <Col sm={7} style={{ marginLeft: '2%' }}>
+              <FormControl
+                name="estadoCivil"
+                componentClass="select"
+                defaultValue=""
+                onChange={this.handleChange}
+                required
+              >
+                <option value="" disabled>Seleccione un estado</option>
+                { this.state.allEstadosCiviles.length && (
+                  this.state.allEstadosCiviles.map((estCiv, index) => (
+                    <option key={index} value={`${estCiv.nombre}`}>
+                      {estCiv.nombre}
+                    </option>
+                  ))
+                )}
+              </FormControl>
+              {this.state.estadoCivilError === 'error'
+                ? this.props.getValidationMessages('estadoCivil').map(this.renderHelpText)
+                : null
+              }
             </Col>
           </FormGroup>
         </Col>
@@ -262,17 +275,25 @@ class DatosGenerales extends Component {
             </Col>
             <Col sm={7} style={{ paddingLeft: '9%' }} >
               <FormControl
-                type="text"
                 name="nacionalidad"
-                value={this.state.nacionalidad}
-                placeholder="Ingrese nacionalidad"
+                componentClass="select"
+                defaultValue=""
                 onChange={this.handleChange}
                 required
-              />
-            {this.state.nacionalidadError === 'error'
-              ? this.props.getValidationMessages('nacionalidad').map(this.renderHelpText)
-              : null
-            }
+              >
+                <option value="" disabled>Seleccione una nacionalidad</option>
+                { this.state.allNacionalidades.length && (
+                  this.state.allNacionalidades.map((nacionalidad, index) => (
+                    <option key={index} value={`${nacionalidad.nombre}`}>
+                      {nacionalidad.nombre}
+                    </option>
+                  ))
+                )}
+              </FormControl>
+              {this.state.nacionalidadError === 'error'
+                ? this.props.getValidationMessages('nacionalidad').map(this.renderHelpText)
+                : null
+              }
             </Col>
           </FormGroup>
         </Col>
@@ -288,13 +309,21 @@ class DatosGenerales extends Component {
             </Col>
             <Col sm={7} style={{ marginLeft: '2%' }} >
               <FormControl
-                type="text"
                 name="grupoCultural"
-                value={this.state.grupoCultural}
-                placeholder="Ingrese grupo étnico"
+                componentClass="select"
+                defaultValue=""
                 onChange={this.handleChange}
                 required
-              />
+              >
+                <option value="" disabled>Seleccione un grupo</option>
+                { this.state.allGruposCulturales.length && (
+                  this.state.allGruposCulturales.map((grpCult, index) => (
+                    <option key={index} value={`${grpCult.nombre}`}>
+                      {grpCult.nombre}
+                    </option>
+                  ))
+                )}
+              </FormControl>
               {this.state.grupoCulturalError === 'error'
                 ? this.props.getValidationMessages('grupoCultural').map(this.renderHelpText)
                 : null
@@ -363,6 +392,33 @@ class DatosGenerales extends Component {
       </Form>
     );
   }
+
+  async componentDidMount() {
+    await this.getNacionalidades();
+    await this.getEstadosCiviles();
+    await this.getGruposCulturales();
+  }
+
+  getNacionalidades = async () => {
+    const { status, body } = await obtenerNacionalidades();
+    if (status === 200) {
+      this.setState({ allNacionalidades: body.data });
+    }
+  };
+
+  getEstadosCiviles = async () => {
+    const { status, body } = await obtenerEstadosCiviles();
+    if (status === 200) {
+      this.setState({ allEstadosCiviles: body.data });
+    }
+  };
+
+  getGruposCulturales = async () => {
+    const { status, body } = await obtenerGruposCulturales();
+    if (status === 200) {
+      this.setState({ allGruposCulturales: body.data });
+    }
+  };
 
   getSuggestions = value => {
     const inputValue = value.trim().toLowerCase();
