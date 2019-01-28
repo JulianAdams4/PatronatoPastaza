@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import { obtenerCitasPendientes } from '../../services/requestsInterface';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 import './citaconsulta.scss';
-import { obtenerBeneficiarios } from '../../services/requestsInterface';
 
 class CitaConsulta extends Component {
   constructor() {
@@ -99,9 +99,9 @@ class CitaConsulta extends Component {
                     Identificación
                   </TableHeaderColumn>
                   <TableHeaderColumn
-                    dataField='telefono'
+                    dataField='estatenc'
                     width="15%">
-                    Teléfono
+                    Estado
                   </TableHeaderColumn>
                 </BootstrapTable>
               </div>
@@ -113,10 +113,16 @@ class CitaConsulta extends Component {
   }
 
   async componentDidMount() {
-    const { body } = await obtenerBeneficiarios({
-      nombre: '', apellido: '', identificacion: ''
-    });
-    this.setState({ data: body.data });
+    const { status, body } = await obtenerCitasPendientes();
+    if (status === 200) {
+      const formattedData = body.data.map(cita => {
+        if (cita.estatenc === 'P') {
+          return { ...cita, estatenc: "Pendiente" }
+        }
+        return cita;
+      });
+      this.setState({ data: formattedData });  
+    }
   }
 
   removeItem = itemId => {

@@ -82,20 +82,26 @@ export const obtenerEstadosCiviles = () => request
   .ok(res => res.status)
   .timeout(timeout);
 
-  export const obtenerInstrucciones = () => request
+export const obtenerInstrucciones = () => request
   .get("/api/beneficiarioSM/instruccion")
   .set("authorization", getTokenFromStorage())
   .ok(res => res.status)
   .timeout(timeout);
 
-  export const obtenerParentescos = () => request
+export const obtenerParentescos = () => request
   .get("/api/beneficiarioSM/parentesco")
   .set("authorization", getTokenFromStorage())
   .ok(res => res.status)
   .timeout(timeout);
 
-  export const obtenerTipoDeExoneraciones = () => request
+export const obtenerTipoDeExoneraciones = () => request
   .get("/api/citaSM/exoneracion")
+  .set("authorization", getTokenFromStorage())
+  .ok(res => res.status)
+  .timeout(timeout);
+
+export const obtenerCitasPendientes = () => request
+  .get("/api/citaSM/atender")
   .set("authorization", getTokenFromStorage())
   .ok(res => res.status)
   .timeout(timeout);

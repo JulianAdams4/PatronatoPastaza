@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import UserInfo from './UserInfo';
 import Nav from './Nav';
+import { getCurrentProject } from "./../../utils/storage";
 
 class SideBar extends Component {
 
@@ -14,12 +15,12 @@ class SideBar extends Component {
       enableBackgroundImage,
       backgroundImage
     } = this.props;
-
+    const project = getCurrentProject() || 'tics';
+    const logoUrl = `https://res.cloudinary.com/jrx4/image/upload/v1548688770/new.${project}.jpg`;
     return (
       <div className="sidebar" data-color={backgroundColor} data-image={backgroundImage}>
-
         <div className="brand">
-          <img src={'https://res.cloudinary.com/jrx4/image/upload/v1547711326/citet.jpg'} alt="logo" className="logo" />
+          <img src={logoUrl} alt="logo" className="logo" />
         </div>
 
         <div className="sidebar-wrapper">

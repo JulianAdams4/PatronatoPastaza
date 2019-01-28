@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import { filtrarBeneficiarios } from '../../services/requestsInterface';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 import './citaingreso.scss';
 
@@ -104,8 +105,19 @@ class CitaConsulta extends Component {
     </div>
   );
 
-  onFilterChange = (params) => {
-    console.log(params);
+  onFilterChange = async ({ nombre, apellido, identificacion }) => {
+    if ( !nombre && !apellido && !identificacion ) {
+      this.setState({ pacientes: [] });
+      return;
+    }
+    
+    const searchParams = {
+      nombre: nombre ? nombre.value : "",
+      apellido: apellido ? apellido.value : '',
+      identificacion: identificacion ? identificacion.value : ""
+    };
+    const { body } = await filtrarBeneficiarios(searchParams);
+    this.setState({ pacientes: body.data });
   }
 
   onSearchChange = (params) => {

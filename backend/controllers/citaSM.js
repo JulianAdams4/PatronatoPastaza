@@ -11,8 +11,8 @@ const consultarAtenderPorServicioSM = (req, res) => {
     .join("atencion","beneficiario.id","atencion.id_beneficiario")
     .where({
       id_servicio: 1,
-      estatenc: "P",
-      fecha: "2018-12-14"
+      estatenc: "P"
+      // , fecha: "2018-12-14"
     })
     .then((collection) => {
       return res.status(200).json({
@@ -97,19 +97,18 @@ const consultarServiciosSM = (req, res) => {
 };
 
 const consultarExoneracion = (req, res) => {
-  db.select("nombre").from("tipoexoneracion")
+  return db.select("nombre")
+    .from("tipoexoneracion")
     .then(function(collection){
-      res.json({
+      return res.status(200).json({
         error: false,
         data: collection
       });
     })
     .catch(function(err){
-      res.status(500).json({
+      return res.status(500).json({
         error: true,
-        data:{
-          message:err.message
-        }
+        data:{ message: err.message }
       });
     });
 };
