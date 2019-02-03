@@ -144,13 +144,8 @@ const consultarBeneficiarioSM = (req, res) => {
 };
 
 const filtrarBeneficiarioSM = (req, res) => {
-  return db.select(
-    "beneficiario.id",
-    "nombre",
-    "apellido",
-    "identificacion",
-    "telefono"
-  ).from("beneficiario")
+  return db.select("*")
+    .from("beneficiario")
     .join(
       "admision",
       "beneficiario.id",

@@ -6,4 +6,30 @@
     margin-bottom: 5%;
     border-bottom: 1px solid #d3d3d3;
   }
+
+  .table.table-striped {
+    td {
+      &:focus {
+        outline: none !important;
+      }
+    }
+  }
+
+  .row-expanded {
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 140px;
+    width: 100%;
+  }
+
+  .view-button, .edit-button {
+    padding: 0px 10px;
+    &:hover {
+      background-color: #2BA3C5;
+      border: 1px solid #2BA3C5;
+      color: white;
+    }
+  }
 }
