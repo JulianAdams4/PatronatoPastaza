@@ -2,11 +2,12 @@ const db = require("../database");
 
 const consultarAtenderPorServicioSM = (req, res) => {
   return db.select(
-    "beneficiario.id",
-    "beneficiario.nombre",
-    "beneficiario.apellido",
-    "beneficiario.identificacion",
-    "atencion.estatenc"
+    // "beneficiario.id",
+    // "beneficiario.nombre",
+    // "beneficiario.apellido",
+    // "beneficiario.identificacion",
+    // "atencion.estatenc"
+    "*"
   ).from("beneficiario")
     .join("atencion","beneficiario.id","atencion.id_beneficiario")
     .where({

@@ -39,7 +39,11 @@ class PacienteConsulta extends Component {
               </div>
               
               <div className="content">
-                <p>Seleccione la fila para ver los datos del paciente</p>
+                <ul>
+                  <li>Seleccione la fila para ver los datos del paciente</li>
+                  <li>Posicione el cursor sobre la columna por la que desea filtrar</li>
+                </ul>
+                <br />
                 <BootstrapTable
                   data={data}
                   bordered={false}
@@ -62,6 +66,7 @@ class PacienteConsulta extends Component {
                     headerAlign='center'
                     isKey
                     width="10%"
+                    ref="filtroHistoria"
                     filter={{
                       type: 'TextFilter',
                       placeholder: 'Filtrar historia'
@@ -71,7 +76,7 @@ class PacienteConsulta extends Component {
                   </TableHeaderColumn>
                   <TableHeaderColumn
                     dataField='nombre'
-                    // width="20%"
+                    ref="filtroNombre"
                     filter={{
                       type: 'TextFilter',
                       placeholder: 'Filtrar por nombre'
@@ -81,7 +86,7 @@ class PacienteConsulta extends Component {
                   </TableHeaderColumn>
                   <TableHeaderColumn
                     dataField='apellido'
-                    // width="20%"
+                    ref="filtroApellido"
                     filter={{
                       type: 'TextFilter',
                       placeholder: 'Filtrar por apellidos'
@@ -95,6 +100,7 @@ class PacienteConsulta extends Component {
                     dataField='identificacion'
                     dataAlign='center'
                     headerAlign='center'
+                    ref="filtroIdentificacion"
                     filter={{
                       type: 'TextFilter',
                       placeholder: 'Filtrar por identificación'
@@ -130,9 +136,7 @@ class PacienteConsulta extends Component {
 
   renderActionButtons = () => {
     return `
-      <button 
-        class="btn btn-xs edit-button"
-      >
+      <button class="btn btn-xs" style="background-color: #2BA3C5; border: 1px solid #2BA3C5; color: white; padding: 0px 10px;">
         Editar
       </button>
     `
@@ -163,9 +167,18 @@ class PacienteConsulta extends Component {
     this.setState({ data: body.data });
   }
 
+  limpiarFiltrosBusqueda = () => {
+    this.refs.filtroHistoria.cleanFiltered();
+    this.refs.filtroNombre.cleanFiltered();
+    this.refs.filtroApellido.cleanFiltered();
+    this.refs.filtroIdentificacion.cleanFiltered();
+  }
+
   handleRowSelect = (row, ev) => {
     this.setState({
       rowExpandableId: row.id
+    }, () => {
+      this.limpiarFiltrosBusqueda();
     });
   };
 

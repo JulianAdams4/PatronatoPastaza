@@ -1,7 +1,7 @@
 // Mixin for generating new styles
 @mixin btn-styles($btn-color, $btn-states-color) {
-  border-color: $azul-patronato;
-  color: $azul-patronato;
+  border-color: $btn-color;
+  color: $btn-color;
   border-radius: $button-border-radius;
   &:hover,
   &:focus,
@@ -24,14 +24,14 @@
     &:active,
     &.active {
       background-color: $transparent-bg;
-      border-color: $azul-patronato;
+      border-color: $btn-color;
     }
   }
 
 
   &.btn-fill {
     color: $white-color;
-    background-color: $azul-patronato;
+    background-color: $btn-color;
     @include opacity(1);
 
     &:hover,
@@ -49,7 +49,7 @@
   }
 
   .caret{
-    border-top-color: $azul-patronato;
+    border-top-color: $btn-color;
   }
 }
 

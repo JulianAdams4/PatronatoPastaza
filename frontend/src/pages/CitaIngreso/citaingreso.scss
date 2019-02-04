@@ -3,7 +3,40 @@
   padding: 1% 5%;
 
   .titulo {
-    margin-bottom: 5%;
+    margin-bottom: 3%;
     border-bottom: 1px solid #d3d3d3;
+  }
+
+  .table.table-striped {
+    td {
+      &:focus {
+        outline: none !important;
+      }
+    }
+  }
+
+  form {
+    .form-fieldset {
+      width: 85%;
+      margin: 0 auto;
+      padding: 15px;
+      // border-top: 1px solid #d3d3d3;
+
+      .form-group {
+        label {
+          padding: 0px;
+        }
+      }
+    }
+
+    .react-datepicker-wrapper, 
+    .react-datepicker__input-container {
+      width: 100%;
+    }
+
+    .react-datepicker__input-container > input {
+      width: 100%;
+    }
+
   }
 }

@@ -98,7 +98,7 @@ class DatosGenerales extends Component {
           <Col componentClass={ControlLabel} sm={3}>
             Nombres:
           </Col>
-          <Col sm={8}>
+          <Col md={8} sm={8} xs={12}>
             <FormControl
               type="text"
               name="nombre"
@@ -122,7 +122,7 @@ class DatosGenerales extends Component {
           <Col componentClass={ControlLabel} sm={3}>
             Apellidos:
           </Col>
-          <Col sm={8}>
+          <Col md={8} sm={8} xs={12}>
             <FormControl
               type="text"
               name="apellido"
@@ -146,7 +146,7 @@ class DatosGenerales extends Component {
           <Col componentClass={ControlLabel} sm={3}>
             Identificación:
           </Col>
-          <Col sm={5}>
+          <Col md={5} sm={5} xs={12}>
             <FormControl
               type="text"
               name="identificacion"
@@ -180,7 +180,7 @@ class DatosGenerales extends Component {
           <Col componentClass={ControlLabel} sm={3}>
             Lugar de nacimiento:
           </Col>
-          <Col sm={8}>
+          <Col md={8} sm={8} xs={12}>
             <FormControl
               type="text"
               name="lugarNacimiento"
@@ -197,8 +197,8 @@ class DatosGenerales extends Component {
         </FormGroup>
 
 
-        <Col md={12} sm={12}>
-        <Col md={6} sm={12}>
+        <Col md={12} sm={12} xs={12} style={{ padding: 0 }}>
+        <Col md={6} sm={6} xs={12} style={{ padding: 0 }}>
           <FormGroup
             controlId="ingresoPacienteFechaNacimiento"
             validationState={this.state.fechaNacimientoError}
@@ -230,7 +230,7 @@ class DatosGenerales extends Component {
         </Col>
 
 
-        <Col md={6} sm={12}>
+        <Col md={6} sm={6} xs={12}>
           <FormGroup 
             controlId="ingresoPacienteEstadoCivil"
             validationState={this.state.estadoCivilError}
@@ -262,7 +262,7 @@ class DatosGenerales extends Component {
             </Col>
           </FormGroup>
         </Col>
-        </Col >
+        </Col>
         
         <Col md={12} sm={12}>
         <Col md={6} sm={12}>
