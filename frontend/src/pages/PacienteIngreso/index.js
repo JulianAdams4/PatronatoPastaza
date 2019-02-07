@@ -5,6 +5,7 @@ import Procedencia from './Procedencia';
 import Ocupacion from './Ocupacion';
 import DatosReferencia from './DatosReferencia';
 import Final from './Final';
+import moment from 'moment';
 import './dashboard.scss';
 
 const ingresoPacientePasos = {
@@ -23,7 +24,7 @@ class IngresoPaciente extends Component {
         apellido: '',
         identificacion: '',
         lugarNacimiento: '',
-        fechaNacimiento: '',
+        fechaNacimiento: moment(),
         estadoCivil: '',
         nacionalidad: '',
         grupoCultural: '',
@@ -118,8 +119,8 @@ class IngresoPaciente extends Component {
                   preventEnterSubmission={true}
                   nextButtonText={"Siguiente"}
                   backButtonText={"Atrás"}
-                  nextButtonCls={"btn btn-prev btn-primary btn-lg pull-right"}
-                  backButtonCls={"btn btn-next btn-primary btn-lg pull-left"}
+                  nextButtonCls={"btn btn-prev btn-lg pull-right boton-prev"}
+                  backButtonCls={"btn btn-next btn-lg pull-left boton-next"}
                   hocValidationAppliedTo={[0, 1, 2, 3]}
                   nextTextOnFinalActionStep="Guardar"
                 />

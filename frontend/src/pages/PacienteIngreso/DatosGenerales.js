@@ -4,7 +4,6 @@ import validation from 'react-validation-mixin';
 import strategy from 'joi-validation-strategy';
 import Joi from 'joi';
 import DatePicker from 'react-datepicker';
-import moment from 'moment';
 import 'moment/locale/es';
 import { ingresoPacientePasos } from './index';
 import {
@@ -68,7 +67,7 @@ class DatosGenerales extends Component {
       lugarNacimiento: Joi.string()
         .required()
         .label('El lugar de nacimiento'),
-      fechaNacimiento: Joi.date()
+      fechaNacimiento: Joi.string()
         .required()
         .label('La fecha de nacimiento'),
       estadoCivil: Joi.string()
@@ -209,8 +208,8 @@ class DatosGenerales extends Component {
             <Col sm={7} style={{ paddingLeft: '9%' }} >
             <DatePicker
               locale="es"
-              value={this.state.fechaNacimiento}
-              selected={this.state.startDate}
+              value={this.state.fechaNacimiento.format('DD-MM-YYYY')}
+              selected={this.state.fechaNacimiento}
               onChange={this.onChangleFechaNacimiento}
               showYearDropdown
               showMonthDropdown
@@ -218,7 +217,6 @@ class DatosGenerales extends Component {
               scrollableYearDropdown
               dateFormatCalendar="MMMM"
               placeholderText="Ingrese una fecha"
-              maxDate={moment()}
               dropdownMode="select"
             />
              {this.state.fechaNacimientoError === 'error'
@@ -458,9 +456,8 @@ class DatosGenerales extends Component {
   }
 
   onChangleFechaNacimiento = params => {
-    const date = params.format('DD-MM-YYYY');
     this.setState({
-      fechaNacimiento: date,
+      fechaNacimiento: params,
       fechaNacimientoError: 'success'
     });
   }
@@ -507,7 +504,7 @@ class DatosGenerales extends Component {
         ? '##########' 
         : this.state.identificacion,
       lugarNacimiento: this.state.lugarNacimiento,
-      fechaNacimiento: this.state.fechaNacimiento,
+      fechaNacimiento: this.state.fechaNacimiento.format('DD-MM-YYYY'),
       estadoCivil: this.state.estadoCivil,
       nacionalidad: this.state.nacionalidad,
       grupoCultural: this.state.grupoCultural,

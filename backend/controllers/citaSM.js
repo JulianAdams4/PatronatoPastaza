@@ -1,20 +1,16 @@
 const db = require("../database");
 
 const consultarAtenderPorServicioSM = (req, res) => {
-  return db.select(
-    // "beneficiario.id",
-    // "beneficiario.nombre",
-    // "beneficiario.apellido",
-    // "beneficiario.identificacion",
-    // "atencion.estatenc"
-    "*"
-  ).from("beneficiario")
+  const whereParams = {
+    id_servicio: req.body.id_servicio,
+    estatenc: "P",
+    fecha: req.body.fecha
+  };
+  return db
+    .select("*")
+    .from("beneficiario")
     .join("atencion","beneficiario.id","atencion.id_beneficiario")
-    .where({
-      id_servicio: 1,
-      estatenc: "P"
-      // , fecha: "2018-12-14"
-    })
+    .where(whereParams)
     .then((collection) => {
       return res.status(200).json({
         error: false,
@@ -22,6 +18,44 @@ const consultarAtenderPorServicioSM = (req, res) => {
       });
     })
     .catch((err) => {
+      return res.status(500).json({
+        error: true,
+        data:{ message: err.message }
+      });
+    });
+};
+
+const marcarAsistenciaACitaSM = (req, res) => {
+  return db
+    .table("atencion")
+    .where({ id: req.body.id_cita })
+    .update({ estatenc: "A" })
+    .then(() => {
+      return res.status(200).json({
+        error: false,
+        data: { message: "Ok" }
+      });
+    })
+    .catch(err => {
+      return res.status(500).json({
+        error: true,
+        data:{ message: err.message }
+      });
+    });
+};
+
+const eliminarCitaSM = (req, res) => {
+  return db
+    .table("atencion")
+    .where({ id: req.body.id_cita })
+    .del()
+    .then(() => {
+      return res.status(200).json({
+        error: false,
+        data: { message: "Ok" }
+      });
+    })
+    .catch(err => {
       return res.status(500).json({
         error: true,
         data:{ message: err.message }
@@ -54,11 +88,13 @@ const consultarEspecialista = (req, res) => {
 };
 
 const consultarServiciosSM = (req, res) => {
-  db.select("servicio.id","tipo").from("cargo")
+  return db
+    .select("servicio.id","tipo")
+    .from("cargo")
     .join("rol","cargo.id_rol","rol.id")
     .join("servicio","rol.id_servicio","servicio.id")
     .where({
-      id_usuario: 2,
+      id_usuario: req.body.id_usuario,
       "cargo.id_proyuni": 1
     })
     .then(function(collection){
@@ -66,18 +102,16 @@ const consultarServiciosSM = (req, res) => {
         db.select("id","tipo").from("servicio")
           .where("id_proyuni",1)
           .whereNot("id",1)
-          .then(function(collection){
-            res.status(200).json({
+          .then(collection2 => {
+            return res.status(200).json({
               error: false,
-              data: collection
+              data: collection2
             });
           })
-          .catch(function(err){
-            res.status(500).json({
+          .catch(err => {
+            return res.status(500).json({
               error: true,
-              data:{
-                message:err.message
-              }
+              data:{ message: err.message }
             });
           });
       }else{
@@ -114,9 +148,31 @@ const consultarExoneracion = (req, res) => {
     });
 };
 
+const crearCitaSM = async (req, res) => {
+  return db
+    .table("atencion")
+    .insert(req.body)
+    .then(function(id){
+      return res.status(200).json({
+        error: false,
+        data: id
+      });
+    })
+    .catch(function(err){
+      return res.status(500).json({
+        error: true,
+        data:{ message: err.message }
+      });
+    });
+
+};
+
 module.exports = {
   consultarAtenderPorServicioSM,
   consultarEspecialista,
   consultarServiciosSM,
-  consultarExoneracion
+  consultarExoneracion,
+  marcarAsistenciaACitaSM,
+  eliminarCitaSM,
+  crearCitaSM
 };

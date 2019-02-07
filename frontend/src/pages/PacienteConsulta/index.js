@@ -26,7 +26,8 @@ class PacienteConsulta extends Component {
       noDataText: 'No hay registros',
       hideSizePerPage: true,
       onFilterChange: this.onFilterChange,
-      expandRowBgColor: '#e9f5f9'
+      expandRowBgColor: '#e9f5f9',
+      expandBy: 'column'
     };
 
     return (
@@ -122,6 +123,7 @@ class PacienteConsulta extends Component {
                     dataAlign='center'
                     headerAlign='center'
                     dataFormat={this.renderActionButtons}
+                    expandable={false}
                   >
                     Acciones
                   </TableHeaderColumn>
@@ -135,11 +137,19 @@ class PacienteConsulta extends Component {
   }
 
   renderActionButtons = () => {
-    return `
-      <button class="btn btn-xs" style="background-color: #2BA3C5; border: 1px solid #2BA3C5; color: white; padding: 0px 10px;">
+    return (
+      <button 
+        className="btn btn-xs" 
+        style={{
+          backgroundColor: '#2BA3C5',
+          border: '1px solid #2BA3C5',
+          color: '#ffffff',
+          padding: '0px 10px'
+        }}
+      >
         Editar
       </button>
-    `
+    );
   };
 
   async componentDidMount() {

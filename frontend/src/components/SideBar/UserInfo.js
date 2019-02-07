@@ -29,7 +29,7 @@ class UserInfo extends Component {
               {this.state.userName}
             </div>
             { this.state.userRol && (
-              <div className="title">Rol: {this.state.userRol}</div>
+              <div className="title">{this.state.userRol}</div>
             )}
           </div>
           <span className={`collapse-arrow ${isShowingUserMenu ? 'active' : ''}`}>

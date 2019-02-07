@@ -100,8 +100,30 @@ export const obtenerTipoDeExoneraciones = () => request
   .ok(res => res.status)
   .timeout(timeout);
 
-export const obtenerCitasPendientes = () => request
-  .get("/api/citaSM/atender")
+export const obtenerCitasPendientes = ({ id_servicio, fecha }) => request
+  .post("/api/citaSM/atender")
   .set("authorization", getTokenFromStorage())
+  .send({ id_servicio, fecha })
+  .ok(res => res.status)
+  .timeout(timeout);
+
+export const marcarAsistenciaCita = ({ id_cita }) => request
+  .post("/api/citaSM/marcarAsistencia")
+  .set("authorization", getTokenFromStorage())
+  .send({ id_cita })
+  .ok(res => res.status)
+  .timeout(timeout);
+
+export const eliminarCita = ({ id_cita }) => request
+  .post("/api/citaSM/eliminar")
+  .set("authorization", getTokenFromStorage())
+  .send({ id_cita })
+  .ok(res => res.status)
+  .timeout(timeout);
+
+export const crearCita = (params) => request
+  .post("/api/citaSM/crear")
+  .set("authorization", getTokenFromStorage())
+  .send(params)
   .ok(res => res.status)
   .timeout(timeout);

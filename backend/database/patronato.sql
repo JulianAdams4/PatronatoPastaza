@@ -139,6 +139,7 @@ CREATE TABLE Atencion (
   id_beneficiario INTEGER,
   id_usuario Integer,
   fecha DATE NOT NULL,
+  hora VARCHAR(6) NOT NULL,
   observacion VARCHAR(300) NULL DEFAULT NULL,
   valor CHAR(20) NOT NULL,
   estAtenc CHAR(1) NOT NULL DEFAULT 'P',
@@ -680,6 +681,21 @@ INSERT INTO Admision(id_proyUni,id_beneficiario,fechaAdmi) VALUES ('1','2','2018
 INSERT INTO Admision(id_proyUni,id_beneficiario,fechaAdmi) VALUES ('2','3','2018-12-14');
 INSERT INTO Admision(id_proyUni,id_beneficiario,fechaAdmi) VALUES ('2','4','2018-12-14');
 
-INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,valor) VALUES ('1','1','3','2018-12-14','Pagado');
-INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,valor) VALUES ('1','1','3','2018-12-15','Pagado');
-INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,valor) VALUES ('1','2','3','2018-12-14','Pagado');
+INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('1','1','3','07-02-2019','08:30','Pagado');
+INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('2','2','3','07-02-2019','09:30','Convenio');
+INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('4','2','3','07-02-2019','10:30','Convenio');
+INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('3','4','3','07-02-2019','11:30','Pagado');
+INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('1','1','3','07-02-2019','14:00','Pagado');
+INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('1','4','3','07-02-2019','15:00','Convenio');
+INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('2','3','3','07-02-2019','15:15','Pagado');
+INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('1','4','3','07-02-2019','16:00','Grupo Prioritario');
+INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('3','1','3','07-02-2019','16:30','Grupo Prioritario');
+INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('3','4','3','08-02-2019','08:30','Pagado');
+INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('1','3','3','08-02-2019','09:30','Pagado');
+INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('1','4','3','08-02-2019','10:30','Convenio');
+INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('4','1','3','08-02-2019','11:30','Convenio');
+INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('4','3','3','08-02-2019','14:00','Convenio');
+INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('1','3','3','08-02-2019','15:00','Convenio');
+INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('3','4','3','08-02-2019','15:15','Pagado');
+INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('1','1','3','08-02-2019','16:00','Grupo Prioritario');
+INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('1','2','3','08-02-2019','16:30','Convenio');

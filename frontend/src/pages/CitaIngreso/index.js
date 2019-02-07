@@ -1,28 +1,26 @@
 import React, { Component } from 'react';
 import { Col, ControlLabel, Form, FormGroup, FormControl } from 'react-bootstrap';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
-import { filtrarBeneficiarios } from '../../services/requestsInterface';
+import { filtrarBeneficiarios, crearCita } from '../../services/requestsInterface';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'moment/locale/es';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 import './citaingreso.scss';
 
-const camposFormCita = {
-  id_servicio: '',
-  id_beneficiario: '',
-  id_usuario: '',
-  fecha: '',
-  valor: ''
-};
+const momentFormatDate = 'DD-MM-YYYY';
 
 class CitaConsulta extends Component {
   constructor() {
     super();
     this.state = {
       pacientes: [],
-      pacienteSeleccionado: {},
-      citasAIngresar: []
+      pacienteSeleccionado: null,
+      fecha: moment(),
+      hora: moment(),
+      id_servicio: '',
+      id_usuario: '',
+      valor: ''
     };
   }
 
@@ -71,13 +69,14 @@ class CitaConsulta extends Component {
 
   renderTitulo = () => (
     <div className="titulo">
-      <h2>Citas</h2>
+      <h2>Ingreso de citas</h2>
     </div>
   );
 
   renderTablaBusqueda = () => (
     <div className="content">
       <p>Ingrese una búsqueda. Seleccione un paciente y asigne una cita.</p>
+      <br />
       <BootstrapTable
         data={this.state.pacientes}
         bordered={false}
@@ -149,22 +148,17 @@ class CitaConsulta extends Component {
   );
 
   renderFormCita = () => {
-    return this.state.citasAIngresar.length ? (
+    return this.state.pacienteSeleccionado ? (
       <Form horizontal autoComplete="off">
-        {this.state.citasAIngresar.map((camposCita, index) => {
-          return (
-            <div className="form-fieldset" key={index}>
-              <FormGroup 
-                validationState={this.state.grupoCulturalError}
-              >
+            <div className="form-fieldset">
+              <FormGroup>
                 <Col componentClass={ControlLabel} lg={4} md={4} xs={12}>
                   Servicio:
                 </Col>
-                <Col lg={6} xs={12}>
+                <Col lg={5} xs={12}>
                   <FormControl
-                    name={`${camposCita.id_servicio}`}
+                    name={`id_servicio`}
                     componentClass="select"
-                    defaultValue=""
                     onChange={this.handleChange}
                     required
                   >
@@ -180,17 +174,14 @@ class CitaConsulta extends Component {
                 </Col>
               </FormGroup>
 
-              <FormGroup 
-                validationState={this.state.grupoCulturalError}
-              >
+              <FormGroup>
                 <Col componentClass={ControlLabel} lg={4} md={4} xs={12}>
                   Especialista:
                 </Col>
-                <Col lg={6} xs={12}>
+                <Col lg={5} xs={12}>
                   <FormControl
-                    name={`${camposCita.id_usuario}`}
+                    name={'id_usuario'}
                     componentClass="select"
-                    defaultValue=""
                     onChange={this.handleChange}
                     required
                   >
@@ -206,26 +197,45 @@ class CitaConsulta extends Component {
                 </Col>
               </FormGroup>
 
-              <FormGroup
-                validationState={this.state.fechaNacimientoError}
-              >
+              <FormGroup>
                 <Col componentClass={ControlLabel} lg={4} md={4} xs={12}>
                   Fecha:
                 </Col>
-                <Col lg={6} xs={12}>
+                <Col lg={5} xs={12}>
                 <DatePicker
+                  name="fecha"
                   locale="es"
-                  value={this.state.fechaNacimiento}
-                  selected={this.state.startDate}
-                  onChange={this.onChangleFechaNacimiento}
+                  selected={this.state.fecha}
+                  value={this.state.fecha.format(momentFormatDate)}
+                  onChange={this.onChangleFecha}
                   showYearDropdown
                   showMonthDropdown
                   showDayDropdown
                   scrollableYearDropdown
                   dateFormatCalendar="MMMM"
                   placeholderText="Ingrese una fecha"
-                  maxDate={moment()}
                   dropdownMode="select"
+                  dateFormat={momentFormatDate}
+                />
+                </Col>
+              </FormGroup>
+              <FormGroup>
+                <Col componentClass={ControlLabel} lg={4} md={4} xs={12}>
+                  Hora:
+                </Col>
+                <Col lg={5} xs={12}>
+                <DatePicker
+                  name="hora"
+                  locale="es"
+                  selected={this.state.hora}
+                  value={this.state.hora.format('hh:mm')}
+                  onChange={this.onChangeHora}
+                  showTimeSelect
+                  showTimeSelectOnly
+                  placeholderText="Ingrese hora"
+                  timeFormat="hh:mm"
+                  timeIntervals={15}
+                  timeCaption="Hora"
                 />
                 </Col>
               </FormGroup>
@@ -234,11 +244,10 @@ class CitaConsulta extends Component {
                 <Col componentClass={ControlLabel} lg={4} md={4} xs={12}>
                   Valor:
                 </Col>
-                <Col lg={6} xs={12}>
+                <Col lg={5} xs={12}>
                   <FormControl
-                    name={`${camposCita.valor}`}
+                    name={'valor'}
                     componentClass="select"
-                    defaultValue=""
                     onChange={this.handleChange}
                     required
                   >
@@ -252,10 +261,18 @@ class CitaConsulta extends Component {
                     )}
                   </FormControl>
                 </Col>
+                
+                <Col lg={12} md={12} xs={12} style={{ display: 'flex', flexDirection: 'column', marginTop: '5%' }} >
+                  <button 
+                    id="guardar-cita-btn"
+                    className="btn btn-prev btn-lg" onClick={this.submit}
+                  >
+                    Guardar
+                  </button>                
+                </Col>
+
               </FormGroup>
             </div>
-          );
-        })}
       </Form>
     ) : null;
   };
@@ -281,8 +298,24 @@ class CitaConsulta extends Component {
 
   handleRowSelect = (row, ev) => {
     this.setState({
-      pacienteSeleccionado: row,
-      citasAIngresar: [camposFormCita]
+      pacienteSeleccionado: row
+    });
+  };
+
+  handleChange = ev => {
+    const value = ev.target.value;
+    const name = ev.target.name;
+    this.setState({ [name]: value });
+  }
+
+  submit = async () => {
+    const { status } = await crearCita({
+      id_servicio: this.state.id_servicio,
+      id_beneficiario: this.state.pacienteSeleccionado.id,
+      id_usuario: 3,
+      fecha: this.state.fecha,
+      hora: this.state.hora,
+      valor: this.state.valor
     });
   };
 }

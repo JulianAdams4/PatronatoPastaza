@@ -9,6 +9,6 @@ export default function configureStore() {
       ...reducers
     }),
     {},
-    applyMiddleware(thunk)
+    applyMiddleware(thunk, createLogger)
   );
 }

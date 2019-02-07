@@ -20,7 +20,6 @@
       width: 85%;
       margin: 0 auto;
       padding: 15px;
-      // border-top: 1px solid #d3d3d3;
 
       .form-group {
         label {
@@ -38,5 +37,13 @@
       width: 100%;
     }
 
+    .react-datepicker__time-box {
+      ul { padding: 0px };
+    }
+
   }
+}
+
+#guardar-cita-btn {
+  margin: 0px auto;
 }

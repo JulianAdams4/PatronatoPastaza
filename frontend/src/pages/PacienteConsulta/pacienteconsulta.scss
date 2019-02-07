@@ -20,6 +20,13 @@
   }
 
   .table.table-striped {
+    tr {
+      cursor: pointer;
+      &:hover {
+        background-color: rgba($color: #e9f5f9, $alpha: 0.5)
+      }
+    }
+
     td {
       &:focus {
         outline: none !important;
@@ -34,6 +41,6 @@
     flex-wrap: wrap;
     height: 140px;
     width: 100%;
-    overflow-x: scroll;
+    // overflow-x: scroll;
   }
 }

@@ -37,6 +37,32 @@
   }
 }
 
+.boton-prev, .boton-next {
+  border-color: $azul-patronato !important;
+  color: $azul-patronato !important;
+}
+
+.react-datepicker__current-month,
+.react-datepicker__day-names,
+.react-datepicker__month-select,
+.react-datepicker__year-select {
+  text-transform: capitalize;
+  font-size: 1.1em;
+  &:focus {
+    border: 1px solid $azul-patronato;
+  }
+  > option {
+    text-transform: capitalize;
+  }
+}
+
+select {
+  &:focus {
+    outline: none;
+    border: none;
+  }
+}
+
 ol.progtrckr {
   list-style-type: none;
   padding: 0;

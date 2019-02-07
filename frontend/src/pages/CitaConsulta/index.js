@@ -1,19 +1,24 @@
 import React, { Component } from 'react';
+import { Col, FormGroup, FormControl } from 'react-bootstrap';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'moment/locale/es';
-import { obtenerCitasPendientes } from '../../services/requestsInterface';
+import { obtenerCitasPendientes, marcarAsistenciaCita, eliminarCita } from '../../services/requestsInterface';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 import './citaconsulta.scss';
+
+const momentFormatDate = 'DD-MM-YYYY';
 
 class CitaConsulta extends Component {
   constructor() {
     super();
     this.state = {
       data: [],
-      dataToEdit: {},
-      disabledButtons: true,
-      rowExpandableId: undefined
+      servicios: [],
+      fecha: moment(),
+      id_servicio: 1,
+      rowExpandableId: null
     };
   }
 
@@ -28,7 +33,8 @@ class CitaConsulta extends Component {
       noDataText: 'No hay registros',
       hideSizePerPage: true,
       onFilterChange: this.onFilterChange,
-      expandRowBgColor: '#e9f5f9'
+      expandRowBgColor: '#e9f5f9',
+      expandBy: 'column'
     };
 
     return (
@@ -37,7 +43,65 @@ class CitaConsulta extends Component {
           <div className="row">
             <div className="col-md-12">
               <div className="titulo">
-                <h2>Citas</h2>
+                <h2>Citas programadas</h2>
+              </div>
+
+              <ul>
+                <li>Seleccione especialidad y fecha a buscar</li>
+                <li>Seleccione una fila para ver los datos del paciente</li>
+                <li>Posicione el cursor sobre la columna por la que desea filtrar</li>
+              </ul>
+               <br />
+
+              <div className="filtros-cita-consulta">
+                <Col md={12} sm={12} xs={12}>
+                  <Col md={6} sm={6} xs={12}>
+                    <FormGroup >
+                      <Col sm={3}xs={12}>
+                        Especialidad:
+                      </Col>
+                      <Col sm={8} xs={12}>
+                        <FormControl
+                          name="id_servicio"
+                          componentClass="select"
+                          value={this.state.id_servicio}
+                          onChange={this.onChangeEspecialidad}
+                        >
+                          { this.state.servicios.length && (
+                            this.state.servicios.map((serv, index) => (
+                              <option key={index} value={`${serv.id}`}>
+                                {serv.nombre}
+                              </option>
+                            ))
+                          )}
+                        </FormControl>
+                      </Col>
+                    </FormGroup>
+                  </Col>
+                  
+                  <Col md={6} sm={6} xs={12}>
+                    <FormGroup >
+                      <Col sm={3}xs={12}>
+                        Fecha:
+                      </Col>
+                      <Col sm={8}xs={12}>
+                        <DatePicker
+                          locale="es"
+                          value={this.state.fecha.format(momentFormatDate)}
+                          selected={this.state.fecha}
+                          onChange={this.onChangeFechaConsulta}
+                          dropdownMode="select"
+                          showYearDropdown
+                          scrollableYearDropdown
+                          showMonthDropdown
+                          dateFormatCalendar="MMMM"
+                          placeholderText="Seleccione una fecha"
+                          dateFormat={momentFormatDate}
+                        />
+                      </Col>
+                    </FormGroup>
+                  </Col>
+                </Col>
               </div>
 
               <div className="content">
@@ -58,6 +122,8 @@ class CitaConsulta extends Component {
                   expandComponent={this.expandComponent}
                   options={options}>
                   <TableHeaderColumn
+                    dataAlign='center'
+                    headerAlign='center'
                     dataField='id'
                     isKey
                     width="10%"
@@ -89,8 +155,10 @@ class CitaConsulta extends Component {
                     Apellidos
                   </TableHeaderColumn>
                   <TableHeaderColumn
+                    dataAlign='center'
+                    headerAlign='center'
                     dataField='identificacion'
-                    width="15%"
+                    width="10%"
                     filter={{
                       type: 'TextFilter',
                       placeholder: 'Ingrese identificación'
@@ -99,15 +167,24 @@ class CitaConsulta extends Component {
                     Identificación
                   </TableHeaderColumn>
                   <TableHeaderColumn
+                    dataAlign='center'
+                    headerAlign='center'
                     dataField='estatenc'
                     width="15%">
                     Estado
                   </TableHeaderColumn>
-
+                  <TableHeaderColumn
+                    dataAlign='center'
+                    headerAlign='center'
+                    dataField='hora'
+                    width="10%">
+                    Hora
+                  </TableHeaderColumn>
                   <TableHeaderColumn
                     dataAlign='center'
                     headerAlign='center'
                     dataFormat={this.renderActionButtons}
+                    expandable={false}
                   >
                     Acciones
                   </TableHeaderColumn>
@@ -120,24 +197,55 @@ class CitaConsulta extends Component {
     );
   }
 
-  renderActionButtons = () => {
-    return `
-      <button class="btn btn-sm btn-info" title="Ficha médica" style="padding: 4px 7px">
-        <span class="btn-label fa fa-user-md" style="font-size: 20px; position:relative; top:2px;"/>
-      </button>
+  renderActionButtons = (cell, row) => {
+    return (
+      <div>
+        <button 
+          className="btn btn-sm btn-info" 
+          title="Ficha médica" 
+          style={{ padding: '4px 7px'}}
+        >
+          <span 
+            className="btn-label fa fa-user-md" 
+            style={{ fontSize: 20, position: 'relative', top:'2px'}}
+          />
+        </button>
 
-      <button class="btn btn-sm btn-success" title="Marcar asistencia" style="padding: 5px 6px">
-        <span class="btn-label fa fa-check" style="font-size: 18px; position:relative; top:2px;"/>
-      </button>
+        <button 
+          className="btn btn-sm btn-success" 
+          title="Marcar asistencia" 
+          style={{ padding: '5px 6px' }}
+          onClick={() => this.onClickMarcarAsistencia(row.id)}
+        >
+          <span 
+            className="btn-label fa fa-check" 
+            style={{ fontSize: 18, position: 'relative', top:'2px' }}
+          />
+        </button>
 
-      <button class="btn btn-sm btn-danger" title="Eliminar asistencia" style="padding: 4px 7px">
-        <span class="btn-label fa fa-times" style="font-size: 20px; position:relative; top:2px;"/>
-      </button>
-    `
+        <button 
+          className="btn btn-sm btn-danger" 
+          title="Eliminar asistencia" 
+          style={{ padding: '4px 7px' }}
+          onClick={() => this.onClickEliminarCita(row.id)}
+        >
+          <span 
+            className="btn-label fa fa-times" 
+            style={{ fontSize: 20, position: 'relative', top:'2px'}}
+          />
+        </button>        
+      </div>
+    );
   };
 
   async componentDidMount() {
-    const { status, body } = await obtenerCitasPendientes();
+    const { id_servicio, fecha } = this.state;
+    await this.cargarCitasPendientes({ id_servicio, fecha });
+    await this.cargarServicios();
+  }
+
+  cargarCitasPendientes = async ({ id_servicio, fecha }) => {
+    const { status, body } = await obtenerCitasPendientes({ id_servicio, fecha });
     if (status === 200) {
       const formattedData = body.data.map(cita => {
         if (cita.estatenc === 'P') {
@@ -149,31 +257,57 @@ class CitaConsulta extends Component {
     }
   }
 
-  removeItem = itemId => {
+  cargarServicios = async () => {
+    const servicios = [
+      { id: 1, nombre: 'Medicina general' },
+      { id: 2, nombre: 'Odontologia' },
+      { id: 3, nombre: 'Hidroterapia' },
+      { id: 4, nombre: 'Equinoterapia' }
+    ];
     this.setState({
-      data: this.state.data.filter(item => item.id !== itemId)
-    });
+      servicios,
+      especialidad: servicios[0] ? servicios[0].id : null
+    })
   }
 
-  onFilterChange = (params) => {
-    console.log(params);
-  }
-
-  onSearchChange = (params) => {
-    console.log(params);
-  }
-
-  handleRowSelect = (row, isSelected, ev) => {
-    this.setState({
-      dataToEdit: row,
-      disabledButtons: false,
-      rowExpandableId: row.id
+  onChangeEspecialidad = ev => {
+    const id_servicio = ev.target.value;
+    this.setState({ id_servicio }, async () => {
+      const { id_servicio, fecha } = this.state;
+      await this.cargarCitasPendientes({ id_servicio, fecha });
     });
   };
 
+  onChangeFechaConsulta = params => {
+    this.setState({ fecha: params }, async () => {
+      const { id_servicio, fecha } = this.state;
+      const parsed = fecha.format(momentFormatDate);
+      await this.cargarCitasPendientes({ id_servicio, fecha: parsed });
+    });
+  }
+
+  onClickMarcarAsistencia = async id_cita => {
+    const { status } = await marcarAsistenciaCita({ id_cita });
+    if (status === 200) {
+      const newData = this.state.data.filter(cita => cita.id !== id_cita);
+      this.setState({ data: newData });
+    }
+  };
+
+  onClickEliminarCita = async id_cita => {
+    const { status } = await eliminarCita({ id_cita });
+    if (status === 200) {
+      const newData = this.state.data.filter(cita => cita.id !== id_cita);
+      this.setState({ data: newData });
+    }
+  };
+
+  handleRowSelect = (row, isSelected, ev) => {
+    this.setState({ rowExpandableId: row.id });
+  };
+
   expandComponent = (row) => {
-    console.log(row);
-    const fechaNacimiento = moment(row.fechanacimiento).format("DD-MMMM-YYYY");
+    const fechaNacimiento = moment(row.fechanacimiento).format(momentFormatDate);
     return (
       <div className="row-expanded">
         <div><strong>Nombres:</strong>    {row.nombre}</div>
@@ -194,7 +328,6 @@ class CitaConsulta extends Component {
       </div>
     )
   }
-
 }
 
 export default CitaConsulta;
