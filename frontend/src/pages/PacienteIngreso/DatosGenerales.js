@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Col, ControlLabel, Form, FormGroup, FormControl, Checkbox } from 'react-bootstrap';
 import validation from 'react-validation-mixin';
-import strategy from 'joi-validation-strategy';
-import Joi from 'joi';
+import strategy from 'joi-validation-strategy-browser';
+import Joi from 'joi-browser';
 import DatePicker from 'react-datepicker';
 import 'moment/locale/es';
 import { ingresoPacientePasos } from './index';
@@ -62,7 +62,7 @@ class DatosGenerales extends Component {
         .required()
         .label('Apellidos'),
       identificacion: Joi.string()
-        .required() 
+        .required()
         .label('La identificación'),
       lugarNacimiento: Joi.string()
         .required()
@@ -106,13 +106,13 @@ class DatosGenerales extends Component {
               onChange={this.handleChange}
               required
             />
-            {this.state.nombreError === 'error' 
+            {this.state.nombreError === 'error'
               ? this.props.getValidationMessages('nombre').map(this.renderHelpText)
               : null
             }
           </Col>
         </FormGroup>
-        
+
 
         <FormGroup
           controlId="ingresoPacienteApellidos"
@@ -130,13 +130,13 @@ class DatosGenerales extends Component {
               onChange={this.handleChange}
               required
             />
-            {this.state.apellidoError === 'error' 
+            {this.state.apellidoError === 'error'
               ? this.props.getValidationMessages('apellido').map(this.renderHelpText)
               : null
             }
           </Col>
         </FormGroup>
-        
+
 
         <FormGroup
           controlId="ingresoPacienteIdentificacion"
@@ -154,14 +154,14 @@ class DatosGenerales extends Component {
               onChange={this.handleChange}
               disabled={this.state.noTieneIdentificacion}
             />
-            {this.state.identificacionError === 'error' 
+            {this.state.identificacionError === 'error'
               ? this.props.getValidationMessages('identificacion').map(this.renderHelpText)
               : null
             }
           </Col>
           <Col sm={3}>
-            <Checkbox 
-              inline 
+            <Checkbox
+              inline
               onClick={this.handleClickNoTieneIdentificacion}
               checked={this.state.noTieneIdentificacion}
               name="identificacion"
@@ -170,7 +170,7 @@ class DatosGenerales extends Component {
             </Checkbox>
           </Col>
         </FormGroup>
-        
+
 
         <FormGroup
           controlId="ingresoPacienteLugarNacimiento"
@@ -188,7 +188,7 @@ class DatosGenerales extends Component {
               onChange={this.handleChange}
               required
             />
-            {this.state.lugarNacimientoError === 'error' 
+            {this.state.lugarNacimientoError === 'error'
               ? this.props.getValidationMessages('lugarNacimiento').map(this.renderHelpText)
               : null
             }
@@ -229,7 +229,7 @@ class DatosGenerales extends Component {
 
 
         <Col md={6} sm={6} xs={12}>
-          <FormGroup 
+          <FormGroup
             controlId="ingresoPacienteEstadoCivil"
             validationState={this.state.estadoCivilError}
           >
@@ -261,7 +261,7 @@ class DatosGenerales extends Component {
           </FormGroup>
         </Col>
         </Col>
-        
+
         <Col md={12} sm={12}>
         <Col md={6} sm={12}>
           <FormGroup
@@ -298,7 +298,7 @@ class DatosGenerales extends Component {
 
 
         <Col md={6} sm={12}>
-          <FormGroup 
+          <FormGroup
             controlId="ingresoPacienteGrupoEtnico"
             validationState={this.state.grupoCulturalError}
           >
@@ -433,7 +433,7 @@ class DatosGenerales extends Component {
       {suggestion.value}
     </div>
   );
-   
+
   onChangeEstadoCivil = (ev, { newValue }) => {
     this.setState({
       estadoCivil: newValue,
@@ -445,7 +445,7 @@ class DatosGenerales extends Component {
   handleChange = (e) => {
     const inputName = e.target.name;
     let inputValue = e.target.value;
-    let inputError = inputName === 'identificacion' 
+    let inputError = inputName === 'identificacion'
       ? inputValue.length === 10 ? 'success' : 'error'
       : inputValue.length > 0 ? 'success' : 'error';
 
@@ -500,8 +500,8 @@ class DatosGenerales extends Component {
     return {
       nombre: this.state.nombre,
       apellido: this.state.apellido,
-      identificacion: this.state.noTieneIdentificacion === true 
-        ? '##########' 
+      identificacion: this.state.noTieneIdentificacion === true
+        ? '##########'
         : this.state.identificacion,
       lugarNacimiento: this.state.lugarNacimiento,
       fechaNacimiento: this.state.fechaNacimiento.format('DD-MM-YYYY'),

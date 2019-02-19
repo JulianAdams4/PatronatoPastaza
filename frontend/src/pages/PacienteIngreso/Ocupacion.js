@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Col, ControlLabel, Form, FormGroup, FormControl, Checkbox } from 'react-bootstrap';
 import validation from 'react-validation-mixin';
-import strategy from 'joi-validation-strategy';
-import Joi from 'joi';
+import strategy from 'joi-validation-strategy-browser';
+import Joi from 'joi-browser';
 import { ingresoPacientePasos } from './index';
 import { obtenerInstrucciones } from '../../services/requestsInterface';
 
@@ -45,7 +45,7 @@ class Procedencia extends Component {
   render() {
     return (
       <Form horizontal autoComplete="off">
-        <FormGroup 
+        <FormGroup
           controlId="ingresoPacienteInstruccion"
           validationState={this.state.instruccionError}
         >
@@ -135,14 +135,14 @@ class Procedencia extends Component {
               onChange={this.handleChange}
               disabled={this.state.noTieneSeguro}
             />
-            {this.state.tipoSeguroError === 'error' 
+            {this.state.tipoSeguroError === 'error'
               ? this.props.getValidationMessages('tipoSeguro').map(this.renderHelpText)
               : null
             }
           </Col>
           <Col sm={3}>
-            <Checkbox 
-              inline 
+            <Checkbox
+              inline
               onChange={this.validarTipoSeguro}
               onClick={this.handleClickNoTieneSeguro}
               checked={this.state.noTieneSeguro}
@@ -193,7 +193,7 @@ class Procedencia extends Component {
     const inputName = e.target.name;
     let inputValue = e.target.value;
     const optionalFields = ['referido', 'emmpresa', 'tipoSeguro']
-    let fieldError = optionalFields.includes(inputName) 
+    let fieldError = optionalFields.includes(inputName)
       ? null
       : inputValue.length > 0 ? 'success' : 'error'
     this.setState({
@@ -201,7 +201,7 @@ class Procedencia extends Component {
       [`${inputName}Error`]: fieldError
     });
   }
-   
+
   handleClickNoTieneSeguro = () => {
     this.setState(prevState => ({
       tipoSeguro: 'NO TIENE',

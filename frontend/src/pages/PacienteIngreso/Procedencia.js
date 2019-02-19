@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Col, ControlLabel, Form, FormGroup, FormControl } from 'react-bootstrap';
 import validation from 'react-validation-mixin';
-import strategy from 'joi-validation-strategy';
+import strategy from 'joi-validation-strategy-browser';
 import Joi from 'joi-browser';
 import {
   getProvincias,
@@ -103,7 +103,7 @@ class Procedencia extends Component {
           </Col>
         </FormGroup>
 
-        <FormGroup 
+        <FormGroup
           controlId="ingresoPacienteProvincia"
           validationState={this.state.provinciaError}
         >
@@ -133,7 +133,7 @@ class Procedencia extends Component {
           </Col>
         </FormGroup>
 
-        <FormGroup 
+        <FormGroup
           controlId="ingresoPacienteCanton"
           validationState={this.state.cantonError}
         >
@@ -163,7 +163,7 @@ class Procedencia extends Component {
           </Col>
         </FormGroup>
 
-        <FormGroup 
+        <FormGroup
           controlId="ingresoPacienteParroquia"
           validationState={this.state.parroquiaError}
         >
@@ -194,7 +194,7 @@ class Procedencia extends Component {
           </Col>
         </FormGroup>
 
-        <FormGroup 
+        <FormGroup
           controlId="ingresoPacienteZona"
           validationState={this.state.zonaError}
         >
@@ -243,7 +243,7 @@ class Procedencia extends Component {
         : 'error'
     });
   }
-   
+
   onChangeProvincia = (e) => {
     const inputName = e.target.name;
     let inputValue = e.target.value;

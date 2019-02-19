@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import { ToastContainer, toast, Slide } from "react-toastify";
 import sha256 from "sha256";
-import IsEmail from "isemail";
+import IsEmail from "isemail-es5";
 import Login from "./Login";
 import "react-toastify/dist/ReactToastify.min.css";
 import { getTokenFromStorage, saveTokenInStorage, getCurrentProject, saveUserRol, saveUserName } from "../../utils/storage";
@@ -101,7 +101,7 @@ class LoginWrapper extends Component {
         saveTokenInStorage(token);
         saveUserRol(rol);
         saveUserName(nombres);
-        
+
         setTimeout(() => {
           this.setState({ successLogin: true });
         }, 2000);

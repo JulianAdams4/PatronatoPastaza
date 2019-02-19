@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Col, ControlLabel, Form, FormGroup, FormControl } from 'react-bootstrap';
 import validation from 'react-validation-mixin';
-import strategy from 'joi-validation-strategy';
-import Joi from 'joi';
+import strategy from 'joi-validation-strategy-browser';
+import Joi from 'joi-browser';
 import { ingresoPacientePasos } from './index';
 import { obtenerParentescos } from '../../services/requestsInterface';
 
@@ -49,7 +49,7 @@ class Procedencia extends Component {
           En caso de emergencia llamar a:
         </p>
 
-        <FormGroup 
+        <FormGroup
           controlId="ingresoPacienteNombresRes"
           validationState={this.state.resNombreError}
         >
@@ -69,7 +69,7 @@ class Procedencia extends Component {
         </FormGroup>
 
 
-        <FormGroup 
+        <FormGroup
           controlId="ingresoPacienteApellidosRes"
           validationState={this.state.resApellidoError}
         >
@@ -87,9 +87,9 @@ class Procedencia extends Component {
             ): null}
           </Col>
         </FormGroup>
-        
 
-        <FormGroup 
+
+        <FormGroup
           controlId="ingresoPacienteParentezcoRes"
           validationState={this.state.resParentezcoError}
         >
@@ -180,7 +180,7 @@ class Procedencia extends Component {
     const inputName = e.target.name;
     let inputValue = e.target.value;
     const optionalFields = ['resDireccion', 'resTelefono']
-    let fieldError = optionalFields.includes(inputName) 
+    let fieldError = optionalFields.includes(inputName)
       ? null
       : inputValue.length > 0 ? 'success' : 'error'
     this.setState({
