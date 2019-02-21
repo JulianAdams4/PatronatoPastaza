@@ -1,3 +1,5 @@
+@import './../../assets//styles/base.scss';
+
 #contenido-paciente-consulta {
   height: 100%;
   padding: 1% 5%;
@@ -30,6 +32,18 @@
     td {
       &:focus {
         outline: none !important;
+      }
+
+      a {
+        color: white;
+        background-color: rgba($color: $azul_patronato, $alpha: 0.8);
+        padding: 4px 8px;
+        border-radius: 15px;
+        font-size: 12px;
+
+        &:hover {
+          background-color: rgba($color: $azul_patronato, $alpha: 1.0);
+        }
       }
     }
   }

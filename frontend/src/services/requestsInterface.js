@@ -127,3 +127,16 @@ export const crearCita = (params) => request
   .send(params)
   .ok(res => res.status)
   .timeout(timeout);
+
+export const obtenerBeneficiarioPorId = id => request
+  .get(`/api/beneficiarioSM/${id}`)
+  .set("authorization", getTokenFromStorage())
+  .ok(res => res.status)
+  .timeout(timeout);
+
+export const actualizarBeneficiario = ({ idBeneficiario, data }) => request
+  .post(`/api/beneficiarioSM/actualizar`)
+  .set("authorization", getTokenFromStorage())
+  .send({ idBeneficiario, data })
+  .ok(res => res.status)
+  .timeout(timeout);

@@ -10,12 +10,12 @@ class Procedencia extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      instruccion: '',
-      ocupacion: '',
-      empresa: '',
-      tipoSeguro: '',
+      instruccion: props.instruccion,
+      ocupacion: props.ocupacion,
+      empresa: props.empresa,
+      tipoSeguro: props.tipoSeguro,
       noTieneSeguro: false,
-      referido: '',
+      referido: props.referido,
 
       instruccionError: null,
       ocupacionError: null,
@@ -56,7 +56,7 @@ class Procedencia extends Component {
             <FormControl
               name="instruccion"
               componentClass="select"
-              defaultValue=""
+              value={this.state.instruccion}
               onChange={this.handleChange}
             >
               <option value="" disabled>Seleccione nivel instrucción</option>
@@ -180,6 +180,9 @@ class Procedencia extends Component {
 
   async componentDidMount() {
     await this.getInstrucciones();
+    if (this.props.isEdit) {
+      this.setState(this.props)
+    }
   }
 
   getInstrucciones = async () => {

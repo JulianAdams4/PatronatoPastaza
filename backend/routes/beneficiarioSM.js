@@ -28,4 +28,6 @@ router.get("/parentesco", controlador.consultarParentesco);
 
 router.get("/:idBeneficiario", controlador.consultarBeneficiarioPorID);
 
+router.post("/actualizar", controlador.actualizarBeneficiarioSM);
+
 module.exports = router;

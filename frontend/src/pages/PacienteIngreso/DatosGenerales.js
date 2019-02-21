@@ -15,12 +15,6 @@ import 'react-datepicker/dist/react-datepicker-cssmodules.min.css';
 import 'react-datepicker/dist/react-datepicker.min.css';
 
 
-const estadosCiviles = [
-  { value: 'SOLTERO' },
-  { value: 'CASADO' },
-  { value: 'VIUDO' }
-];
-
 class DatosGenerales extends Component {
   constructor(props, context) {
     super(props, context);
@@ -67,8 +61,7 @@ class DatosGenerales extends Component {
       lugarNacimiento: Joi.string()
         .required()
         .label('El lugar de nacimiento'),
-      fechaNacimiento: Joi.string()
-        .required()
+      fechaNacimiento: Joi.required()
         .label('La fecha de nacimiento'),
       estadoCivil: Joi.string()
         .required()
@@ -208,7 +201,7 @@ class DatosGenerales extends Component {
             <Col sm={7} style={{ paddingLeft: '9%' }} >
             <DatePicker
               locale="es"
-              value={this.state.fechaNacimiento.format('DD-MM-YYYY')}
+              dateFormat={"DD-MM-YYYY"}
               selected={this.state.fechaNacimiento}
               onChange={this.onChangleFechaNacimiento}
               showYearDropdown
@@ -240,7 +233,7 @@ class DatosGenerales extends Component {
               <FormControl
                 name="estadoCivil"
                 componentClass="select"
-                defaultValue=""
+                value={this.state.estadoCivil}
                 onChange={this.handleChange}
                 required
               >
@@ -275,7 +268,7 @@ class DatosGenerales extends Component {
               <FormControl
                 name="nacionalidad"
                 componentClass="select"
-                defaultValue=""
+                value={this.state.nacionalidad}
                 onChange={this.handleChange}
                 required
               >
@@ -309,7 +302,7 @@ class DatosGenerales extends Component {
               <FormControl
                 name="grupoCultural"
                 componentClass="select"
-                defaultValue=""
+                value={this.state.grupoCultural}
                 onChange={this.handleChange}
                 required
               >
@@ -344,14 +337,13 @@ class DatosGenerales extends Component {
               <FormControl
                 name="sexo"
                 componentClass="select"
-                defaultValue=""
-                placeholder="none"
-                required
+                value={this.state.sexo}
                 onChange={this.handleChange}
+                required
               >
                 <option value="" disabled>(Seleccione sexo)</option>
-                <option value="masculino">Masculino</option>
-                <option value="femenino">Femenino</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Femenino">Femenino</option>
               </FormControl>
               {this.state.sexoError === 'error'
                 ? this.props.getValidationMessages('sexo').map(this.renderHelpText)
@@ -395,6 +387,7 @@ class DatosGenerales extends Component {
     await this.getNacionalidades();
     await this.getEstadosCiviles();
     await this.getGruposCulturales();
+    this.setState(this.props);
   }
 
   getNacionalidades = async () => {
@@ -417,22 +410,6 @@ class DatosGenerales extends Component {
       this.setState({ allGruposCulturales: body.data });
     }
   };
-
-  getSuggestions = value => {
-    const inputValue = value.trim().toLowerCase();
-    const inputLength = inputValue.length;
-    return inputLength === 0 ? [] : estadosCiviles.filter(estCiv =>
-      estCiv.value.toLowerCase().slice(0, inputLength) === inputValue
-    );
-  };
-
-  getSuggestionValue = suggestion => suggestion.value;
-
-  renderSuggestion = suggestion => (
-    <div>
-      {suggestion.value}
-    </div>
-  );
 
   onChangeEstadoCivil = (ev, { newValue }) => {
     this.setState({
@@ -504,7 +481,7 @@ class DatosGenerales extends Component {
         ? '##########'
         : this.state.identificacion,
       lugarNacimiento: this.state.lugarNacimiento,
-      fechaNacimiento: this.state.fechaNacimiento.format('DD-MM-YYYY'),
+      fechaNacimiento: this.state.fechaNacimiento,
       estadoCivil: this.state.estadoCivil,
       nacionalidad: this.state.nacionalidad,
       grupoCultural: this.state.grupoCultural,

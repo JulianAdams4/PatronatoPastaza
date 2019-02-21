@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import Alert from 'sweetalert-react';
-import { ingresarBeneficiario } from '../../services/requestsInterface';
+import { ingresarBeneficiario, actualizarBeneficiario } from '../../services/requestsInterface';
 
 class Final extends Component {
 constructor(props) {
   super(props);
   this.state = {
     showMessage: 'none',
-    shouldRedirect: false
+    shouldRedirect: false,
+    redirectTo: ""
   };
 }
 
@@ -38,26 +39,26 @@ constructor(props) {
     return (
       <div className="content">
         { this.state.shouldRedirect ? (
-          <Redirect to="/" />
+          <Redirect to={this.state.redirectTo} />
         ) : (
           <div>
             <p>Nombres: {nombre} </p>
             <p>Apellidos: {apellido} </p>
             <p>Identificación: {identificacion} </p>
             <p>Lugar de nacimiento: {lugarNacimiento} </p>
-            <p>Fecha de nacimiento: {fechaNacimiento} </p>
+            <p>Fecha de nacimiento: {fechaNacimiento.format("DD-MM-YYYY")} </p>
             <p>Estado civil: {estadoCivil} </p>
             <p>Nacionalidad: {nacionalidad} </p>
             <p>Grupo Cultural: {grupoCultural} </p>
             <p>Sexo: {sexo} </p>
-            { telefono ? (<p>{telefono}</p>) : null}
+            { telefono ? (<p>Teléfono: {telefono}</p>) : null}
             <p>Dirección: {direccion} </p>
             <p>Barrio: {barrio} </p>
             <p>Instrucción: {instruccion} </p>
             <p>Ocupación: {ocupacion} </p>
-            { empresa ? (<p>{empresa}</p>) : null}
-            { tipoSeguro ? (<p>{tipoSeguro}</p>) : null}
-            { this.props.referido ? (<p>{referido}</p>) : null}
+            { empresa ? (<p>Empresa: {empresa}</p>) : null}
+            { tipoSeguro ? (<p>Seguro: {tipoSeguro}</p>) : null}
+            { this.props.referido ? (<p>Referido: {referido}</p>) : null}
             <p>Responsable: {resNombre} {resApellido}</p>
             <p>Parentezco: {parentezco} </p>
 
@@ -117,11 +118,34 @@ constructor(props) {
 
   async componentDidMount() {
     window.addEventListener('popstate', this.onCloseAlert);
-    const { status } = await ingresarBeneficiario(this.props.formData);
-    if (status === 200) {
-      this.setState({ showMessage: 'success' });
+    const formData = {
+      ...this.props.formData,
+      fechaNacimiento: this.props.formData.fechaNacimiento.format('DD-MM-YYYY')
+    };
+    delete formData.provincia;
+    delete formData.canton;
+    delete formData.parroquia;
+    if (this.props.isEdit) {
+      let showMessage = '';
+      const { status } = await actualizarBeneficiario({
+        idBeneficiario: this.props.editId,
+        data: formData
+      });
+      if (status === 200) {
+        showMessage = 'success';
+      } else {
+        showMessage = 'error';
+      }
+      this.setState({ showMessage });
     } else {
-      this.setState({ showMessage: 'error' });
+      let showMessage = '';
+      const { status } = await ingresarBeneficiario(formData);
+      if (status === 200) {
+        showMessage = 'success';
+      } else {
+        showMessage = 'error';
+      }
+      this.setState({ showMessage });
     }
   }
 
@@ -146,7 +170,8 @@ constructor(props) {
   onCloseSuccess = () => {
     this.setState({
       showMessage: 'none',
-      shouldRedirect: true
+      shouldRedirect: true,
+      redirectTo: "/pacientes/consulta"
     })
   };
 }

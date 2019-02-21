@@ -98,11 +98,11 @@ CREATE TABLE Beneficiario (
   viveCon VARCHAR(50) NULL DEFAULT NULL,
   estadoCivil VARCHAR(20) NULL DEFAULT NULL,
   institucion VARCHAR(200) NULL DEFAULT NULL,
-  instruccion VARCHAR(50) NULL DEFAULT NULL,
-  empresa VARCHAR(100) NULL DEFAULT NULL,
-  ocupacion VARCHAR(100) NULL DEFAULT NULL,
-  seguro VARCHAR(100) NULL DEFAULT NULL,
-  referido VARCHAR(100) NULL DEFAULT NULL,
+  instruccion VARCHAR(50) NULL DEFAULT 'Sin Estudios',
+  empresa VARCHAR(100) NULL DEFAULT '',
+  ocupacion VARCHAR(100) NULL DEFAULT '',
+  seguro VARCHAR(100) NULL DEFAULT 'No tiene',
+  referido VARCHAR(100) NULL DEFAULT '',
   id_parroquia INTEGER,
   PRIMARY KEY (id)
 );
@@ -562,6 +562,7 @@ INSERT INTO Instruccion (nombre) VALUES ('Primaria');
 INSERT INTO Instruccion (nombre) VALUES ('Secundaria');
 INSERT INTO Instruccion (nombre) VALUES ('Superior');
 
+INSERT INTO Parentesco (nombre) VALUES ('Conyuge');
 INSERT INTO Parentesco (nombre) VALUES ('Madre');
 INSERT INTO Parentesco (nombre) VALUES ('Padre');
 INSERT INTO Parentesco (nombre) VALUES ('Hermano (a)');
@@ -648,27 +649,27 @@ INSERT INTO Beneficiario (nombre,apellido,identificacion,direccion,barrio,zona,t
   lugarNacimiento,nacionalidad,grupoCultural,sexo,discapacidad,estadoCivil,empresa,ocupacion,
   seguro,id_parroquia) VALUES
   ('Juan','Fernandez','1010102020','Sur','Pomona','Urbana','0910102030','1982-10-01',
-    'Pastaza','Ecuatoriana','Mestizo','Hombre','No presenta','Soltero','Tienda','Tendero',
+    'Pastaza','Ecuatoriana','Mestizo','Masculino','No presenta','Soltero (a)','Tienda','Tendero',
     'No tiene','10');
 INSERT INTO Beneficiario (nombre,apellido,identificacion,direccion,barrio,zona,telefono,fechaNacimiento,
   lugarNacimiento,nacionalidad,grupoCultural,sexo,discapacidad,estadoCivil,empresa,ocupacion,
   seguro,id_parroquia) VALUES
   ('Lusmila','Tapia','2020302020','Norte','Pomona','Urbana','0930102030','1962-10-01',
-    'Pastaza','Ecuatoriana','Mestizo','Mujer','No presenta','Soltero','Costuras','Costurera',
+    'Pastaza','Ecuatoriana','Mestizo','Femenino','No presenta','Soltero (a)','Costuras','Costurera',
     'No tiene','10');
 INSERT INTO Beneficiario (nombre,apellido,identificacion,direccion,barrio,zona,telefono,fechaNacimiento,
-  lugarNacimiento,nacionalidad,grupoCultural,sexo,discapacidad,instruccion,id_parroquia) VALUES
+  lugarNacimiento,nacionalidad,grupoCultural,sexo,discapacidad,estadoCivil,instruccion,id_parroquia) VALUES
   ('Evelyn','Tapia','4520342020','Norte','Pomona','Urbana','0930145630','2009-01-01',
-    'Pastaza','Ecuatoriana','Mestizo','Mujer','Auditiva','Cuarto Año Basico','5');
+    'Pastaza','Ecuatoriana','Mestizo','Femenino','Auditiva','Soltero (a)','Primaria','5');
 INSERT INTO Beneficiario (nombre,apellido,identificacion,direccion,barrio,zona,telefono,fechaNacimiento,
-  lugarNacimiento,nacionalidad,grupoCultural,sexo,discapacidad,instruccion,id_parroquia) VALUES
+  lugarNacimiento,nacionalidad,grupoCultural,sexo,discapacidad,estadoCivil,instruccion,id_parroquia) VALUES
   ('Jose','Lara','4530342050','Este','Araujo','Rural','0920145630','2010-01-01',
-    'Pastaza','Ecuatoriana','Mestizo','Hombre','Retraso','No asiste','4');
+    'Pastaza','Ecuatoriana','Mestizo','Masculino','Retraso','Soltero (a)','Sin estudios','4');
 
 INSERT INTO Responsable (nombre,apellido,parentesco,telefono,id_beneficiario) VALUES
-  ('Juana','Martin','Esposa','0929393929','1');
+  ('Juana','Martin','Conyuge','0929393929','1');
 INSERT INTO Responsable (nombre,apellido,parentesco,telefono,id_beneficiario) VALUES
-  ('Luisa','Martinez','Hermana','0919292919','2');
+  ('Luisa','Martinez','Hermano (a)','0919292919','2');
 INSERT INTO Responsable (nombre,apellido,identificacion,parentesco,id_beneficiario) VALUES
   ('Luna','Lino','1029102934','Madre','3');
 INSERT INTO Responsable (nombre,apellido,identificacion,parentesco,id_beneficiario) VALUES

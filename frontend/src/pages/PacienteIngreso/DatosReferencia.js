@@ -100,7 +100,7 @@ class Procedencia extends Component {
             <FormControl
               name="resParentezco"
               componentClass="select"
-              defaultValue=""
+              value={this.state.resParentezco}
               onChange={this.handleChange}
             >
               <option value="" disabled>Seleccione parentezco</option>
@@ -167,6 +167,9 @@ class Procedencia extends Component {
 
   async componentDidMount() {
     await this.getParentescos();
+    if (this.props.isEdit) {
+      this.setState(this.props)
+    }
   }
 
   getParentescos = async () => {

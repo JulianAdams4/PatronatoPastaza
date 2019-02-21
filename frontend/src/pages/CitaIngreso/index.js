@@ -309,7 +309,7 @@ class CitaConsulta extends Component {
   }
 
   submit = async () => {
-    const { status } = await crearCita({
+    await crearCita({
       id_servicio: this.state.id_servicio,
       id_beneficiario: this.state.pacienteSeleccionado.id,
       id_usuario: 3,

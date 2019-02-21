@@ -6,6 +6,7 @@ import Ocupacion from './Ocupacion';
 import DatosReferencia from './DatosReferencia';
 import Final from './Final';
 import moment from 'moment';
+import { obtenerBeneficiarioPorId } from '../../services/requestsInterface';
 import './dashboard.scss';
 
 const ingresoPacientePasos = {
@@ -19,6 +20,9 @@ class IngresoPaciente extends Component {
   constructor(props){
     super(props);
     this.state = {
+      isEdit: false,
+      editId: '',
+      tituloSeccion: '',
       datosGenerales: {
         nombre: '',
         apellido: '',
@@ -36,13 +40,17 @@ class IngresoPaciente extends Component {
         id_parroquia: '',
         zona: '',
         barrio: '',
+
+        parroquia: '',
+        provincia: '',
+        canton: ''
       },
       datosOcupacion: {
         instruccion: '',
         ocupacion: '',
         empresa: '',
         tipoSeguro: '',
-        referido: '',
+        referido: ''
       },
       datosReferencia: {
         resNombre: '',
@@ -61,14 +69,14 @@ class IngresoPaciente extends Component {
           <div className="row">
             <div id="formulario-ingreso-paciente" className="col-md-12">
               <div className="titulo">
-                <h2>Ingreso de Paciente</h2>
+                <h2>{this.state.tituloSeccion}</h2>
               </div>
 
               <div className="formulario">
                 <StepZilla 
                   steps={[
                     { 
-                      name: 'Datos Generales', 
+                      name: '1. Datos Generales', 
                       component:
                         <DatosGenerales 
                           {...this.state.datosGenerales} 
@@ -76,30 +84,34 @@ class IngresoPaciente extends Component {
                         />
                     },
                     { 
-                      name: 'Procedencia', 
-                      component: <Procedencia 
-                        {...this.state.datosProcedencia}
-                        guardarData={this.actualizarDatosFrom} 
+                      name: '2. Procedencia', 
+                      component:
+                         <Procedencia 
+                          {...this.state.datosProcedencia}
+                          guardarData={this.actualizarDatosFrom}
+                          isEdit={this.state.isEdit}
                         />
                     },
                     { 
-                      name: 'Ocupación', 
+                      name: '3. Ocupación', 
                       component: 
                         <Ocupacion 
                           {...this.state.datosOcupacion} 
                           guardarData={this.actualizarDatosFrom}
+                          isEdit={this.state.isEdit}
                         />
                     },
                     { 
-                      name: 'Datos de referencia', 
+                      name: '4. Datos de referencia', 
                       component: 
                         <DatosReferencia 
                           {...this.state.datosReferencia}
                           guardarData={this.actualizarDatosFrom}
+                          isEdit={this.state.isEdit}
                         />
                     },
                     {
-                      name: 'Final',
+                      name: '5. Final',
                       component: 
                         <Final 
                           formData={{
@@ -108,6 +120,8 @@ class IngresoPaciente extends Component {
                             ...this.state.datosOcupacion,
                             ...this.state.datosReferencia
                           }}
+                          isEdit={this.state.isEdit}
+                          editId={this.state.editId}
                         />
                     }
                   ]}
@@ -130,6 +144,63 @@ class IngresoPaciente extends Component {
         </div>
       </div>
     );
+  }
+
+  async componentDidMount() {
+    if (this.props.match.params.historia) {
+      const id = this.props.match.params.historia;
+      const { status, body } = await obtenerBeneficiarioPorId(id)
+      if (status === 200) {
+        const [infoPaciente] = body.data;
+        const datosGenerales = {
+          nombre: infoPaciente.nombre,
+          apellido: infoPaciente.apellido,
+          identificacion: infoPaciente.identificacion,
+          lugarNacimiento: infoPaciente.lugarnacimiento,
+          fechaNacimiento: moment(infoPaciente.fechanacimiento),
+          estadoCivil: infoPaciente.estadocivil,
+          nacionalidad: infoPaciente.nacionalidad,
+          grupoCultural: infoPaciente.grupocultural,
+          sexo: infoPaciente.sexo,
+          telefono: infoPaciente.telefono
+        };
+        const datosProcedencia = {
+          direccion: infoPaciente.direccion,
+          id_parroquia: infoPaciente.id_parroquia,
+          zona: infoPaciente.zona,
+          barrio: infoPaciente.barrio,
+
+          parroquia: infoPaciente.parroquia,
+          provincia: infoPaciente.provincia,
+          canton: infoPaciente.canton
+        };
+        const datosOcupacion = {
+          instruccion: infoPaciente.instruccion || 'No tiene',
+          ocupacion: infoPaciente.ocupacion || '',
+          empresa: infoPaciente.empresa || '',
+          tipoSeguro: infoPaciente.seguro || '',
+          referido: infoPaciente.referido || ''
+        };
+        const datosReferencia = {
+          resNombre: infoPaciente.resNombre,
+          resApellido: infoPaciente.resApellido,
+          resParentezco: infoPaciente.resParentesco,
+          resDireccion: infoPaciente.resDireccion || '',
+          resTelefono: infoPaciente.resTelefono || ''
+        };
+        this.setState({
+          isEdit: true,
+          editId: id,
+          tituloSeccion: 'Editar paciente',
+          datosGenerales,
+          datosProcedencia,
+          datosOcupacion,
+          datosReferencia
+        });
+        return;
+      }
+    }
+    this.setState({ tituloSeccion: 'Ingreso de paciente' });
   }
 
   actualizarDatosFrom = (seccion, validData) => {

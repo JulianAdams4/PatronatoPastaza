@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import moment from 'moment';
-import { Redirect, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { filtrarBeneficiarios } from '../../services/requestsInterface';
 import 'moment/locale/es';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
@@ -142,7 +142,7 @@ class PacienteConsulta extends Component {
   renderActionButtons = (cell, row) => {
     const editUrl = `/pacientes/editar/${row.id}`;
     return (
-      <Link to={editUrl}>Editar</Link>
+      <Link title="Editar paciente" to={editUrl}>Editar</Link>
     );
   };
 

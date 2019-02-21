@@ -15,9 +15,9 @@ class Procedencia extends Component {
     super(props, context);
     this.state = {
       direccion: props.direccion,
-      provincia: '',
-      canton: '',
-      parroquia: '',
+      provincia: props.provincia,
+      canton: props.canton,
+      parroquia: props.parroquia,
       id_parroquia: props.id_parroquia,
       zona: props.zona,
       barrio: props.barrio,
@@ -114,7 +114,7 @@ class Procedencia extends Component {
             <FormControl
               name="provincia"
               componentClass="select"
-              defaultValue=""
+              value={this.state.provincia}
               onChange={this.onChangeProvincia}
               required
             >
@@ -144,7 +144,7 @@ class Procedencia extends Component {
             <FormControl
               name="canton"
               componentClass="select"
-              defaultValue=""
+              value={this.state.canton}
               onChange={this.onChangeCanton}
               required
             >
@@ -174,7 +174,7 @@ class Procedencia extends Component {
             <FormControl
               name="parroquia"
               componentClass="select"
-              defaultValue=""
+              value={this.state.parroquia}
               onChange={this.onChangeParroquia}
               required
             >
@@ -205,14 +205,14 @@ class Procedencia extends Component {
             <FormControl
               name="zona"
               componentClass="select"
-              defaultValue=""
+              value={this.state.zona}
               placeholder="Seleccione opción"
-              required
               onChange={this.handleChange}
+              required
             >
               <option value="" disabled>(Seleccione zona)</option>
-              <option value="urbana">Urbana</option>
-              <option value="rural">Rural</option>
+              <option value="Urbana">Urbana</option>
+              <option value="Rural">Rural</option>
             </FormControl>
               {this.state.zonaError === 'error'
                 ? this.props.getValidationMessages('zona').map(this.renderHelpText)
@@ -225,10 +225,16 @@ class Procedencia extends Component {
   }
 
   async componentDidMount() {
+    console.log("Es create");
     const { status, body } = await getProvincias();
     if (status === 200) {
-      this.setState({
-        allProvincias: body.data
+      this.setState({ allProvincias: body.data });
+    }
+    if (this.props.isEdit) {
+      this.setState(this.props, async () => {
+        await this.cargarCantonesPorParroquia();
+        await this.cargarParroquiasPorCanton();
+        this.obtenerIdParroquia(this.props.parroquia);
       });
     }
   }
@@ -252,18 +258,18 @@ class Procedencia extends Component {
       [`${inputName}Error`]: inputValue.length > 0
         ? 'success'
         : 'error'
-    }, async () => {
-      const [curentProvince] = this.state.allProvincias.filter(
-        provincia => provincia.nombre === this.state.provincia
-      )
-      const { status, body } = await getCantonByProvinceId(curentProvince.id);
-      if (status === 200) {
-        this.setState({
-          allCanton: body.data
-        });
-      }
-    });
+    }, async () => { await this.cargarCantonesPorParroquia() });
   };
+
+  cargarCantonesPorParroquia = async () => {
+    const [curentProvince] = this.state.allProvincias.filter(
+      provincia => provincia.nombre === this.state.provincia
+    )
+    const { status, body } = await getCantonByProvinceId(curentProvince.id);
+    if (status === 200) {
+      this.setState({ allCanton: body.data });
+    }
+  }
 
   onChangeCanton = (e) => {
     const inputName = e.target.name;
@@ -273,33 +279,40 @@ class Procedencia extends Component {
       [`${inputName}Error`]: inputValue.length > 0
         ? 'success'
         : 'error'
-    }, async () => {
-      const [curentCanton] = this.state.allCanton.filter(
-        canton => canton.nombre === this.state.canton
-      )
-      const { status, body } = await getParroquiaByCantonId(curentCanton.id);
-      if (status === 200) {
-        this.setState({
-          allParroquias: body.data
-        });
-      }
-    });
+    }, async () => { await this.cargarParroquiasPorCanton(); });
   };
+
+  cargarParroquiasPorCanton = async () => {
+    const [curentCanton] = this.state.allCanton.filter(
+      canton => canton.nombre === this.state.canton
+    )
+    const { status, body } = await getParroquiaByCantonId(curentCanton.id);
+    if (status === 200) {
+      this.setState({
+        allParroquias: body.data
+      });
+    }
+  }
 
   onChangeParroquia = (e) => {
     const inputName = e.target.name;
     const inputValue = e.target.value;
-    const [parroquiaSelected] = this.state.allParroquias.filter(
-      parroq => parroq.nombre === inputValue
-    );
-    const id_parroquia = parroquiaSelected.id;
     this.setState({
-      id_parroquia,
       [inputName]: inputValue,
       [`${inputName}Error`]: inputValue.length > 0
         ? 'success'
         : 'error'
+    }, () => {
+      this.obtenerIdParroquia(inputValue);
     });
+  };
+
+  obtenerIdParroquia = nombreParroq => {
+    const [parroquiaSelected] = this.state.allParroquias.filter(
+      parroq => parroq.nombre === nombreParroq
+    );
+    const id_parroquia = parroquiaSelected.id;
+    this.setState({ id_parroquia });
   };
 
   isValidated = () => {
@@ -318,9 +331,6 @@ class Procedencia extends Component {
         }
         else {
           const validData = this.getValidatorData();
-          delete validData.provincia;
-          delete validData.canton;
-          delete validData.parroquia;
           this.props.guardarData(ingresoPacientePasos.DATOS_PROCEDENCIA, validData);
           return resolve();
         }

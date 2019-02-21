@@ -1,14 +1,9 @@
 const db = require("../database");
 const moment = require("moment");
 
-
-/*
-if(req.body.nombre != '' && req.body.apellido != '' && req.body.edad != '' &&
-   req.body.nacionalidad != '' && req.body.grupoCultural != '' && req.body.sexo != '' &&
-   req.body.zona != '' && req.body.estadoCivil != '' && req.body.resNombre != '' &&
-   req.body.resApellido != '' && req.body.resParentesco != '')
-*/
-
+/*--------------
+    Create
+---------------*/
 const ingresarBeneficiarioSM = async (req, res) => {
   const tieneNombres = req.body.nombre !== "";
   const tieneApellidos = req.body.apellido !== "";
@@ -115,6 +110,84 @@ const ingresarBeneficiarioSM = async (req, res) => {
   }); // End trx
 };
 
+/*--------------
+    Update
+---------------*/
+const actualizarBeneficiarioSM = async (req, res) => {
+  try {
+    if (!req.body.idBeneficiario) {
+      return res.status(422).json({
+        error: true,
+        data:{ message: "No hay identificador" }
+      });
+    }
+  
+    return await db.transaction(async trx => {
+      const { idBeneficiario, data } = req.body;
+      const responseB = await trx("beneficiario")
+        .where({ id: idBeneficiario })
+        .update({
+          nombre: data.nombre,
+          apellido: data.apellido,
+          identificacion: data.identificacion,
+          lugarnacimiento: data.lugarNacimiento,
+          fechanacimiento: data.fechaNacimiento,
+          estadocivil: data.estadoCivil,
+          nacionalidad: data.nacionalidad,
+          grupocultural: data.grupoCultural,
+          sexo: data.sexo,
+          telefono: data.telefono,
+          direccion: data.direccion,
+          id_parroquia: data.parroquia,
+          zona: data.zona,
+          barrio: data.barrio,
+          instruccion: data.instruccion,
+          ocupacion: data.ocupacion,
+          empresa: data.empresa,
+          seguro: data.seguro,
+          referido: data.referido
+        });
+      
+      if (!responseB) {
+        return res.status(500).json({
+          error: true,
+          data:{ message: "Error al actualizar el beneficiario" }
+        });
+      }
+    
+      const responseR = await trx("responsable")
+        .where({ id_beneficiario: idBeneficiario })
+        .update({
+          nombre: data.resNombre,
+          apellido: data.resApellido,
+          parentesco: data.resParentezco,
+          telefono: data.resTelefono,
+          direccion: data.resDireccion
+        });
+  
+      if (!responseR) {
+        return res.status(500).json({
+          error: true,
+          data:{ message: "Error al actualizar el responsable" }
+        });
+      }
+  
+      return res.status(200).json({
+        error: false,
+        data:{ message: "OK" }
+      });
+    }); // End trx
+  } catch (err) {
+    return res.status(500).json({
+      error: true,
+      data:{ message: err.message }
+    });
+  }
+};
+
+/*------------------
+   Get by ProyUni
+--------------------*/
 const consultarBeneficiarioSM = (req, res) => {
   return db.select(
     "beneficiario.id",
@@ -143,6 +216,13 @@ const consultarBeneficiarioSM = (req, res) => {
     });
 };
 
+/*------------------
+   Get by params:
+   - Nombre
+   - Apellido
+   - Identificacion
+   - ProyUni
+--------------------*/
 const filtrarBeneficiarioSM = (req, res) => {
   return db.select("*")
     .from("beneficiario")
@@ -177,6 +257,13 @@ const filtrarBeneficiarioSM = (req, res) => {
     });
 };
 
+/*------------------
+   Get by params:
+   - Nombre
+   - Apellido
+   - Identificacion
+   (All projects)
+--------------------*/
 const filtrarBeneficiario = (req, res) => {
   return db.select(
     "beneficiario.id",
@@ -210,6 +297,9 @@ const filtrarBeneficiario = (req, res) => {
     });
 };
 
+/*------------------
+   Getters
+--------------------*/
 const consultarProvincia = (req, res) => {
   return db
     .select(
@@ -270,121 +360,142 @@ const consultarParroquia = (req, res) => {
 };
 
 const consultarNacionalidad = (req, res) => {
-  db.select("nombre").from("nacionalidad")
-    .then(function(collection){
-      res.json({
+  return db
+    .select("nombre")
+    .from("nacionalidad")
+    .then(collection => {
+      return res.status(200).json({
         error: false,
         data: collection
       });
     })
-    .catch(function(err){
-      res.status(500).json({
+    .catch(err => {
+      return res.status(500).json({
         error: true,
-        data:{
-          message:err.message
-        }
+        data:{ message: err.message }
       });
     });
 };
 
 const consultarGrupoCultural = (req, res) => {
-  db.select("nombre").from("grupocultural")
-    .then(function(collection){
-      res.json({
+  return db
+    .select("nombre")
+    .from("grupocultural")
+    .then(collection => {
+      return res.status(200).json({
         error: false,
         data: collection
       });
     })
-    .catch(function(err){
-      res.status(500).json({
+    .catch(err => {
+      return res.status(500).json({
         error: true,
-        data:{
-          message:err.message
-        }
+        data:{ message: err.message }
       });
     });
 };
 
 const consultarEstadoCivil = (req, res) => {
-  db.select("nombre").from("estadocivil")
-    .then(function(collection){
-      res.json({
+  return db
+    .select("nombre")
+    .from("estadocivil")
+    .then(collection => {
+      return res.status(200).json({
         error: false,
         data: collection
       });
     })
-    .catch(function(err){
-      res.status(500).json({
+    .catch(err => {
+      return res.status(500).json({
         error: true,
-        data:{
-          message:err.message
-        }
+        data:{ message: err.message }
       });
     });
 };
 
 const consultarInstruccion = (req, res) => {
-  db.select("nombre").from("instruccion")
-    .then(function(collection){
-      res.json({
+  return db
+    .select("nombre")
+    .from("instruccion")
+    .then(collection => {
+      return res.status(200).json({
         error: false,
         data: collection
       });
     })
-    .catch(function(err){
-      res.status(500).json({
+    .catch(err => {
+      return res.status(500).json({
         error: true,
-        data:{
-          message:err.message
-        }
+        data:{ message: err.message }
       });
     });
 };
 
 const consultarParentesco = (req, res) => {
-  db.select("nombre").from("parentesco")
-    .then(function(collection){
-      res.json({
+  return db
+    .select("nombre")
+    .from("parentesco")
+    .then(collection => {
+      return res.status(200).json({
         error: false,
         data: collection
       });
     })
-    .catch(function(err){
-      res.status(500).json({
+    .catch(err => {
+      return res.status(500).json({
         error: true,
-        data:{
-          message:err.message
-        }
+        data: { message: err.message }
       });
     });
 };
 
 const consultarBeneficiarioPorID = (req, res) => {
-  db.select("beneficiario.nombre","beneficiario.apellido","beneficiario.identificacion","beneficiario.telefono",
-    "beneficiario.direccion","beneficiario.barrio", "parroquia.nombre as parroquia", "canton.nombre as canton", "provincia.nombre as provincia",
-    "beneficiario.zona", "beneficiario.fechanacimiento", "beneficiario.lugarnacimiento", "beneficiario.nacionalidad", "beneficiario.grupocultural",
-    "beneficiario.sexo", "beneficiario.estadocivil", "beneficiario.instruccion", "beneficiario.ocupacion","beneficiario.empresa","beneficiario.seguro",
-    "beneficiario.referido","responsable.nombre as resNombre", "responsable.apellido as resApellido", "responsable.parentesco as resParentesco",
-    "responsable.direccion as resdireccion", "responsable.telefono as resTelefono")
+  return db
+    .select(
+      "beneficiario.nombre",
+      "beneficiario.apellido",
+      "beneficiario.identificacion",
+      "beneficiario.telefono",
+      "beneficiario.direccion",
+      "beneficiario.barrio",
+      "parroquia.nombre as parroquia",
+      "canton.nombre as canton",
+      "provincia.nombre as provincia",
+      "beneficiario.zona",
+      "beneficiario.fechanacimiento",
+      "beneficiario.lugarnacimiento",
+      "beneficiario.nacionalidad",
+      "beneficiario.grupocultural",
+      "beneficiario.sexo",
+      "beneficiario.estadocivil",
+      "beneficiario.instruccion",
+      "beneficiario.ocupacion",
+      "beneficiario.empresa",
+      "beneficiario.seguro",
+      "beneficiario.referido",
+      "responsable.nombre as resNombre",
+      "responsable.apellido as resApellido",
+      "responsable.parentesco as resParentesco",
+      "responsable.direccion as resDireccion",
+      "responsable.telefono as resTelefono"
+    )
     .from("beneficiario")
     .join("responsable","beneficiario.id","responsable.id_beneficiario")
     .join("parroquia","beneficiario.id_parroquia","parroquia.id")
     .join("canton","canton.id","parroquia.id_canton")
     .join("provincia","provincia.id","canton.id_provincia")
-    .where("beneficiario.id",req.params.idBeneficiario)
+    .where("beneficiario.id", req.params.idBeneficiario)
     .limit(1)
-    .then(function(collection){
-      res.json({
+    .then(collection => {
+      return res.status(200).json({
         error: false,
         data: collection
       });
     })
     .catch(function(err){
-      res.status(500).json({
+      return res.status(500).json({
         error: true,
-        data:{
-          message:err.message
-        }
+        data:{ message: err.message }
       });
     });
 };
@@ -402,5 +513,6 @@ module.exports = {
   consultarEstadoCivil,
   consultarInstruccion,
   consultarParentesco,
-  consultarBeneficiarioPorID
+  consultarBeneficiarioPorID,
+  actualizarBeneficiarioSM
 };
