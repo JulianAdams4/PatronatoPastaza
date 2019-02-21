@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Collapse } from 'react-bootstrap';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getUserRol, getUserName } from '../../utils/storage';
 
@@ -9,10 +9,18 @@ class UserInfo extends Component {
   state = {
     isShowingUserMenu: false,
     userRol: '',
-    userName: ' '
+    userName: ' ',
+    shouldRedirect: false,
+    redirectTo: ''
   };
 
   render() {
+    if (this.state.shouldRedirect) {
+      return (
+        <Redirect to={this.state.redirectTo}/>
+      );
+    };
+
     let { isShowingUserMenu } = this.state;
     return (
       <div className="user-wrapper">
@@ -36,13 +44,18 @@ class UserInfo extends Component {
             <b className="caret"></b>
           </span>
         </div>
+
         <Collapse in={isShowingUserMenu}>
           <ul className="nav user-nav">
-            <li className={this.isPathActive('/usuario/cambiarContrasena') ? 'active' : null}>
-              <Link to="/usuario/cambiarContrasena">Cambiar de proyecto</Link>
+            <li>
+              <a onClick={this.onClickCambiarProyecto}>
+                Cambiar de proyecto
+              </a>
             </li>
-            <li className={this.isPathActive('/usuario/cerrarSesion') ? 'active' : null}>
-              <Link to="/usuario/cerrarSesion">Cerrar sesión</Link>
+            <li>
+              <a onClick={this.onClickCerrarSesion}>
+                Cerrar sesión
+              </a>
             </li>
           </ul>
         </Collapse>
@@ -64,6 +77,20 @@ class UserInfo extends Component {
   isPathActive = (path) => {
     return this.props.location.pathname.startsWith(path);
   }
+
+  onClickCambiarProyecto = () => {
+    this.setState({
+      shouldRedirect: true,
+      redirectTo: "/proyectos"
+    });
+  }
+
+  onClickCerrarSesion = () => {
+    this.setState({
+      shouldRedirect: true,
+      redirectTo: "/usuario/cerrarSesion"
+    });
+  };
 }
 
 const mapStateToProps = state => ({

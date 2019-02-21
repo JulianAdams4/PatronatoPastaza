@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import cx from 'classnames';
-import { withRouter } from 'react-router-dom';
+import { Switch, withRouter } from 'react-router-dom';
 
 import { setMobileNavVisibility } from '../../reducers/Layout';
 import Header from './Header';
@@ -21,8 +21,6 @@ import PacienteConsulta from '../PacienteConsulta';
 import CitaIngreso from '../CitaIngreso';
 import CitaConsulta from '../CitaConsulta';
 
-import { getTokenFromStorage, getCurrentProject } from '../../utils/storage';
-
 const Main = ({
   mobileNavVisibility,
   hideMobileMenu,
@@ -37,34 +35,29 @@ const Main = ({
     <div className={cx({
       'nav-open': mobileNavVisibility === true
     })}>
-      { !getTokenFromStorage() ? (
-          <div className="wrapper-out">
-            <Route exact path="/" component={Login} />
-          </div>
-        ) : ( 
-         !getCurrentProject() ? (
-            <Route exact path="/proyectos" component={Proyectos} />
-          ) : 
-          (
-            <div className="wrapper">
-              <div className="close-layer" onClick={hideMobileMenu}></div>
-              <SideBar />
-              <div className="main-panel">
-                <Header />
-                <Route path="/" render={() => 
-                  <Redirect to="/pacientes/consulta" />
-                }/>
-                <Route path="/pacientes/ingreso" component={PacienteIngreso} />
-                <Route path="/pacientes/consulta" component={PacienteConsulta} />
-                
-                <Route path="/citas/ingreso" component={CitaIngreso} />
-                <Route path="/citas/consulta" component={CitaConsulta} />
+      <Switch>
+        <Route exact path="/" component={Login} />
+        <Route exact path="/proyectos" component={Proyectos} />
+      
+        <div className="wrapper">
+          <div className="close-layer" onClick={hideMobileMenu}></div>
+          <SideBar />
+          <div className="main-panel">
+            <Header />
 
-                <Route path="/usuario/cerrarSesion" component={CerrarSesion} />
-              </div>
-            </div>
-          )
-      )}
+            <Route path="/pacientes/ingreso" component={PacienteIngreso} />
+            <Route path="/pacientes/consulta" component={PacienteConsulta} />
+            <Route path="/pacientes/editar/:historia" component={PacienteIngreso} />
+            <Route path="/citas/ingreso" component={CitaIngreso} />
+            <Route path="/citas/consulta" component={CitaConsulta} />
+            <Route exact path="/usuario/cerrarSesion" component={CerrarSesion} />
+
+            {/* Default */}
+            <Redirect from='/home' to="/pacientes/consulta" />
+          </div>
+        </div>
+      </Switch>
+    )}
     </div>
   )
 };

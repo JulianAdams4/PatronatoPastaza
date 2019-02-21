@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import moment from 'moment';
-import 'moment/locale/es';
+import { Redirect, Link } from 'react-router-dom';
 import { filtrarBeneficiarios } from '../../services/requestsInterface';
+import 'moment/locale/es';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 import './pacienteconsulta.scss';
 
@@ -11,7 +12,9 @@ class PacienteConsulta extends Component {
     super();
     this.state = {
       data: [],
-      rowExpandableId: undefined
+      rowExpandableId: undefined,
+      shouldRedirect: false,
+      redirectTo: ''
     };
   }
 
@@ -136,19 +139,10 @@ class PacienteConsulta extends Component {
     );
   }
 
-  renderActionButtons = () => {
+  renderActionButtons = (cell, row) => {
+    const editUrl = `/pacientes/editar/${row.id}`;
     return (
-      <button 
-        className="btn btn-xs" 
-        style={{
-          backgroundColor: '#2BA3C5',
-          border: '1px solid #2BA3C5',
-          color: '#ffffff',
-          padding: '0px 10px'
-        }}
-      >
-        Editar
-      </button>
+      <Link to={editUrl}>Editar</Link>
     );
   };
 
@@ -196,21 +190,65 @@ class PacienteConsulta extends Component {
     const fechaNacimiento = moment(row.fechanacimiento).format("DD-MMMM-YYYY");
     return (
       <div className="row-expanded">
-        <div><strong>Nombres:</strong>    {row.nombre}</div>
-        <div><strong>Apellidos:</strong>    {row.apellido}</div>
-        {row.identificacion && ( <div><strong>Identificación:</strong>    {row.identificacion}</div> )}
-        <div><strong>Lugar de nacimiento:</strong>    {row.lugarnacimiento}</div>
-        <div><strong>Fecha de nacimiento:</strong>    {fechaNacimiento}</div>
-        {row.telefono && ( <div><strong>Teléfono:</strong>    {row.telefono}</div> )}
-        <div><strong>Estado civil:</strong>    {row.estadocivil}</div>
-        {row.direccion && ( <div><strong>Dirección:</strong>    {row.direccion}</div> )}
-        {row.barrio && ( <div><strong>Barrio:</strong>    {row.barrio}</div> )}
-        <div><strong>Nacionalidad:</strong>    {row.nacionalidad}</div>
-        <div><strong>Grupo Cultural:</strong>    {row.grupocultural}</div>
-        {row.instruccion && ( <div><strong>Instrucción:</strong>    {row.instruccion}</div> )}
-        {row.ocupacion && ( <div><strong>Ocupación:</strong>    {row.ocupacion}</div> )}
-        {row.empresa && ( <div><strong>Empresa:</strong>    {row.empresa}</div> )}
-        {row.seguro && ( <div><strong>Seguro:</strong>    {row.seguro}</div> )}
+        <div>
+          <strong>Nombres:</strong> {row.nombre}
+        </div>
+        
+        <div>
+          <strong>Apellidos:</strong> {row.apellido}
+        </div>
+        
+        {row.identificacion && (<div>
+          <strong>Identificación:</strong> {row.identificacion}
+        </div>)}
+        
+        <div>
+          <strong>Lugar de nacimiento:</strong> {row.lugarnacimiento}
+        </div>
+        
+        <div>
+          <strong>Fecha de nacimiento:</strong> {fechaNacimiento}
+        </div>
+        
+        {row.telefono && (<div>
+          <strong>Teléfono:</strong> {row.telefono}
+        </div>)}
+        
+        <div>
+          <strong>Estado civil:</strong> {row.estadocivil}
+        </div>
+        
+        {row.direccion && (<div>
+          <strong>Dirección:</strong> {row.direccion}
+        </div>)}
+        
+        {row.barrio && (<div>
+          <strong>Barrio:</strong> {row.barrio}
+        </div>)}
+        
+        <div>
+          <strong>Nacionalidad:</strong> {row.nacionalidad}
+        </div>
+        
+        <div>
+          <strong>Grupo Cultural:</strong> {row.grupocultural}
+        </div>
+        
+        {row.instruccion && (<div>
+          <strong>Instrucción:</strong> {row.instruccion}
+        </div>)}
+        
+        {row.ocupacion && (<div>
+          <strong>Ocupación:</strong> {row.ocupacion}
+        </div>)}
+        
+        {row.empresa && (<div>
+          <strong>Empresa:</strong> {row.empresa}
+        </div>)}
+        
+        {row.seguro && (<div>
+          <strong>Seguro:</strong> {row.seguro}
+        </div>)}
       </div>
     )
   }

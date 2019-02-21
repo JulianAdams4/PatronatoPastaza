@@ -5,13 +5,16 @@ import { Collapse } from 'react-bootstrap';
 
 class Nav extends Component {
 
-  state = {};
+  state = {
+    isOpenPacientes: true,
+    isOpenCitas: false
+  };
 
   render() {
     return (
       <ul className="nav">
-        <li className={this.isPathActive('/pacientes') || this.state.componentMenuOpen ? 'active' : null}>
-          <a onClick={() => this.setState({ componentMenuOpen: !this.state.componentMenuOpen })}
+        <li className={this.isPathActive('/pacientes') || this.state.isOpenPacientes ? 'active' : null}>
+          <a onClick={() => this.setState({ isOpenPacientes: !this.state.isOpenPacientes })}
             data-toggle="collapse">
             <i className="pe-7s-plugin"></i>
             <p>
@@ -20,13 +23,17 @@ class Nav extends Component {
             </p>
           </a>
           
-          <Collapse in={this.state.componentMenuOpen}>
+          <Collapse in={this.state.isOpenPacientes}>
             <div>
               <ul className="nav">
                 <li className={this.isPathActive('/pacientes/ingreso') ? 'active' : null}>
                   <Link to="/pacientes/ingreso">Ingreso</Link>
                 </li>
-                <li className={this.isPathActive('/pacientes/consulta') ? 'active' : null}>
+                <li className={
+                  (this.isPathActive('/pacientes/consulta') || this.isPathActive('/pacientes/editar'))
+                    ? 'active' 
+                    : null
+                }>
                   <Link to="/pacientes/consulta">Consulta</Link>
                 </li>
               </ul>
@@ -35,12 +42,12 @@ class Nav extends Component {
         </li>
         <div className="line"><hr /></div>
 
-        <li className={this.isPathActive('/citas') || this.state.formMenuOpen ? 'active' : null}>
-          <a onClick={() => this.setState({ formMenuOpen: !this.state.formMenuOpen })} data-toggle="collapse">
+        <li className={this.isPathActive('/citas') || this.state.isOpenCitas ? 'active' : null}>
+          <a onClick={() => this.setState({ isOpenCitas: !this.state.isOpenCitas })} data-toggle="collapse">
             <i className="pe-7s-note2"></i>
             <p>Cita médica <b className="caret"></b></p>
           </a>
-          <Collapse in={this.state.formMenuOpen}>
+          <Collapse in={this.state.isOpenCitas}>
             <div>
               <ul className="nav">
                 <li className={this.isPathActive('/citas/ingreso') ? 'active' : null}>

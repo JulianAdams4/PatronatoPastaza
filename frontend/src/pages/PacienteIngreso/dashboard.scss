@@ -73,28 +73,29 @@ ol.progtrckr {
 }
 
 ol.progtrckr li {
-  display: inline-block;
   text-align: center;
-  line-height: 4.5rem;
+  line-height: 3rem;
   cursor: pointer;
+  display: flex;
+  align-items: center;
   flex-grow: 1;
 }
 
 ol.progtrckr li span {
-  padding: 0 1.5rem;
+  margin: 0 auto;
 }
-
 @media (max-width: 650px) {
   .progtrckr li span {
     display: none;
   }
 }
+
+
 .progtrckr em {
   display: none;
   font-weight: 700;
   padding-left: 1rem;
 }
-
 @media (max-width: 650px) {
   .progtrckr em {
     display: inline;
@@ -113,7 +114,7 @@ ol.progtrckr li.progtrckr-doing {
   color: $azul-patronato;
   border-bottom: 4px solid $azul-patronato;
   &:hover {
-    background-color: rgba($color: $azul-patronato, $alpha: 0.05);
+    background-color: rgba($color: $azul-patronato, $alpha: 0.1);
   }
 }
 
@@ -125,46 +126,46 @@ ol.progtrckr li.progtrckr-done {
   }
 }
 
-ol.progtrckr li:after {
-  content: "\00a0\00a0";
-}
+// ol.progtrckr li:after {
+//   content: "\00a0\00a0";
+// }
 
-ol.progtrckr li:before {
-  position: relative;
-  bottom: -3.7rem;
-  float: left;
-  left: 50%;
-}
+// ol.progtrckr li:before {
+//   position: relative;
+//   bottom: -3.7rem;
+//   float: left;
+//   left: 50%;
+// }
 
-ol.progtrckr li.progtrckr-todo:before {
-  content: "\039F";
-  color: silver;
-  background-color: white;
-  width: 1.2em;
-  line-height: 1.4em;
-}
+// ol.progtrckr li.progtrckr-todo:before {
+//   content: "\039F";
+//   color: silver;
+//   background-color: white;
+//   width: 1.2em;
+//   line-height: 1.4em;
+// }
 
-ol.progtrckr li.progtrckr-doing:before {
-  content: "\2022";
-  color: white;
-  background-color: $azul-patronato;
-  width: 1.2em;
-  line-height: 1.2em;
-  border-radius: 1.2em;
-}
+// ol.progtrckr li.progtrckr-doing:before {
+//   content: "\2022";
+//   color: white;
+//   background-color: $azul-patronato;
+//   width: 1.2em;
+//   line-height: 1.2em;
+//   border-radius: 1.2em;
+// }
 
-ol.progtrckr li.progtrckr-done:before {
-  content: "\2713";
-  color: white;
-  background-color: $azul-patronato;
-  width: 1.2em;
-  line-height: 1.2em;
-  border-radius: 1.2em;
-}
+// ol.progtrckr li.progtrckr-done:before {
+//   content: "\2713";
+//   color: white;
+//   background-color: $azul-patronato;
+//   width: 1.2em;
+//   line-height: 1.2em;
+//   border-radius: 1.2em;
+// }
 
-ol.progtrckr li.progtrckr-done:hover:before {
-  color: #333;
-}
+// ol.progtrckr li.progtrckr-done:hover:before {
+//   color: #333;
+// }
 
 
 
