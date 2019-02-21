@@ -1,12 +1,18 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import { ToastContainer, toast, Slide } from "react-toastify";
-import sha256 from "sha256";
 import IsEmail from "isemail-es5";
+import sha256 from "sha256";
 import Login from "./Login";
-import "react-toastify/dist/ReactToastify.min.css";
-import { getTokenFromStorage, saveTokenInStorage, getCurrentProject, saveUserRol, saveUserName } from "../../utils/storage";
+import {
+  getTokenFromStorage, 
+  saveTokenInStorage, 
+  getCurrentProject,
+  saveUserName
+} from "../../utils/storage";
 import { sendLogin } from "../../services/requestsInterface";
+import "react-toastify/dist/ReactToastify.min.css";
+
 
 class LoginWrapper extends Component {
   constructor() {
@@ -32,7 +38,7 @@ class LoginWrapper extends Component {
     return this.state.successLogin ? (
       <Redirect to="/proyectos" />
     ) : (
-      <div style={{ height: '100%' }} >
+      <div className="wrapper-out">
         <Login
           inputEmailValue={this.state.inputEmail.value}
           inputPasswordValue={this.state.inputPassword.value}
@@ -96,11 +102,9 @@ class LoginWrapper extends Component {
         contrasena: sha256(this.state.inputPassword.value),
       };
       const { status, body } = await sendLogin(formValues);
-      const { token, nombres, rol } = body;
       if (status === 200) {
-        saveTokenInStorage(token);
-        saveUserRol(rol);
-        saveUserName(nombres);
+        saveTokenInStorage(body.token);
+        saveUserName(body.nombres);
 
         setTimeout(() => {
           this.setState({ successLogin: true });

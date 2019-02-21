@@ -8,8 +8,7 @@ export const getTokenFromStorage = () => {
   return undefined;
 };
 export const deleteSessionToken = () => {
-  window.localStorage.removeItem("sessionToken");
-  window.localStorage.removeItem('currentProject');
+  window.localStorage.clear();
 };
 
 // Project
@@ -24,12 +23,21 @@ export const getCurrentProject = () => {
 };
 
 // Rol
-export const saveUserRol = rol => {
+export const saveUserRol = (rol, proyUni) => {
   window.localStorage.setItem('userRol', rol);
+  window.localStorage.setItem('proyUni', proyUni);
 };
 export const getUserRol = () => {
-  if (window.localStorage.getItem("userRol") !== "null") {
-    return window.localStorage.getItem("userRol");
+  const value = window.localStorage.getItem("userRol");
+  if ( value!=="null" || value!=="undefined" ) {
+    return value;
+  }
+  return undefined;
+};
+export const getProyUni = () => {
+  const value = window.localStorage.getItem("proyUni");
+  if ( value!=="null" || value!=="undefined" ) {
+    return value;
   }
   return undefined;
 };
