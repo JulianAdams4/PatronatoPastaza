@@ -597,6 +597,7 @@ INSERT INTO ProyUni (id_unidad,id_proyecto) VALUES ('1','1');
 INSERT INTO ProyUni (id_unidad,id_proyecto) VALUES ('2','2');
 INSERT INTO ProyUni (id_unidad,id_proyecto) VALUES ('3','10');
 
+INSERT INTO Servicio (tipo,id_proyUni) VALUES ('General','1');
 INSERT INTO Servicio (tipo,id_proyUni) VALUES ('Medicina General','1');
 INSERT INTO Servicio (tipo,id_proyUni) VALUES ('Odontología','1');
 INSERT INTO Servicio (tipo,id_proyUni) VALUES ('Terapia de Lenguaje','1');
@@ -633,17 +634,43 @@ INSERT INTO RolAcc (id_rol,id_accion) VALUES ('7','1');
 INSERT INTO Usuario (nombre,apellido,identificacion,telefono,fechaIngreso,correo,contrasena) VALUES
   ('Erick','Pérez','0912324323','0912344321','2018-12-06','erialper@espol.edu.ec','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918');
 INSERT INTO Usuario (nombre,apellido,identificacion,telefono,fechaIngreso,correo,contrasena) VALUES
-  ('Maribel','Moreno','0922324323','0922344321','2018-12-06','mabemore@espol.edu.ec','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918');
+  ('Maribel','Moreno','0922324323','0922344321','2018-12-06','mabemore@patronato.ec','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918');
 INSERT INTO Usuario (nombre,apellido,identificacion,telefono,fechaIngreso,correo,contrasena) VALUES
   ('Julian','Adams','0950322529','0981262314','2018-12-06','jadams@espol.edu.ec','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918');
 INSERT INTO Usuario (nombre,apellido,identificacion,telefono,fechaIngreso,correo,contrasena) VALUES
-  ('Rosa','Moreno','0923554523','0932674321','2018-12-13','erick94.perez@gmail.com','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918');
+  ('Luis','Tipan','0923254523','0932674321','2018-12-13','ltipan@patronato.com','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918');
+INSERT INTO Usuario (nombre,apellido,identificacion,telefono,fechaIngreso,correo,contrasena) VALUES
+  ('Rosa','Moreno','0924554523','0932674321','2018-12-13','rmoreno@patronato.com','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918');
+INSERT INTO Usuario (nombre,apellido,identificacion,telefono,fechaIngreso,correo,contrasena) VALUES
+  ('Vanesa','Moreno','0623554523','0932674321','2018-12-13','vmoreno@patronato.com','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918');
+INSERT INTO Usuario (nombre,apellido,identificacion,telefono,fechaIngreso,correo,contrasena) VALUES
+  ('Laura','Cruz','0935554523','0932674321','2018-12-13','lcruz@patronato.com','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918');
+INSERT INTO Usuario (nombre,apellido,identificacion,telefono,fechaIngreso,correo,contrasena) VALUES
+  ('Tania','Mite','0943554523','0932674321','2018-12-13','tmite@patronato.com','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918');
+INSERT INTO Usuario (nombre,apellido,identificacion,telefono,fechaIngreso,correo,contrasena) VALUES
+  ('Joaquin','Duarte','0963554523','0932674321','2018-12-13','jduarte@patronato.com','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918');
+INSERT INTO Usuario (nombre,apellido,identificacion,telefono,fechaIngreso,correo,contrasena) VALUES
+  ('Tito','Toledo','0943574523','0932674321','2018-12-13','ttoledo@patronato.com','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918');
+INSERT INTO Usuario (nombre,apellido,identificacion,telefono,fechaIngreso,correo,contrasena) VALUES
+  ('Jose','Manrique','0938554523','0932674321','2018-12-13','jmanrique@patronato.com','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918');
+INSERT INTO Usuario (nombre,apellido,identificacion,telefono,fechaIngreso,correo,contrasena) VALUES
+  ('Tania','Peña','0943559523','0932674321','2018-12-13','tpeña@patronato.com','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918');
+INSERT INTO Usuario (nombre,apellido,identificacion,telefono,fechaIngreso,correo,contrasena) VALUES
+  ('Luz','Guillen','0933524523','0932674321','2018-12-13','lguillen@patronato.com','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918');
 
-INSERT INTO Cargo (id_usuario,id_Rol,id_ProyUni) VALUES ('1','1','3');
-INSERT INTO Cargo (id_usuario,id_Rol,id_ProyUni) VALUES ('2','2','1');
 INSERT INTO Cargo (id_usuario,id_Rol,id_ProyUni) VALUES ('3','1','1');
 INSERT INTO Cargo (id_usuario,id_Rol,id_ProyUni) VALUES ('3','1','2');
-INSERT INTO Cargo (id_usuario,id_Rol,id_ProyUni) VALUES ('3','3','1');
+INSERT INTO Cargo (id_usuario,id_Rol,id_ProyUni) VALUES ('2','2','1');
+INSERT INTO Cargo (id_usuario,id_Rol,id_ProyUni) VALUES ('4','3','1');
+INSERT INTO Cargo (id_usuario,id_Rol,id_ProyUni) VALUES ('5','3','1');
+INSERT INTO Cargo (id_usuario,id_Rol,id_ProyUni) VALUES ('6','4','1');
+INSERT INTO Cargo (id_usuario,id_Rol,id_ProyUni) VALUES ('7','5','1');
+INSERT INTO Cargo (id_usuario,id_Rol,id_ProyUni) VALUES ('8','6','1');
+INSERT INTO Cargo (id_usuario,id_Rol,id_ProyUni) VALUES ('9','7','1');
+INSERT INTO Cargo (id_usuario,id_Rol,id_ProyUni) VALUES ('10','8','1');
+INSERT INTO Cargo (id_usuario,id_Rol,id_ProyUni) VALUES ('11','9','1');
+INSERT INTO Cargo (id_usuario,id_Rol,id_ProyUni) VALUES ('12','7','1');
+INSERT INTO Cargo (id_usuario,id_Rol,id_ProyUni) VALUES ('13','4','1');
 
 INSERT INTO Beneficiario (nombre,apellido,identificacion,direccion,barrio,zona,telefono,fechaNacimiento,
   lugarNacimiento,nacionalidad,grupoCultural,sexo,discapacidad,estadoCivil,empresa,ocupacion,
@@ -682,21 +709,21 @@ INSERT INTO Admision(id_proyUni,id_beneficiario,fechaAdmi) VALUES ('1','2','2018
 INSERT INTO Admision(id_proyUni,id_beneficiario,fechaAdmi) VALUES ('2','3','2018-12-14');
 INSERT INTO Admision(id_proyUni,id_beneficiario,fechaAdmi) VALUES ('2','4','2018-12-14');
 
-INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('1','1','3','07-02-2019','08:30','Pagado');
+INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('2','1','3','07-02-2019','08:30','Pagado');
 INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('2','2','3','07-02-2019','09:30','Convenio');
 INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('4','2','3','07-02-2019','10:30','Convenio');
 INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('3','4','3','07-02-2019','11:30','Pagado');
-INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('1','1','3','07-02-2019','14:00','Pagado');
-INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('1','4','3','07-02-2019','15:00','Convenio');
+INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('2','1','3','07-02-2019','14:00','Pagado');
+INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('2','4','3','07-02-2019','15:00','Convenio');
 INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('2','3','3','07-02-2019','15:15','Pagado');
-INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('1','4','3','07-02-2019','16:00','Grupo Prioritario');
+INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('3','4','3','07-02-2019','16:00','Grupo Prioritario');
 INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('3','1','3','07-02-2019','16:30','Grupo Prioritario');
 INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('3','4','3','08-02-2019','08:30','Pagado');
-INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('1','3','3','08-02-2019','09:30','Pagado');
-INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('1','4','3','08-02-2019','10:30','Convenio');
+INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('3','3','3','08-02-2019','09:30','Pagado');
+INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('3','4','3','08-02-2019','10:30','Convenio');
 INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('4','1','3','08-02-2019','11:30','Convenio');
 INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('4','3','3','08-02-2019','14:00','Convenio');
-INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('1','3','3','08-02-2019','15:00','Convenio');
+INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('4','3','3','08-02-2019','15:00','Convenio');
 INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('3','4','3','08-02-2019','15:15','Pagado');
-INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('1','1','3','08-02-2019','16:00','Grupo Prioritario');
-INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('1','2','3','08-02-2019','16:30','Convenio');
+INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('4','1','3','08-02-2019','16:00','Grupo Prioritario');
+INSERT INTO Atencion (id_servicio,id_beneficiario,id_usuario,fecha,hora,valor) VALUES ('4','2','3','08-02-2019','16:30','Convenio');
