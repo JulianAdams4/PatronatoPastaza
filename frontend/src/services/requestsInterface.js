@@ -142,3 +142,31 @@ export const actualizarBeneficiario = ({ idBeneficiario, data }) => request
   .send({ idBeneficiario, data })
   .ok(res => res.status)
   .timeout(timeout);
+
+export const obtenerReporteBeneficiarios = () => request
+  .get(`/api/beneficiarioSM/reporte/diario`)
+  .set("authorization", getTokenFromStorage())
+  .set("proyuni", getProyUni())
+  .ok(res => res.status)
+  .timeout(timeout);
+
+export const obtenerServicioSM = () => request
+  .get(`/api/citaSM/servicio`)
+  .set("authorization", getTokenFromStorage())
+  .set("proyuni", getProyUni())
+  .ok(res => res.status)
+  .timeout(timeout);
+
+export const obtenerEspecialistas = idServicio => request
+  .get(`/api/citaSM/especialista/${idServicio}`)
+  .set("authorization", getTokenFromStorage())
+  .set("proyuni", getProyUni())
+  .ok(res => res.status)
+  .timeout(timeout);
+
+export const obtenerExoneraciones = () => request
+  .get(`/api/citaSM/exoneracion`)
+  .set("authorization", getTokenFromStorage())
+  .set("proyuni", getProyUni())
+  .ok(res => res.status)
+  .timeout(timeout);

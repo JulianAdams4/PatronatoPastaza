@@ -30,4 +30,6 @@ router.get("/:idBeneficiario", controlador.consultarBeneficiarioPorID);
 
 router.post("/actualizar", controlador.actualizarBeneficiarioSM);
 
+router.get("/reporte/diario", controlador.reporteBeneficiariosSM);
+
 module.exports = router;

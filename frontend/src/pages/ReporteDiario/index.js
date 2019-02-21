@@ -4,7 +4,7 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'moment/locale/es';
-import { obtenerCitasPendientes, marcarAsistenciaCita, eliminarCita, filtrarBeneficiarios } from '../../services/requestsInterface';
+import { obtenerReporteBeneficiarios } from '../../services/requestsInterface';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 import './citaconsulta.scss';
 
@@ -51,7 +51,7 @@ class CitaConsulta extends Component {
               </ul>
                <br />
 
-              <div className="filtros-cita-consulta">
+              {/* <div className="filtros-cita-consulta">
                 <Col md={12} sm={12} xs={12}>
                   <Col md={6} sm={6} xs={12}>
                     <FormGroup >
@@ -100,7 +100,7 @@ class CitaConsulta extends Component {
                     </FormGroup>
                   </Col>
                 </Col>
-              </div>
+              </div> */}
 
               <div className="content">
               <BootstrapTable
@@ -118,6 +118,7 @@ class CitaConsulta extends Component {
                   }}
                   expandableRow={row => row.id  === this.state.rowExpandableId}
                   expandComponent={this.expandComponent}
+                  exportCSV={ true }
                   options={options}>
                   <TableHeaderColumn
                     dataField='id'
@@ -146,12 +147,6 @@ class CitaConsulta extends Component {
                     dataSort>
                     Identificación
                   </TableHeaderColumn>
-
-                  <TableHeaderColumn
-                    dataField='edad'
-                    dataSort>
-                    Edad
-                  </TableHeaderColumn>
                   <TableHeaderColumn
                     dataField='sexo'
                     dataSort>
@@ -162,7 +157,6 @@ class CitaConsulta extends Component {
                     dataSort>
                     Grupo Cultural
                   </TableHeaderColumn>
-
                   <TableHeaderColumn
                     dataField='canton'
                     dataSort>
@@ -178,7 +172,6 @@ class CitaConsulta extends Component {
                     dataSort>
                     Barrio
                   </TableHeaderColumn>
-
                   <TableHeaderColumn
                     className="hidden-xs"
                     columnClassName="hidden-xs"
@@ -202,12 +195,10 @@ class CitaConsulta extends Component {
   }
 
   cargarBeneficiariosCentroMedico = async () => {
-    const { body } = await filtrarBeneficiarios({
-      nombre: '',
-      apellido: '',
-      identificacion: ''
-    });
-    this.setState({ data: body.data });
+    const { status, body } = await obtenerReporteBeneficiarios();
+    if (status === 200) {
+      this.setState({ data: body.data });
+    }
     await this.cargarServicios();
   };
 
@@ -227,16 +218,13 @@ class CitaConsulta extends Component {
   onChangeEspecialidad = ev => {
     const id_servicio = ev.target.value;
     this.setState({ id_servicio }, async () => {
-      const { id_servicio, fecha } = this.state;
-      await this.cargarCitasPendientes({ id_servicio, fecha });
+      await this.cargarBeneficiariosCentroMedico();
     });
   };
 
   onChangeFechaConsulta = params => {
     this.setState({ fecha: params }, async () => {
-      const { id_servicio, fecha } = this.state;
-      const parsed = fecha.format(momentFormatDate);
-      await this.cargarCitasPendientes({ id_servicio, fecha: parsed });
+      await this.cargarBeneficiariosCentroMedico();
     });
   }
 

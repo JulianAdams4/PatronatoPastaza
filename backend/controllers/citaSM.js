@@ -95,7 +95,7 @@ const consultarServiciosSM = (req, res) => {
     .join("rol","cargo.id_rol","rol.id")
     .join("servicio","rol.id_servicio","servicio.id")
     .where({
-      id_usuario: req.body.id_usuario,
+      id_usuario: 3,
       "cargo.id_proyuni": id_proyuni
     })
     .then(async collection => {

@@ -502,6 +502,63 @@ const consultarBeneficiarioPorID = (req, res) => {
     });
 };
 
+
+
+/*------------------
+   Get by param:
+   - ProyUni
+--------------------*/
+const reporteBeneficiariosSM = (req, res) => {
+  return db
+    .select(
+      "beneficiario.nombre",
+      "beneficiario.apellido",
+      "beneficiario.identificacion",
+      "beneficiario.telefono",
+      "beneficiario.direccion",
+      "beneficiario.barrio",
+      "parroquia.nombre as parroquia",
+      "canton.nombre as canton",
+      "provincia.nombre as provincia",
+      "beneficiario.zona",
+      "beneficiario.fechanacimiento",
+      "beneficiario.lugarnacimiento",
+      "beneficiario.nacionalidad",
+      "beneficiario.grupocultural",
+      "beneficiario.sexo",
+      "beneficiario.estadocivil",
+      "beneficiario.instruccion",
+      "beneficiario.ocupacion",
+      "beneficiario.empresa",
+      "beneficiario.seguro",
+      "beneficiario.referido",
+      "atencion.valor as tipoExoneracion",
+      "admision.fechaadmi as fechaAdmision"
+    )
+    .from("beneficiario")
+    .join("admision", "beneficiario.id", "admision.id_beneficiario")
+    .join("atencion", "beneficiario.id", "atencion.id_beneficiario")
+    .join("parroquia","beneficiario.id_parroquia","parroquia.id")
+    .join("canton","canton.id","parroquia.id_canton")
+    .join("provincia","provincia.id","canton.id_provincia")
+    .join("servicio","servicio.id","atencion.id_servicio")
+    .where("servicio.id_proyuni", req.headers["proyuni"])
+    .then((collection) => {
+      return res.status(200).json({
+        error: false,
+        data: collection
+      });
+    })
+    .catch((err) => {
+      return res.status(500).json({
+        error: true,
+        data:{ message:err.message }
+      });
+    });
+};
+
+
+
 module.exports = {
   ingresarBeneficiarioSM,
   consultarBeneficiarioSM,
@@ -516,5 +573,6 @@ module.exports = {
   consultarInstruccion,
   consultarParentesco,
   consultarBeneficiarioPorID,
-  actualizarBeneficiarioSM
+  actualizarBeneficiarioSM,
+  reporteBeneficiariosSM
 };

@@ -4,7 +4,7 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'moment/locale/es';
-import { obtenerCitasPendientes, marcarAsistenciaCita, eliminarCita } from '../../services/requestsInterface';
+import { obtenerCitasPendientes, marcarAsistenciaCita, eliminarCita, obtenerServicioSM } from '../../services/requestsInterface';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 import './citaconsulta.scss';
 
@@ -70,7 +70,7 @@ class CitaConsulta extends Component {
                           { this.state.servicios.length && (
                             this.state.servicios.map((serv, index) => (
                               <option key={index} value={`${serv.id}`}>
-                                {serv.nombre}
+                                {serv.tipo}
                               </option>
                             ))
                           )}
@@ -258,16 +258,11 @@ class CitaConsulta extends Component {
   }
 
   cargarServicios = async () => {
-    const servicios = [
-      { id: 1, nombre: 'Medicina general' },
-      { id: 2, nombre: 'Odontologia' },
-      { id: 3, nombre: 'Hidroterapia' },
-      { id: 4, nombre: 'Equinoterapia' }
-    ];
+    const { body } = await obtenerServicioSM();
     this.setState({
-      servicios,
-      especialidad: servicios[0] ? servicios[0].id : null
-    })
+      servicios: body.data,
+      especialidad: body.data[0] ? body.data[0].id : null
+    });
   }
 
   onChangeEspecialidad = ev => {

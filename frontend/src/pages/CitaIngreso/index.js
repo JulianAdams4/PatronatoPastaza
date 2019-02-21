@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Col, ControlLabel, Form, FormGroup, FormControl } from 'react-bootstrap';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
-import { filtrarBeneficiarios, crearCita } from '../../services/requestsInterface';
+import { filtrarBeneficiarios, crearCita, obtenerServicioSM, obtenerExoneraciones, obtenerEspecialistas } from '../../services/requestsInterface';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'moment/locale/es';
@@ -41,30 +41,14 @@ class CitaConsulta extends Component {
     );
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    const { body } = await obtenerServicioSM();
     this.setState({
-      serviciosDisponibles: [
-        { id: 1, nombre: "Medicina General" },
-        { id: 2, nombre: "Odontología" },
-        { id: 3, nombre: "Terapia de Lenguaje" },
-        { id: 4, nombre: "Terapia Física" },
-        { id: 5, nombre: "Psicología" },
-        { id: 6, nombre: "Equinoterapia" },
-        { id: 7, nombre: "Estimulación Temprana" }
-      ],
-      especialistasDisponibles: [
-        { id: 1, nombre: 'Especialista 1' },
-        { id: 2, nombre: 'Especialista 2' },
-        { id: 3, nombre: 'Especialista 3' },
-        { id: 4, nombre: 'Especialista 4' }
-      ],
-      tiposExoneraciones: [
-        { id: 1, nombre: 'Pagado' },
-        { id: 2, nombre: 'Proyecto' },
-        { id: 3, nombre: 'Convenio' },
-        { id: 4, nombre: 'Grupo prioritario' }
-      ]
-    })
+      serviciosDisponibles: body.data
+    }, async () => {
+      const { body } = await obtenerExoneraciones();
+      this.setState({ tiposExoneraciones: body.data, especialistasDisponibles: [] });
+    });
   }
 
   renderTitulo = () => (
@@ -166,7 +150,7 @@ class CitaConsulta extends Component {
                     { this.state.serviciosDisponibles.length && (
                       this.state.serviciosDisponibles.map((serv, index) => (
                         <option key={index} value={`${serv.id}`}>
-                          {serv.nombre}
+                          {serv.tipo}
                         </option>
                       ))
                     )}
@@ -305,7 +289,12 @@ class CitaConsulta extends Component {
   handleChange = ev => {
     const value = ev.target.value;
     const name = ev.target.name;
-    this.setState({ [name]: value });
+    this.setState({ [name]: value }, async () => {
+      if (name === 'id_servicio') {
+        const { body } = await obtenerEspecialistas(value);
+        this.setState({ especialistasDisponibles: body.data });
+      }
+    });
   }
 
   submit = async () => {
@@ -313,8 +302,8 @@ class CitaConsulta extends Component {
       id_servicio: this.state.id_servicio,
       id_beneficiario: this.state.pacienteSeleccionado.id,
       id_usuario: 3,
-      fecha: this.state.fecha,
-      hora: this.state.hora,
+      fecha: this.state.fecha.format('DD-MM-YYYY'),
+      hora: this.state.hora.format('hh:mm'),
       valor: this.state.valor
     });
   };
