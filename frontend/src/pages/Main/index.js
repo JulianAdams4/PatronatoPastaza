@@ -21,6 +21,8 @@ import PacienteConsulta from '../PacienteConsulta';
 import CitaIngreso from '../CitaIngreso';
 import CitaConsulta from '../CitaConsulta';
 
+import ReporteDiario from '../ReporteDiario';
+
 const Main = ({
   mobileNavVisibility,
   hideMobileMenu,
@@ -50,6 +52,8 @@ const Main = ({
             <Route path="/pacientes/editar/:historia" component={PacienteIngreso} />
             <Route path="/citas/ingreso" component={CitaIngreso} />
             <Route path="/citas/consulta" component={CitaConsulta} />
+            <Route path="/reportes/diario" component={ReporteDiario} />
+
             <Route exact path="/usuario/cerrarSesion" component={CerrarSesion} />
 
             {/* Default */}

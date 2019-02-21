@@ -1,0 +1,44 @@
+#contenido-cita-consulta {
+  height: 98%;
+  padding: 1% 5%;
+  display: flex;
+  flex-direction: column;
+
+  .titulo {
+    margin-bottom: 1%;
+    border-bottom: 1px solid #d3d3d3;
+  }
+
+  ul {
+    margin-bottom: 2%;
+  }
+
+  .content {
+    margin-top: 7%;
+  }
+
+  .table.table-striped {
+    tr {
+      cursor: pointer;
+      &:hover {
+        background-color: rgba($color: #e9f5f9, $alpha: 0.5)
+      }
+    }
+
+    td {
+      &:focus {
+        outline: none !important;
+      }
+    }
+  }
+
+  .row-expanded {
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 140px;
+    width: 100%;
+    // overflow-x: scroll;
+  }
+}

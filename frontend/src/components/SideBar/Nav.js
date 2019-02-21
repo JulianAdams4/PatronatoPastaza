@@ -7,7 +7,8 @@ class Nav extends Component {
 
   state = {
     isOpenPacientes: true,
-    isOpenCitas: false
+    isOpenCitas: false,
+    isOpenReportes: false
   };
 
   render() {
@@ -60,6 +61,24 @@ class Nav extends Component {
             </div>
           </Collapse>
         </li>
+        <div className="line"><hr /></div>
+
+        <li className={this.isPathActive('/reportes') || this.state.isOpenReportes ? 'active' : null}>
+          <a onClick={() => this.setState({ isOpenReportes: !this.state.isOpenReportes })} data-toggle="collapse">
+            <i className="pe-7s-note2"></i>
+            <p>Reportes <b className="caret"></b></p>
+          </a>
+          <Collapse in={this.state.isOpenReportes}>
+            <div>
+              <ul className="nav">
+                <li className={this.isPathActive('/reportes/diario') ? 'active' : null}>
+                  <Link to="/reportes/diario">Reporte diario</Link>
+                </li>
+              </ul>
+            </div>
+          </Collapse>
+        </li>
+        <div className="line"><hr /></div>
       </ul>
     );
   }
