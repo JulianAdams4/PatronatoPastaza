@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import StepZilla from "react-stepzilla";
 import DatosGenerales from './DatosGenerales';
 import Procedencia from './Procedencia';
@@ -22,6 +23,8 @@ class IngresoPaciente extends Component {
     this.state = {
       isEdit: false,
       editId: '',
+      shouldRedirect: false,
+      redirectTo: '',
       tituloSeccion: '',
       datosGenerales: {
         nombre: '',
@@ -63,6 +66,12 @@ class IngresoPaciente extends Component {
   }
 
   render() {
+    if (this.state.shouldRedirect) {
+      return (
+        <Redirect to={this.state.redirectTo} />
+      );
+    }
+
     return (
       <div className="content">
         <div className="container-fluid">
@@ -133,8 +142,8 @@ class IngresoPaciente extends Component {
                   preventEnterSubmission={true}
                   nextButtonText={"Siguiente"}
                   backButtonText={"Atrás"}
-                  nextButtonCls={"btn btn-prev btn-lg pull-right boton-prev"}
-                  backButtonCls={"btn btn-next btn-lg pull-left boton-next"}
+                  nextButtonCls={`btn btn-prev btn-lg pull-right boton-prev ${this.state.disableAll ? 'disabled' : ''}`}
+                  backButtonCls={`btn btn-next btn-lg pull-left boton-next ${this.state.disableAll ? 'disabled' : ''}`}
                   hocValidationAppliedTo={[0, 1, 2, 3]}
                   nextTextOnFinalActionStep="Guardar"
                 />
@@ -149,9 +158,16 @@ class IngresoPaciente extends Component {
   async componentDidMount() {
     if (this.props.match.params.historia) {
       const id = this.props.match.params.historia;
-      const { status, body } = await obtenerBeneficiarioPorId(id)
+      const { status, body } = await obtenerBeneficiarioPorId(id);
       if (status === 200) {
         const [infoPaciente] = body.data;
+        if (!infoPaciente) {
+          this.setState({
+            shouldRedirect: true,
+            redirectTo: '/pacientes/consulta'
+          });
+          return;
+        }
         const datosGenerales = {
           nombre: infoPaciente.nombre,
           apellido: infoPaciente.apellido,

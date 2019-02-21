@@ -1,5 +1,5 @@
 import request from "superagent";
-import { getTokenFromStorage } from "./../utils/storage";
+import { getTokenFromStorage, getProyUni } from "./../utils/storage";
 
 const timeout = {
   response: 20000,
@@ -53,6 +53,7 @@ export const obtenerBeneficiarios = ({ nombre, apellido, identificacion }) => re
 export const filtrarBeneficiarios = ({ nombre, apellido, identificacion }) => request
   .post("/api/beneficiarioSM/filtrar")
   .set("authorization", getTokenFromStorage())
+  .set("proyuni", getProyUni())
   .send({ nombre, apellido, identificacion })
   .ok(res => res.status)
   .timeout(timeout);
@@ -60,6 +61,7 @@ export const filtrarBeneficiarios = ({ nombre, apellido, identificacion }) => re
 export const ingresarBeneficiario = params => request
   .post("/api/beneficiarioSM/crear")
   .set("authorization", getTokenFromStorage())
+  .set("proyuni", getProyUni())
   .send(params)
   .ok(res => res.status)
   .timeout(timeout);

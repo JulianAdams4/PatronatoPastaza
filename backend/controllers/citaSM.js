@@ -88,6 +88,7 @@ const consultarEspecialista = (req, res) => {
 };
 
 const consultarServiciosSM = (req, res) => {
+  const id_proyuni = req.headers["proyuni"];
   return db
     .select("servicio.id","tipo")
     .from("cargo")
@@ -95,12 +96,12 @@ const consultarServiciosSM = (req, res) => {
     .join("servicio","rol.id_servicio","servicio.id")
     .where({
       id_usuario: req.body.id_usuario,
-      "cargo.id_proyuni": 1
+      "cargo.id_proyuni": id_proyuni
     })
-    .then(function(collection){
+    .then(async collection => {
       if(collection[0].id==1){
-        db.select("id","tipo").from("servicio")
-          .where("id_proyuni",1)
+        await db.select("id","tipo").from("servicio")
+          .where("id_proyuni", id_proyuni)
           .whereNot("id",1)
           .then(collection2 => {
             return res.status(200).json({
@@ -115,18 +116,16 @@ const consultarServiciosSM = (req, res) => {
             });
           });
       }else{
-        res.status(200).json({
+        return res.status(200).json({
           error: false,
           data: collection
         });
       }
     })
     .catch(function(err){
-      res.status(500).json({
+      return res.status(500).json({
         error: true,
-        data:{
-          message:err.message
-        }
+        data:{ message: err.message }
       });
     });
 };

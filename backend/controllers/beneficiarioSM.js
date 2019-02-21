@@ -21,6 +21,7 @@ const ingresarBeneficiarioSM = async (req, res) => {
   const tieneResNombre =  req.body.resNombre !== "";
   const tieneResApellido =  req.body.resApellido !== "";
   const tieneResParentezco =  req.body.resParentesco !== "";
+  const tieneIdParroquia = req.body.id_parroquia !== "";
 
   const tieneTodosLosCamposObligatorios = [
     tieneNombres,
@@ -38,7 +39,8 @@ const ingresarBeneficiarioSM = async (req, res) => {
     tieneOcupacion,
     tieneResNombre,
     tieneResApellido,
-    tieneResParentezco
+    tieneResParentezco,
+    tieneIdParroquia
   ];
   if (tieneTodosLosCamposObligatorios.includes(false)) {
     return res.status(422).json({
@@ -60,7 +62,7 @@ const ingresarBeneficiarioSM = async (req, res) => {
       sexo: req.body.sexo,
       telefono: req.body.telefono,
       direccion: req.body.direccion,
-      id_parroquia: req.body.parroquia,
+      id_parroquia: req.body.id_parroquia,
       zona: req.body.zona,
       barrio: req.body.barrio,
       instruccion: req.body.instruccion,
@@ -92,7 +94,7 @@ const ingresarBeneficiarioSM = async (req, res) => {
     }
 
     const [idAdmision] = await trx("admision").insert({
-      id_proyuni: "1", // !!!!
+      id_proyuni: req.headers["proyuni"],
       id_beneficiario: idBeneficiario,
       fechaadmi: moment().format("YYYY-MM-DD")
     }).returning("id");
@@ -242,7 +244,7 @@ const filtrarBeneficiarioSM = (req, res) => {
         qb.orWhere("identificacion", "like", `%${req.body.identificacion}%`);
       }
     })
-    .andWhere("id_proyuni", 1)
+    .andWhere("id_proyuni", req.headers["proyuni"])
     .then((collection) => {
       return res.status(200).json({
         error: false,
@@ -283,13 +285,13 @@ const filtrarBeneficiario = (req, res) => {
         qb.orWhere("identificacion", "like", `%${req.body.identificacion}%`);
       }
     })
-    .then(function(collection){
+    .then(collection => {
       return res.status(200).json({
         error: false,
         data: collection
       });
     })
-    .catch((err) => {
+    .catch(err => {
       return res.status(500).json({
         error: true,
         data:{ message: err.message }

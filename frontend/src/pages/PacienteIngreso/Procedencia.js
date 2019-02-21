@@ -225,7 +225,6 @@ class Procedencia extends Component {
   }
 
   async componentDidMount() {
-    console.log("Es create");
     const { status, body } = await getProvincias();
     if (status === 200) {
       this.setState({ allProvincias: body.data });
