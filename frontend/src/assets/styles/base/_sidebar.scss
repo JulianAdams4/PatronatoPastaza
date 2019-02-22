@@ -241,11 +241,11 @@ a {
 
 @media (max-width: 992px) {
   .main-panel {
-    zoom: 1;
+    zoom: 0.9;
     > .content {
       padding: 10px;
       > .container-fluid {
-        padding: 0px;
+        padding: 0px;;
       }
     }
   }
@@ -279,6 +279,7 @@ a {
     }
     .sidebar {
       transform: translateX(0);
+      overflow-y: auto;
     }
     .close-layer {
       opacity: 1;

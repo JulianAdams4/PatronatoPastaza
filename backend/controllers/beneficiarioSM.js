@@ -269,43 +269,43 @@ const filtrarBeneficiarioSM = (req, res) => {
 const filtrarBeneficiario = (req, res) => {
   const id_proyuni = req.headers["proyuni"];
   return db
-      .select(
-        "beneficiario.id",
-        "nombre",
-        "apellido",
-        "identificacion",
-        "telefono"
-      )
-      .from("beneficiario")
-      .join(
-        "admision",
-        "beneficiario.id",
-        "admision.id_beneficiario"
-      )
-      .where((qb) => {
-        if ( req.body.nombre !== "" ) {
-          qb.where("nombre", "like", `%${req.body.nombre}%`);
-        }
-        if ( req.body.apellido !== "" ) {
-          qb.orWhere("apellido", "like", `%${req.body.apellido}%`);
-        }
-        if ( req.body.identificacion !== "" ) {
-          qb.orWhere("identificacion", "like", `%${req.body.identificacion}%`);
-        }
-      })
-      .whereNot("id_proyuni", req.headers["proyuni"])
-      .then(collection => {
-        return res.status(200).json({
-          error: false,
-          data: collection
-        });
-      })
-      .catch(err => {
-        return res.status(500).json({
-          error: true,
-          data:{ message: err.message }
-        });
+    .select(
+      "beneficiario.id",
+      "nombre",
+      "apellido",
+      "identificacion",
+      "telefono"
+    )
+    .from("beneficiario")
+    .join(
+      "admision",
+      "beneficiario.id",
+      "admision.id_beneficiario"
+    )
+    .where((qb) => {
+      if ( req.body.nombre !== "" ) {
+        qb.where("nombre", "like", `%${req.body.nombre}%`);
+      }
+      if ( req.body.apellido !== "" ) {
+        qb.orWhere("apellido", "like", `%${req.body.apellido}%`);
+      }
+      if ( req.body.identificacion !== "" ) {
+        qb.orWhere("identificacion", "like", `%${req.body.identificacion}%`);
+      }
+    })
+    .whereNot("id_proyuni", id_proyuni)
+    .then(collection => {
+      return res.status(200).json({
+        error: false,
+        data: collection
       });
+    })
+    .catch(err => {
+      return res.status(500).json({
+        error: true,
+        data:{ message: err.message }
+      });
+    });
 };
 
 /*------------------
@@ -518,6 +518,10 @@ const consultarBeneficiarioPorID = (req, res) => {
    - ProyUni
 --------------------*/
 const reporteBeneficiariosSM = (req, res) => {
+  console.log(
+    req.headers["fechareporte"],
+    req.headers["idservicio"]
+  )
   return db
     .select(
       "beneficiario.nombre",
@@ -551,7 +555,10 @@ const reporteBeneficiariosSM = (req, res) => {
     .join("canton","canton.id","parroquia.id_canton")
     .join("provincia","provincia.id","canton.id_provincia")
     .join("servicio","servicio.id","atencion.id_servicio")
-    .where("servicio.id_proyuni", req.headers["proyuni"])
+    .andWhere("admision.fechaadmi", req.headers["fechareporte"])
+    .orWhere("atencion.fecha", req.headers["fechareporte"])
+    .andWhere("servicio.id", req.headers["idservicio"])
+    .andWhere("servicio.id_proyuni", req.headers["proyuni"])
     .then((collection) => {
       return res.status(200).json({
         error: false,

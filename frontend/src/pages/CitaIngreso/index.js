@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import { Col, ControlLabel, Form, FormGroup, FormControl } from 'react-bootstrap';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import { filtrarBeneficiarios, crearCita, obtenerServicioSM, obtenerExoneraciones, obtenerEspecialistas } from '../../services/requestsInterface';
@@ -20,11 +21,19 @@ class CitaConsulta extends Component {
       hora: moment(),
       id_servicio: '',
       id_usuario: '',
-      valor: ''
+      valor: '',
+
+      shouldRedirect: false,
+      redirectTo: ''
     };
   }
 
   render() {
+    if (this.state.shouldRedirect) {
+      return (
+        <Redirect to={this.state.redirectTo} />
+      );
+    }
     return (
       <div className="content">
         <div id="contenido-cita-ingreso" className="container-fluid">
@@ -133,7 +142,7 @@ class CitaConsulta extends Component {
 
   renderFormCita = () => {
     return this.state.pacienteSeleccionado ? (
-      <Form horizontal autoComplete="off">
+      <div>
             <div className="form-fieldset">
               <FormGroup>
                 <Col componentClass={ControlLabel} lg={4} md={4} xs={12}>
@@ -192,8 +201,7 @@ class CitaConsulta extends Component {
                   name="fecha"
                   locale="es"
                   selected={this.state.fecha}
-                  value={this.state.fecha.format(momentFormatDate)}
-                  onChange={this.onChangleFecha}
+                  onChange={this.handleChangeDate}
                   showYearDropdown
                   showMonthDropdown
                   showDayDropdown
@@ -215,7 +223,7 @@ class CitaConsulta extends Component {
                   locale="es"
                   selected={this.state.hora}
                   value={this.state.hora.format('hh:mm')}
-                  onChange={this.onChangeHora}
+                  onChange={this.handleChangeHour}
                   showTimeSelect
                   showTimeSelectOnly
                   placeholderText="Ingrese hora"
@@ -249,18 +257,24 @@ class CitaConsulta extends Component {
                   </FormControl>
                 </Col>
 
-                <Col lg={12} md={12} xs={12} style={{ display: 'flex', flexDirection: 'column', marginTop: '5%' }} >
-                  <button
-                    id="guardar-cita-btn"
-                    className="btn btn-prev btn-lg" onClick={this.submit}
-                  >
-                    Guardar
-                  </button>
-                </Col>
-
               </FormGroup>
             </div>
-      </Form>
+            <Col lg={12} md={12} xs={12}
+              style={{
+                display: 'flex', 
+                flexDirection: 'column',
+                marginTop: '5%',
+                marginBottom: "70px"
+              }}
+            >
+              <button
+                id="guardar-cita-btn"
+                className="btn btn-prev btn-lg" onClick={this.enviarForm}
+              >
+                Guardar
+              </button>
+            </Col>
+      </div>
     ) : null;
   };
 
@@ -300,8 +314,16 @@ class CitaConsulta extends Component {
     });
   }
 
-  submit = async () => {
-    await crearCita({
+  handleChangeDate = (params) => {
+    this.setState({ fecha: params });
+  };
+
+  handleChangeHour = (params) => {
+    this.setState({ hora: params });
+  };
+
+  enviarForm = async () => {
+    const { status } = await crearCita({
       id_servicio: this.state.id_servicio,
       id_beneficiario: this.state.pacienteSeleccionado.id,
       id_usuario: this.state.id_usuario,
@@ -309,6 +331,12 @@ class CitaConsulta extends Component {
       hora: this.state.hora.format('hh:mm'),
       valor: this.state.valor
     });
+    if (status === 200) {
+      this.setState({
+        shouldRedirect: true,
+        redirectTo: '/pacientes/consulta'
+      })
+    }
   };
 }
 

@@ -1,11 +1,14 @@
 #seleccionProyecto {
   margin: 0 auto;
+  height: 100%;
 
   &.container {
     padding: 25px;
     background-color: #fff;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
+    height: 100%;
   }
 
   > .button-container {
@@ -37,6 +40,7 @@
     padding-top: 70px;
     align-items: center;
     justify-content: center;
+    margin-bottom: 50px;
 
     .titulo {
       font-size: 40px;

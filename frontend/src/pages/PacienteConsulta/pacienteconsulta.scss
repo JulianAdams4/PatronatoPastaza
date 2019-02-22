@@ -55,6 +55,11 @@
     flex-wrap: wrap;
     height: 140px;
     width: 100%;
-    // overflow-x: scroll;
+  }
+}
+
+@media (max-width: 992px) {
+  .row-expanded {
+    height: auto !important;
   }
 }

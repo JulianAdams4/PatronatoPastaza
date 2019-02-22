@@ -29,7 +29,7 @@ class SeleccionProyecto extends Component {
     }
 
     return (
-      <div id="seleccionProyecto" className="container">
+      <div id="seleccionProyecto" className="container" style={{ height: '100%' }} >
         {this.renderButtonCerrarSesion()}
 
         <div className="proyectos-container">

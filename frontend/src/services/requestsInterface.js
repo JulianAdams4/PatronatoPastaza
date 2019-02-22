@@ -143,9 +143,11 @@ export const actualizarBeneficiario = ({ idBeneficiario, data }) => request
   .ok(res => res.status)
   .timeout(timeout);
 
-export const obtenerReporteBeneficiarios = () => request
+export const obtenerReporteBeneficiarios = (fecha, servicio) => request
   .get(`/api/beneficiarioSM/reporte/diario`)
   .set("authorization", getTokenFromStorage())
+  .set("idservicio", servicio)
+  .set("fechareporte", fecha)
   .set("proyuni", getProyUni())
   .ok(res => res.status)
   .timeout(timeout);

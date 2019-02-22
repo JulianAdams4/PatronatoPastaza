@@ -99,8 +99,6 @@ class PacienteConsulta extends Component {
                     Apellidos
                   </TableHeaderColumn>
                   <TableHeaderColumn
-                    className="hidden-xs"
-                    columnClassName="hidden-xs"
                     dataField='identificacion'
                     dataAlign='center'
                     headerAlign='center'
@@ -109,12 +107,11 @@ class PacienteConsulta extends Component {
                       type: 'TextFilter',
                       placeholder: 'Filtrar por identificación'
                     }}
+                    width="auto"
                     dataSort>
                     Identificación
                   </TableHeaderColumn>
                   <TableHeaderColumn
-                    className="hidden-xs"
-                    columnClassName="hidden-xs"
                     dataField='telefono'
                     dataAlign='center'
                     headerAlign='center'

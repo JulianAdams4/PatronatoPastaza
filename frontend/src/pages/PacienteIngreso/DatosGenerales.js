@@ -211,6 +211,7 @@ class DatosGenerales extends Component {
               dateFormatCalendar="MMMM"
               placeholderText="Ingrese una fecha"
               dropdownMode="select"
+              withPortal
             />
              {this.state.fechaNacimientoError === 'error'
                 ? this.props.getValidationMessages('fechaNacimiento').map(this.renderHelpText)
@@ -237,7 +238,7 @@ class DatosGenerales extends Component {
                 onChange={this.handleChange}
                 required
               >
-                <option value="" disabled>Seleccione un estado</option>
+                <option value="">Seleccione un estado</option>
                 { this.state.allEstadosCiviles.length && (
                   this.state.allEstadosCiviles.map((estCiv, index) => (
                     <option key={index} value={`${estCiv.nombre}`}>

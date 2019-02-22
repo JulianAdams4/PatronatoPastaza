@@ -4,7 +4,7 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'moment/locale/es';
-import { obtenerReporteBeneficiarios } from '../../services/requestsInterface';
+import { obtenerReporteBeneficiarios, obtenerServicioSM } from '../../services/requestsInterface';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 import './citaconsulta.scss';
 
@@ -17,8 +17,7 @@ class CitaConsulta extends Component {
       data: [],
       servicios: [],
       fecha: moment(),
-      id_servicio: 1,
-      rowExpandableId: null
+      id_servicio: 1
     };
   }
 
@@ -31,14 +30,12 @@ class CitaConsulta extends Component {
       firstPage: 'Primera',
       lastPage: 'Última',
       noDataText: 'No hay registros',
-      hideSizePerPage: true,
-      expandRowBgColor: '#e9f5f9',
-      expandBy: 'column'
+      hideSizePerPage: true
     };
 
     return (
       <div className="content">
-        <div id="contenido-cita-consulta" className="container-fluid">
+        <div id="contenido-reporte-diario" className="container-fluid">
           <div className="row">
             <div className="col-md-12">
               <div className="titulo">
@@ -51,7 +48,7 @@ class CitaConsulta extends Component {
               </ul>
                <br />
 
-              {/* <div className="filtros-cita-consulta">
+              <div className="filtros-cita-consulta">
                 <Col md={12} sm={12} xs={12}>
                   <Col md={6} sm={6} xs={12}>
                     <FormGroup >
@@ -68,7 +65,7 @@ class CitaConsulta extends Component {
                           { this.state.servicios.length && (
                             this.state.servicios.map((serv, index) => (
                               <option key={index} value={`${serv.id}`}>
-                                {serv.nombre}
+                                {serv.tipo}
                               </option>
                             ))
                           )}
@@ -100,7 +97,7 @@ class CitaConsulta extends Component {
                     </FormGroup>
                   </Col>
                 </Col>
-              </div> */}
+              </div>
 
               <div className="content">
               <BootstrapTable
@@ -108,67 +105,104 @@ class CitaConsulta extends Component {
                   bordered={false}
                   striped
                   pagination={true}
-                  selectRow={{
-                    mode: 'radio',
-                    bgColor: '#e9f5f9',
-                    clickToSelect: true,
-                    clickToExpand: true,
-                    hideSelectColumn: true,
-                    onSelect: this.handleRowSelect
-                  }}
-                  expandableRow={row => row.id  === this.state.rowExpandableId}
-                  expandComponent={this.expandComponent}
                   exportCSV={ true }
                   options={options}>
                   <TableHeaderColumn
-                    dataField='id'
+                    dataField="any"
+                    dataFormat={this.generarIndex}
                     dataAlign='center'
                     headerAlign='center'
-                    isKey
-                    dataSort>
+                    width="4%"
+                    isKey={true}
+                  >
                     #
                   </TableHeaderColumn>
                   <TableHeaderColumn
+                    dataAlign='center'
                     dataField='apellido'
+                    width="auto"
+                    csvHeader='Apellido'
                     dataSort>
                     Apellido
                   </TableHeaderColumn>
                   <TableHeaderColumn
+                    dataAlign='center'
                     dataField='nombre'
+                    width="auto"
+                    csvHeader='Nombre'
                     dataSort>
                     Nombre
                   </TableHeaderColumn>
                   <TableHeaderColumn
-                    className="hidden-xs"
-                    columnClassName="hidden-xs"
                     dataField='identificacion'
                     dataAlign='center'
                     headerAlign='center'
+                    width="auto"
+                    csvHeader='Identificación'
                     dataSort>
                     Identificación
                   </TableHeaderColumn>
                   <TableHeaderColumn
+                    dataField='fechanacimiento'
+                    dataAlign='center'
+                    headerAlign='center'
+                    dataFormat={this.obtenerEdad}
+                    width="auto"
+                    csvHeader='Edad'
+                    csvFormat={this.obtenerEdad}
+                    dataSort>
+                    Edad
+                  </TableHeaderColumn>
+                  <TableHeaderColumn
+                    className="hidden-xs hidden-sm"
+                    columnClassName="hidden-xs hidden-sm"
+                    dataAlign='center'
                     dataField='sexo'
+                    csvHeader='Sexo'
                     dataSort>
                     Sexo
                   </TableHeaderColumn>
                   <TableHeaderColumn
+                    className="hidden-lg hidden-md"
+                    columnClassName="hidden-lg hidden-md"
+                    dataAlign='center'
+                    dataField='sexo'
+                    csvHeader='Sexo'
+                    dataFormat={(cell, row) => {
+                      return row.sexo.slice(0,1);
+                    }}
+                    dataSort>
+                    Sexo
+                  </TableHeaderColumn>
+                  <TableHeaderColumn
+                    dataAlign='center'
                     dataField='grupocultural'
+                    width="auto"
+                    csvHeader='Grupo Cultural'
                     dataSort>
                     Grupo Cultural
                   </TableHeaderColumn>
                   <TableHeaderColumn
+                    dataAlign='center'
                     dataField='canton'
+                    width="auto"
+                    csvHeader='Cantón'
                     dataSort>
                     Canton
                   </TableHeaderColumn>
                   <TableHeaderColumn
+                    dataAlign='center'
                     dataField='parroquia'
+                    width="auto"
+                    csvHeader='Parroquia'
                     dataSort>
                     Parroquia
                   </TableHeaderColumn>
                   <TableHeaderColumn
+                    dataAlign='center'
                     dataField='barrio'
+                    width="auto"
+                    csvHeader='Barrio'
                     dataSort>
                     Barrio
                   </TableHeaderColumn>
@@ -178,7 +212,9 @@ class CitaConsulta extends Component {
                     dataField='tipoExoneracion'
                     dataAlign='center'
                     headerAlign='center'
-                    >
+                    csvHeader='Exoneracióñ'
+                    width="auto"
+                  >
                     Exoneración
                   </TableHeaderColumn>
                 </BootstrapTable>
@@ -191,11 +227,23 @@ class CitaConsulta extends Component {
   }
 
   async componentDidMount() {
-    await this.cargarBeneficiariosCentroMedico();
+    const fechareporte = this.state.fecha.format("YYYY-MM-DD");
+    const idservicio = this.state.id_servicio;
+    await this.cargarBeneficiariosCentroMedico(fechareporte, idservicio);
   }
 
-  cargarBeneficiariosCentroMedico = async () => {
-    const { status, body } = await obtenerReporteBeneficiarios();
+  generarIndex = (cell, row, enumObject, index) => {
+    return (<div>{index+1}</div>)
+  }
+
+  obtenerEdad = (cell, rowData) => {
+    const hoy = moment();
+    const fecha = moment(rowData.fechanacimiento);
+    return hoy.diff(fecha, 'year');
+  }
+
+  cargarBeneficiariosCentroMedico = async (fecha, servicio) => {
+    const { status, body } = await obtenerReporteBeneficiarios(fecha, servicio);
     if (status === 200) {
       this.setState({ data: body.data });
     }
@@ -203,52 +251,25 @@ class CitaConsulta extends Component {
   };
 
   cargarServicios = async () => {
-    const servicios = [
-      { id: 1, nombre: 'Medicina general' },
-      { id: 2, nombre: 'Odontologia' },
-      { id: 3, nombre: 'Hidroterapia' },
-      { id: 4, nombre: 'Equinoterapia' }
-    ];
-    this.setState({
-      servicios,
-      especialidad: servicios[0] ? servicios[0].id : null
-    })
+    const { body } = await obtenerServicioSM();
+    this.setState({ servicios: body.data || [] });
   }
 
   onChangeEspecialidad = ev => {
     const id_servicio = ev.target.value;
     this.setState({ id_servicio }, async () => {
-      await this.cargarBeneficiariosCentroMedico();
+      const fechareporte = this.state.fecha.format("YYYY-MM-DD");
+      const idservicio = this.state.id_servicio;
+      await this.cargarBeneficiariosCentroMedico(fechareporte, idservicio);
     });
   };
 
   onChangeFechaConsulta = params => {
     this.setState({ fecha: params }, async () => {
-      await this.cargarBeneficiariosCentroMedico();
+      const fechareporte = this.state.fecha.format("YYYY-MM-DD");
+      const idservicio = this.state.id_servicio;
+      await this.cargarBeneficiariosCentroMedico(fechareporte, idservicio);
     });
-  }
-
-  expandComponent = (row) => {
-    const fechaNacimiento = moment(row.fechanacimiento).format(momentFormatDate);
-    return (
-      <div className="row-expanded">
-        <div><strong>Nombres:</strong>    {row.nombre}</div>
-        <div><strong>Apellidos:</strong>    {row.apellido}</div>
-        {row.identificacion && ( <div><strong>Identificación:</strong>    {row.identificacion}</div> )}
-        <div><strong>Lugar de nacimiento:</strong>    {row.lugarnacimiento}</div>
-        <div><strong>Fecha de nacimiento:</strong>    {fechaNacimiento}</div>
-        {row.telefono && ( <div><strong>Teléfono:</strong>    {row.telefono}</div> )}
-        <div><strong>Estado civil:</strong>    {row.estadocivil}</div>
-        {row.direccion && ( <div><strong>Dirección:</strong>    {row.direccion}</div> )}
-        {row.barrio && ( <div><strong>Barrio:</strong>    {row.barrio}</div> )}
-        <div><strong>Nacionalidad:</strong>    {row.nacionalidad}</div>
-        <div><strong>Grupo Cultural:</strong>    {row.grupocultural}</div>
-        {row.instruccion && ( <div><strong>Instrucción:</strong>    {row.instruccion}</div> )}
-        {row.ocupacion && ( <div><strong>Ocupación:</strong>    {row.ocupacion}</div> )}
-        {row.empresa && ( <div><strong>Empresa:</strong>    {row.empresa}</div> )}
-        {row.seguro && ( <div><strong>Seguro:</strong>    {row.seguro}</div> )}
-      </div>
-    )
   }
 }
 
