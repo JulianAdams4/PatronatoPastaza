@@ -77,7 +77,7 @@ const ingresarBeneficiarioSM = async (req, res) => {
         data:{ message: "Error al guardar el beneficiario" }
       });
     }
-  
+
     const [idResponsable] = await trx("responsable").insert({
       nombre: req.body.resNombre,
       apellido: req.body.resApellido,
@@ -123,7 +123,7 @@ const actualizarBeneficiarioSM = async (req, res) => {
         data:{ message: "No hay identificador" }
       });
     }
-  
+
     return await db.transaction(async trx => {
       const { idBeneficiario, data } = req.body;
       const responseB = await trx("beneficiario")
@@ -149,14 +149,14 @@ const actualizarBeneficiarioSM = async (req, res) => {
           seguro: data.seguro,
           referido: data.referido
         });
-      
+
       if (!responseB) {
         return res.status(500).json({
           error: true,
           data:{ message: "Error al actualizar el beneficiario" }
         });
       }
-    
+
       const responseR = await trx("responsable")
         .where({ id_beneficiario: idBeneficiario })
         .update({
@@ -166,14 +166,14 @@ const actualizarBeneficiarioSM = async (req, res) => {
           telefono: data.resTelefono,
           direccion: data.resDireccion
         });
-  
+
       if (!responseR) {
         return res.status(500).json({
           error: true,
           data:{ message: "Error al actualizar el responsable" }
         });
       }
-  
+
       return res.status(200).json({
         error: false,
         data:{ message: "OK" }
@@ -264,39 +264,48 @@ const filtrarBeneficiarioSM = (req, res) => {
    - Nombre
    - Apellido
    - Identificacion
-   (All projects)
+   (Consultar todos lo beneficiarios distintos al proyuni actual)
 --------------------*/
 const filtrarBeneficiario = (req, res) => {
-  return db.select(
-    "beneficiario.id",
-    "nombre",
-    "apellido",
-    "identificacion",
-    "telefono"
-  ).from("beneficiario")
-    .where((qb) => {
-      if ( req.body.nombre !== "" ) {
-        qb.where("nombre", "like", `%${req.body.nombre}%`);
-      }
-      if ( req.body.apellido !== "" ) {
-        qb.orWhere("apellido", "like", `%${req.body.apellido}%`);
-      }
-      if ( req.body.identificacion !== "" ) {
-        qb.orWhere("identificacion", "like", `%${req.body.identificacion}%`);
-      }
-    })
-    .then(collection => {
-      return res.status(200).json({
-        error: false,
-        data: collection
+  const id_proyuni = req.headers["proyuni"];
+  return db
+      .select(
+        "beneficiario.id",
+        "nombre",
+        "apellido",
+        "identificacion",
+        "telefono"
+      )
+      .from("beneficiario")
+      .join(
+        "admision",
+        "beneficiario.id",
+        "admision.id_beneficiario"
+      )
+      .where((qb) => {
+        if ( req.body.nombre !== "" ) {
+          qb.where("nombre", "like", `%${req.body.nombre}%`);
+        }
+        if ( req.body.apellido !== "" ) {
+          qb.orWhere("apellido", "like", `%${req.body.apellido}%`);
+        }
+        if ( req.body.identificacion !== "" ) {
+          qb.orWhere("identificacion", "like", `%${req.body.identificacion}%`);
+        }
+      })
+      .whereNot("id_proyuni", req.headers["proyuni"])
+      .then(collection => {
+        return res.status(200).json({
+          error: false,
+          data: collection
+        });
+      })
+      .catch(err => {
+        return res.status(500).json({
+          error: true,
+          data:{ message: err.message }
+        });
       });
-    })
-    .catch(err => {
-      return res.status(500).json({
-        error: true,
-        data:{ message: err.message }
-      });
-    });
 };
 
 /*------------------

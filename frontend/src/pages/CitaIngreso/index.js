@@ -143,6 +143,7 @@ class CitaConsulta extends Component {
                   <FormControl
                     name={`id_servicio`}
                     componentClass="select"
+                    value = {this.state.id_servicio}
                     onChange={this.handleChange}
                     required
                   >
@@ -166,6 +167,7 @@ class CitaConsulta extends Component {
                   <FormControl
                     name={'id_usuario'}
                     componentClass="select"
+                    value = {this.state.id_usuario}
                     onChange={this.handleChange}
                     required
                   >
@@ -224,7 +226,7 @@ class CitaConsulta extends Component {
                 </Col>
               </FormGroup>
 
-              <FormGroup validationState={this.state.grupoCulturalError}>
+              <FormGroup>
                 <Col componentClass={ControlLabel} lg={4} md={4} xs={12}>
                   Valor:
                 </Col>
@@ -232,6 +234,7 @@ class CitaConsulta extends Component {
                   <FormControl
                     name={'valor'}
                     componentClass="select"
+                    value = {this.state.valor}
                     onChange={this.handleChange}
                     required
                   >
@@ -245,14 +248,14 @@ class CitaConsulta extends Component {
                     )}
                   </FormControl>
                 </Col>
-                
+
                 <Col lg={12} md={12} xs={12} style={{ display: 'flex', flexDirection: 'column', marginTop: '5%' }} >
-                  <button 
+                  <button
                     id="guardar-cita-btn"
                     className="btn btn-prev btn-lg" onClick={this.submit}
                   >
                     Guardar
-                  </button>                
+                  </button>
                 </Col>
 
               </FormGroup>
@@ -270,7 +273,7 @@ class CitaConsulta extends Component {
       });
       return;
     }
-    
+
     const searchParams = {
       nombre: nombre ? nombre.value : "",
       apellido: apellido ? apellido.value : '',
@@ -301,7 +304,7 @@ class CitaConsulta extends Component {
     await crearCita({
       id_servicio: this.state.id_servicio,
       id_beneficiario: this.state.pacienteSeleccionado.id,
-      id_usuario: 3,
+      id_usuario: this.state.id_usuario,
       fecha: this.state.fecha.format('DD-MM-YYYY'),
       hora: this.state.hora.format('hh:mm'),
       valor: this.state.valor

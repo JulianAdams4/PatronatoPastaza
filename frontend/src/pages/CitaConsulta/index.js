@@ -67,6 +67,7 @@ class CitaConsulta extends Component {
                           value={this.state.id_servicio}
                           onChange={this.onChangeEspecialidad}
                         >
+                          <option value="" disabled>Seleccione especialidad</option>
                           { this.state.servicios.length && (
                             this.state.servicios.map((serv, index) => (
                               <option key={index} value={`${serv.id}`}>
@@ -78,7 +79,7 @@ class CitaConsulta extends Component {
                       </Col>
                     </FormGroup>
                   </Col>
-                  
+
                   <Col md={6} sm={6} xs={12}>
                     <FormGroup >
                       <Col sm={3}xs={12}>
@@ -124,7 +125,7 @@ class CitaConsulta extends Component {
                   <TableHeaderColumn
                     dataAlign='center'
                     headerAlign='center'
-                    dataField='id'
+                    dataField='id_beneficiario'
                     isKey
                     width="10%"
                     filter={{
@@ -200,40 +201,40 @@ class CitaConsulta extends Component {
   renderActionButtons = (cell, row) => {
     return (
       <div>
-        <button 
-          className="btn btn-sm btn-info" 
-          title="Ficha médica" 
+        <button
+          className="btn btn-sm btn-info"
+          title="Ficha médica"
           style={{ padding: '4px 7px'}}
         >
-          <span 
-            className="btn-label fa fa-user-md" 
+          <span
+            className="btn-label fa fa-user-md"
             style={{ fontSize: 20, position: 'relative', top:'2px'}}
           />
         </button>
 
-        <button 
-          className="btn btn-sm btn-success" 
-          title="Marcar asistencia" 
+        <button
+          className="btn btn-sm btn-success"
+          title="Marcar asistencia"
           style={{ padding: '5px 6px' }}
           onClick={() => this.onClickMarcarAsistencia(row.id)}
         >
-          <span 
-            className="btn-label fa fa-check" 
+          <span
+            className="btn-label fa fa-check"
             style={{ fontSize: 18, position: 'relative', top:'2px' }}
           />
         </button>
 
-        <button 
-          className="btn btn-sm btn-danger" 
-          title="Eliminar asistencia" 
+        <button
+          className="btn btn-sm btn-danger"
+          title="Eliminar asistencia"
           style={{ padding: '4px 7px' }}
           onClick={() => this.onClickEliminarCita(row.id)}
         >
-          <span 
-            className="btn-label fa fa-times" 
+          <span
+            className="btn-label fa fa-times"
             style={{ fontSize: 20, position: 'relative', top:'2px'}}
           />
-        </button>        
+        </button>
       </div>
     );
   };
@@ -253,7 +254,7 @@ class CitaConsulta extends Component {
         }
         return cita;
       });
-      this.setState({ data: formattedData });  
+      this.setState({ data: formattedData });
     }
   }
 
