@@ -249,7 +249,7 @@ class CitaConsulta extends Component {
                     <option value="" disabled>Seleccione valor</option>
                     { this.state.tiposExoneraciones.length && (
                       this.state.tiposExoneraciones.map((exon, index) => (
-                        <option key={index} value={`${exon.id}`}>
+                        <option key={index} value={`${exon.nombre}`}>
                           {exon.nombre}
                         </option>
                       ))
@@ -329,7 +329,7 @@ class CitaConsulta extends Component {
       id_usuario: this.state.id_usuario,
       fecha: this.state.fecha.format('DD-MM-YYYY'),
       hora: this.state.hora.format('hh:mm'),
-      valor: this.state.valor
+      valor: this.state.valor || 'Pagado'
     });
     if (status === 200) {
       this.setState({
