@@ -329,7 +329,7 @@ class CitaConsulta extends Component {
       id_usuario: this.state.id_usuario,
       fecha: this.state.fecha.format('DD-MM-YYYY'),
       hora: this.state.hora.format('hh:mm'),
-      valor: this.state.valor || 'Pagado'
+      valor: this.state.valor
     });
     if (status === 200) {
       this.setState({
