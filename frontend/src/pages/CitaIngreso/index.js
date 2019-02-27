@@ -142,139 +142,139 @@ class CitaConsulta extends Component {
 
   renderFormCita = () => {
     return this.state.pacienteSeleccionado ? (
-      <div>
-            <div className="form-fieldset">
-              <FormGroup>
-                <Col componentClass={ControlLabel} lg={4} md={4} xs={12}>
-                  Servicio:
-                </Col>
-                <Col lg={5} xs={12}>
-                  <FormControl
-                    name={`id_servicio`}
-                    componentClass="select"
-                    value = {this.state.id_servicio}
-                    onChange={this.handleChange}
-                    required
-                  >
-                    <option value="" disabled>Seleccione servicio</option>
-                    { this.state.serviciosDisponibles.length && (
-                      this.state.serviciosDisponibles.map((serv, index) => (
-                        <option key={index} value={`${serv.id}`}>
-                          {serv.tipo}
-                        </option>
-                      ))
-                    )}
-                  </FormControl>
-                </Col>
-              </FormGroup>
+      <Form horizontal autoComplete="off">
+          <div className="form-fieldset">
+            <FormGroup>
+              <Col componentClass={ControlLabel} lg={4} md={4} xs={12}>
+                Servicio:
+              </Col>
+              <Col lg={5} xs={12}>
+                <FormControl
+                  name={`id_servicio`}
+                  componentClass="select"
+                  value = {this.state.id_servicio}
+                  onChange={this.handleChange}
+                  required
+                >
+                  <option value="" disabled>Seleccione servicio</option>
+                  { this.state.serviciosDisponibles.length && (
+                    this.state.serviciosDisponibles.map((serv, index) => (
+                      <option key={index} value={`${serv.id}`}>
+                        {serv.tipo}
+                      </option>
+                    ))
+                  )}
+                </FormControl>
+              </Col>
+            </FormGroup>
 
-              <FormGroup>
-                <Col componentClass={ControlLabel} lg={4} md={4} xs={12}>
-                  Especialista:
-                </Col>
-                <Col lg={5} xs={12}>
-                  <FormControl
-                    name={'id_usuario'}
-                    componentClass="select"
-                    value = {this.state.id_usuario}
-                    onChange={this.handleChange}
-                    required
-                  >
-                    <option value="" disabled>Seleccione especialista</option>
-                    { this.state.especialistasDisponibles.length && (
-                      this.state.especialistasDisponibles.map((espec, index) => (
-                        <option key={index} value={`${espec.id}`}>
-                          {espec.nombre}
-                        </option>
-                      ))
-                    )}
-                  </FormControl>
-                </Col>
-              </FormGroup>
+            <FormGroup>
+              <Col componentClass={ControlLabel} lg={4} md={4} xs={12}>
+                Especialista:
+              </Col>
+              <Col lg={5} xs={12}>
+                <FormControl
+                  name={'id_usuario'}
+                  componentClass="select"
+                  value = {this.state.id_usuario}
+                  onChange={this.handleChange}
+                  required
+                >
+                  <option value="" disabled>Seleccione especialista</option>
+                  { this.state.especialistasDisponibles.length && (
+                    this.state.especialistasDisponibles.map((espec, index) => (
+                      <option key={index} value={`${espec.id}`}>
+                        {espec.nombre}
+                      </option>
+                    ))
+                  )}
+                </FormControl>
+              </Col>
+            </FormGroup>
 
-              <FormGroup>
-                <Col componentClass={ControlLabel} lg={4} md={4} xs={12}>
-                  Fecha:
-                </Col>
-                <Col lg={5} xs={12}>
-                <DatePicker
-                  name="fecha"
-                  locale="es"
-                  selected={this.state.fecha}
-                  onChange={this.handleChangeDate}
-                  showYearDropdown
-                  showMonthDropdown
-                  showDayDropdown
-                  scrollableYearDropdown
-                  dateFormatCalendar="MMMM"
-                  placeholderText="Ingrese una fecha"
-                  dropdownMode="select"
-                  dateFormat={momentFormatDate}
-                />
-                </Col>
-              </FormGroup>
-              <FormGroup>
-                <Col componentClass={ControlLabel} lg={4} md={4} xs={12}>
-                  Hora:
-                </Col>
-                <Col lg={5} xs={12}>
-                <DatePicker
-                  name="hora"
-                  locale="es"
-                  selected={this.state.hora}
-                  value={this.state.hora.format('hh:mm')}
-                  onChange={this.handleChangeHour}
-                  showTimeSelect
-                  showTimeSelectOnly
-                  placeholderText="Ingrese hora"
-                  timeFormat="hh:mm"
-                  timeIntervals={15}
-                  timeCaption="Hora"
-                />
-                </Col>
-              </FormGroup>
+            <FormGroup>
+              <Col componentClass={ControlLabel} lg={4} md={4} xs={12}>
+                Fecha:
+              </Col>
+              <Col lg={5} xs={12}>
+              <DatePicker
+                name="fecha"
+                locale="es"
+                selected={this.state.fecha}
+                onChange={this.handleChangeDate}
+                showYearDropdown
+                showMonthDropdown
+                showDayDropdown
+                scrollableYearDropdown
+                dateFormatCalendar="MMMM"
+                placeholderText="Ingrese una fecha"
+                dropdownMode="select"
+                dateFormat={momentFormatDate}
+              />
+              </Col>
+            </FormGroup>
+            <FormGroup>
+              <Col componentClass={ControlLabel} lg={4} md={4} xs={12}>
+                Hora:
+              </Col>
+              <Col lg={5} xs={12}>
+              <DatePicker
+                name="hora"
+                locale="es"
+                selected={this.state.hora}
+                value={this.state.hora.format('hh:mm')}
+                onChange={this.handleChangeHour}
+                showTimeSelect
+                showTimeSelectOnly
+                placeholderText="Ingrese hora"
+                timeFormat="hh:mm"
+                timeIntervals={15}
+                timeCaption="Hora"
+              />
+              </Col>
+            </FormGroup>
 
-              <FormGroup>
-                <Col componentClass={ControlLabel} lg={4} md={4} xs={12}>
-                  Valor:
-                </Col>
-                <Col lg={5} xs={12}>
-                  <FormControl
-                    name={'valor'}
-                    componentClass="select"
-                    value = {this.state.valor}
-                    onChange={this.handleChange}
-                    required
-                  >
-                    <option value="" disabled>Seleccione valor</option>
-                    { this.state.tiposExoneraciones.length && (
-                      this.state.tiposExoneraciones.map((exon, index) => (
-                        <option key={index} value={`${exon.nombre}`}>
-                          {exon.nombre}
-                        </option>
-                      ))
-                    )}
-                  </FormControl>
-                </Col>
+            <FormGroup>
+              <Col componentClass={ControlLabel} lg={4} md={4} xs={12}>
+                Valor:
+              </Col>
+              <Col lg={5} xs={12}>
+                <FormControl
+                  name={'valor'}
+                  componentClass="select"
+                  value = {this.state.valor}
+                  onChange={this.handleChange}
+                  required
+                >
+                  <option value="" disabled>Seleccione valor</option>
+                  { this.state.tiposExoneraciones.length && (
+                    this.state.tiposExoneraciones.map((exon, index) => (
+                      <option key={index} value={`${exon.nombre}`}>
+                        {exon.nombre}
+                      </option>
+                    ))
+                  )}
+                </FormControl>
+              </Col>
 
-              </FormGroup>
-            </div>
-            <Col lg={12} md={12} xs={12}
-              style={{
-                display: 'flex', 
-                flexDirection: 'column',
-                marginTop: '5%',
-                marginBottom: "70px"
-              }}
+            </FormGroup>
+          </div>
+          <Col lg={12} md={12} xs={12}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              marginTop: '5%',
+              marginBottom: "70px"
+            }}
+          >
+            <button
+              id="guardar-cita-btn"
+              className="btn btn-prev btn-lg" onClick={this.enviarForm}
             >
-              <button
-                id="guardar-cita-btn"
-                className="btn btn-prev btn-lg" onClick={this.enviarForm}
-              >
-                Guardar
-              </button>
-            </Col>
-      </div>
+              Guardar
+            </button>
+          </Col>
+      </Form>
     ) : null;
   };
 

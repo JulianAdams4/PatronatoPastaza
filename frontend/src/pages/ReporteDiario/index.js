@@ -62,6 +62,7 @@ class CitaConsulta extends Component {
                           value={this.state.id_servicio}
                           onChange={this.onChangeEspecialidad}
                         >
+                          <option value="" disabled>Seleccione servicio</option>
                           { this.state.servicios.length && (
                             this.state.servicios.map((serv, index) => (
                               <option key={index} value={`${serv.id}`}>
@@ -73,7 +74,7 @@ class CitaConsulta extends Component {
                       </Col>
                     </FormGroup>
                   </Col>
-                  
+
                   <Col md={6} sm={6} xs={12}>
                     <FormGroup >
                       <Col sm={3}xs={12}>
